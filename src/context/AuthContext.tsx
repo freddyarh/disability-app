@@ -1,13 +1,15 @@
 
 import React, { createContext, useReducer } from "react";
-import { LoginData, Usuario } from "../interfaces/appInterfaces";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import disabilityApi from "../api/disabilityApi";
+import { LoginResponse, LoginData, User } from "../interfaces/appInterfaces";
 import { authReducer, AuthState } from "./authReducer";
 
 
 type AuthContextProps = {
     errorMessage: string;
     token: string;
-    user: Usuario | null;
+    user: User | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
     signUp: () => void;
     signIn: ( loginData: LoginData ) => void;
@@ -31,27 +33,20 @@ export const AuthProvider = ({ children }: any) => {
     const signUp = () => {};
     const signIn = async({ email, password }: LoginData ) => {
         try {
-            if( email === "fredy@gmail.com" && password === "123456" ){
-                dispatch({ type: 'signUp', 
-                    payload: {
-                        token: "token123456",
-                        user: {
-                            role: "USER",
-                            state: true,
-                            name: "Fredy",
-                            lastName: "Aristizabal",
-                            email: "fredy@gmail.com",
-                            uid: "uid123456"
-                        }
-                }})
-            }else{
-                dispatch({ type: 'addError',
-                    payload: 'Information incorrect'
-                })
-            }
+
+            const { data } = await disabilityApi.post<LoginResponse>('/auth/login', { email, password });
+
+            dispatch({ type: 'signUp', payload: {
+                token: data.token,
+                user: data.user
+                }
+            }) 
             
         } catch (error) {
-            
+
+            dispatch({ type: 'addError',
+                payload: error.response.data.msg || 'Incorrect information'
+            })
         }
     };
     const logOut = () => {};

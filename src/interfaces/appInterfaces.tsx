@@ -1,5 +1,5 @@
 export interface LoginResponse {
-    usuario: Usuario;
+    user: User;
     token: string;
 }
 
@@ -8,7 +8,7 @@ export interface LoginData {
     password: string;
 }
 
-export interface Usuario {
+export interface User {
     role: string;
     state: boolean;
     name: string;
