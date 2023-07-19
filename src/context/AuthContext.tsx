@@ -1,5 +1,5 @@
 
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useEffect, useReducer } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import disabilityApi from "../api/disabilityApi";
 import { LoginResponse, LoginData, User } from "../interfaces/appInterfaces";
@@ -30,6 +30,35 @@ export const AuthProvider = ({ children }: any) => {
 
     const [state, dispatch] = useReducer(authReducer, authInitialStaate);
 
+    useEffect(() => {
+      
+        checkToken();
+
+    }, [])
+
+    const checkToken = async() => {
+        const token = AsyncStorage.getItem('token');
+
+        //Not token, not authenticate
+            if( !token ) return dispatch({ type: 'notAuthenticated' });
+        //There is token
+        const resp = await disabilityApi.get('/auth');
+
+        if( resp.status !== 200 ){
+            return dispatch({ type: 'notAuthenticated' });
+        }
+
+        dispatch({
+            type: 'signUp',
+            payload: {
+                token: resp.data.token,
+                user: resp.data.user
+            }
+        })
+
+    }
+    
+
     const signUp = () => {};
     const signIn = async({ email, password }: LoginData ) => {
         try {
@@ -41,6 +70,8 @@ export const AuthProvider = ({ children }: any) => {
                 user: data.user
                 }
             }) 
+
+            await AsyncStorage.setItem('token', data.token);
             
         } catch (error) {
 
