@@ -9,7 +9,7 @@ import { LoginData } from '../interfaces/appInterfaces';
 interface Props extends NativeStackScreenProps<any, any> {}
 
 export const Login = ({ navigation }: Props) => {
-  const [email, setEmail] = useState("fredy@gmail.com");
+  const [email, setEmail] = useState("test4@gmail.com");
   const [password, setPassword] = useState("123456");
   const { signIn, errorMessage, removeError } = useContext( AuthContext );
 

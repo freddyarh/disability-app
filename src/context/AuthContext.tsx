@@ -37,12 +37,12 @@ export const AuthProvider = ({ children }: any) => {
     }, [])
 
     const checkToken = async() => {
-        const token = AsyncStorage.getItem('token');
-
+        const token = await AsyncStorage.getItem('token');
         //Not token, not authenticate
             if( !token ) return dispatch({ type: 'notAuthenticated' });
         //There is token
         const resp = await disabilityApi.get('/auth');
+        // console.log('resp', resp.status)
 
         if( resp.status !== 200 ){
             return dispatch({ type: 'notAuthenticated' });
@@ -80,7 +80,10 @@ export const AuthProvider = ({ children }: any) => {
             })
         }
     };
-    const logOut = () => {};
+    const logOut = async() => {
+        await AsyncStorage.removeItem('token');
+        dispatch({ type: 'logout' });
+    };
     const removeError = () => {
         dispatch({ type: 'removeError' });
     };

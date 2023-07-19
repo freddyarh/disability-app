@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Avatar, Card, Button as ButtonPaper } from 'react-native-paper';
 import Button from '../components/Button';
+import { AuthContext } from '../context/AuthContext';
 import { clientJson } from './clientJson';
 
 const Clients = ({ navigation }: any) => {
+
+    const { logOut } = useContext( AuthContext );
   return (
     <>
         { clientJson.map( (client, index) => (
@@ -31,6 +34,7 @@ const Clients = ({ navigation }: any) => {
         ))}
         <Button label={ "Create new client" } buttonEvent={ () => navigation.navigate("Form Client")} disabled={ false } />
         <Button label={ "Create new staff" } buttonEvent={ () => navigation.navigate("Staff Members")} disabled={ false } />
+        <Button label={ "Logout" } buttonEvent={ logOut } disabled={ false } />
     </>
   )
 }
