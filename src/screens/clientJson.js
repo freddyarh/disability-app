@@ -9,6 +9,10 @@ export const clientJson = [
         ndisGoals: "NDIS Goals",
         assessment: "This is the assessment",
         supportNetwork: "This is support network",
+        staffs:[{
+            uid: 2345,
+            name: "Jorge Guzman"
+        }],
         state: true,
     },
     {
@@ -21,6 +25,10 @@ export const clientJson = [
         ndisGoals: "NDIS Goals",
         assessment: "This is the assessment",
         supportNetwork: "This is support network",
+        staffs:[{
+            uid: 2345,
+            name: "Jorge Guzman"
+        }],
         state: true,
     },
     {
@@ -33,6 +41,10 @@ export const clientJson = [
         ndisGoals: "NDIS Goals",
         assessment: "This is the assessment",
         supportNetwork: "This is support network",
+        staffs:[{
+            uid: 2345,
+            name: "Jorge Guzman"
+        }],
         state: true,
     },
 ];

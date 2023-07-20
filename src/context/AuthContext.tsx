@@ -38,24 +38,30 @@ export const AuthProvider = ({ children }: any) => {
 
     const checkToken = async() => {
         const token = await AsyncStorage.getItem('token');
-        //Not token, not authenticate
+        
+        // Not token, not authenticate
             if( !token ) return dispatch({ type: 'notAuthenticated' });
         //There is token
-        const resp = await disabilityApi.get('/auth');
-        // console.log('resp', resp.status)
+        disabilityApi.get('/auth')
+            .then(async(resp) => {
+                if( resp.status !== 200 ){
+                    return dispatch({ type: 'notAuthenticated' });
+                }
 
-        if( resp.status !== 200 ){
-            return dispatch({ type: 'notAuthenticated' });
-        }
+                await AsyncStorage.setItem('token', resp.data.token);
 
-        dispatch({
-            type: 'signUp',
-            payload: {
-                token: resp.data.token,
-                user: resp.data.user
-            }
-        })
-
+                dispatch({
+                    type: 'signUp',
+                    payload: {
+                        token: resp.data.token,
+                        user: resp.data.user
+                    }
+                })
+            })
+            .catch(err => {
+                console.log('err ', err);
+                return dispatch({ type: 'notAuthenticated' });
+            });
     }
     
 
@@ -73,7 +79,7 @@ export const AuthProvider = ({ children }: any) => {
 
             await AsyncStorage.setItem('token', data.token);
             
-        } catch (error) {
+        } catch (error: any) {
 
             dispatch({ type: 'addError',
                 payload: error.response.data.msg || 'Incorrect information'
