@@ -10,11 +10,9 @@ disabilityApi.interceptors.request.use(
 
     async(config) => {
         const token = await AsyncStorage.getItem('token');
-
         if( token ){
             config.headers['auth-token'] = token;
         }
-
         return config;
     }
 )
