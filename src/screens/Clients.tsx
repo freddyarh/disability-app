@@ -33,8 +33,8 @@ const Clients = ({ navigation }: any) => {
             // </TouchableOpacity>
             ))}
             <Button label={ "Logout" } buttonEvent={ logOut } disabled={ false } />
-        <Button label={ "Create new client" } buttonEvent={ () => navigation.navigate("Form Client")} disabled={ false } />
         <Button label={ "Create new staff" } buttonEvent={ () => navigation.navigate("Staff Members")} disabled={ false } />
+        <Button label={ "Create new client" } buttonEvent={ () => navigation.navigate("Form Client")} disabled={ false } />
     </>
   )
 }

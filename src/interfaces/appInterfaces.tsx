@@ -10,11 +10,12 @@ export interface LoginData {
 
 export interface User {
     role: string;
-    state: boolean;
+    state?: boolean;
     name: string;
     lastName: string;
     email: string;
-    uid: string;
+    password?: string;
+    uid?: string;
 }
 export interface Client {
     uid: string;

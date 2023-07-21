@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import disabilityApi from "../api/disabilityApi";
 import { LoginResponse, LoginData, User } from "../interfaces/appInterfaces";
 import { authReducer, AuthState } from "./authReducer";
+import { Alert } from "react-native";
 
 
 type AuthContextProps = {
@@ -11,7 +12,7 @@ type AuthContextProps = {
     token: string;
     user: User | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
-    signUp: () => void;
+    signUp: ( user: User ) => void;
     signIn: ( loginData: LoginData ) => void;
     logOut: () => void;
     removeError: () => void;
@@ -65,7 +66,19 @@ export const AuthProvider = ({ children }: any) => {
     }
     
 
-    const signUp = () => {};
+    const signUp = async({ name, lastName, email, password, role }: User ) => {
+        
+        try {
+
+            const { data } = await disabilityApi.post<User>('/users/createUser', { name, lastName, email, password, role });
+            Alert.alert('Info', data?.msg);
+            
+        } catch (error: any) {
+
+            console.log(error);
+            Alert.alert('Invalid info', error.response.data.msg);
+        }
+    };
     const signIn = async({ email, password }: LoginData ) => {
         try {
 
