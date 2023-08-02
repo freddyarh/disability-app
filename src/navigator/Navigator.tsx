@@ -10,10 +10,96 @@ import  Clients  from '../screens/Clients';
 import ClientProfileForm from '../screens/ClientProfileForm';
 import { LoadingScreen } from '../screens/LoadingScreen';
 import ClientProfile from '../screens/ClientProfile';
+import CreateStaffMembers from '../screens/CreateStaffMembers';
 import StaffMembers from '../screens/StaffMembers';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useWindowDimensions } from 'react-native';
+import { DrawerContent } from './DrawerContent';
+import ChangePassword from '../screens/ChangePassword';
+import InsertCode from '../screens/InsertCode';
 
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+export const AuthNavigator = () => {
+  return(
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen name="Login" component={ Login } />
+      <Stack.Screen name="ForgotPassword" component={ ForgotPassword } />
+      <Stack.Screen name="ChangePassword" component={ ChangePassword } />
+      <Stack.Screen name="InsertCode" component={ InsertCode } />
+    </Stack.Navigator>
+  )
+}
+
+export const DrawerNavigator = () => {
+  const dimensions = useWindowDimensions();
+  const isLargeScreen = dimensions.width >= 768;
+  return(
+    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+      <Drawer.Screen 
+        name={ "Clients" } 
+        component={ Clients }
+        options={{
+          title: 'Home',
+          headerTintColor: "white",
+          headerStyle: {
+              backgroundColor: "rgb(99, 81, 159)",
+          },
+        }}
+        />
+      <Drawer.Screen 
+        name={ "Create Staff Members" } 
+        component={ CreateStaffMembers }
+        options={{
+          title: 'Create Staff Members',
+          headerTintColor: "white",
+          headerStyle: {
+              backgroundColor: "rgb(99, 81, 159)",
+          },
+        }}
+        />
+      <Drawer.Screen 
+        name={ "Staff Members" } 
+        component={ StaffMembers }
+        options={{
+          title: 'Staff Members',
+          headerTintColor: "white",
+          headerStyle: {
+              backgroundColor: "rgb(99, 81, 159)",
+          },
+        }}
+        />
+      <Drawer.Screen 
+        name={ "Client Profile" } 
+        component={ ClientProfile }
+        options={{
+          title: 'Client Profile',
+          headerTintColor: "white",
+          headerStyle: {
+              backgroundColor: "rgb(99, 81, 159)",
+          },
+        }}
+        />
+      <Drawer.Screen 
+        name={ "ClientProfileForm" } 
+        component={ ClientProfileForm }
+        options={{
+          title: 'ClientProfileForm',
+          headerTintColor: "white",
+          headerStyle: {
+              backgroundColor: "rgb(99, 81, 159)",
+          },
+        }}
+        />
+    </Drawer.Navigator>
+  )
+}
 
 export const Navigator = () => {
 
@@ -23,43 +109,19 @@ export const Navigator = () => {
 
   return (
     // <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: true,
-        }}
-      >
 
-        {
-          ( status !== 'authenticated') 
-            ? (
-              <>
-                <Stack.Screen name="Login" component={ Login } />
-                <Stack.Screen name="ForgotPassword" component={ ForgotPassword } />
-              </>
-            )
-            : (
-              <>
-                <Stack.Screen 
-                  name="Clients" 
-                  component={ Clients } 
-                />
-                <Stack.Screen 
-                  name="Form Client" 
-                  component={ ClientProfileForm }
-                />
-                <Stack.Screen 
-                  name="Client Profile" 
-                  component={ ClientProfile }
-                />
-                <Stack.Screen 
-                  name="Staff Members" 
-                  component={ StaffMembers }
-                />
-              </>
-            )
+    <>
+      {
+        ( status !== 'authenticated') 
+        ? (
+            <AuthNavigator />
+          )
+          : (
+            <DrawerNavigator />
+          )
         }
+    </>
 
-      </Stack.Navigator>
     // </NavigationContainer>
   );
 }

@@ -1,22 +1,22 @@
 import React, { useContext } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Avatar, Card, Button as ButtonPaper } from 'react-native-paper';
 import Button from '../components/Button';
 import { AuthContext } from '../context/AuthContext';
+import { globalStyles } from '../styles/globalStyles';
 import { clientJson } from './clientJson';
 
 const Clients = ({ navigation }: any) => {
 
-    const { logOut } = useContext( AuthContext );
   return (
-    <>
+    <View style={ globalStyles.container }>
         { clientJson.map( (client, index) => (
             // <TouchableOpacity key={ index } 
             //     onPress={ () => navigation.navigate("Client Profile",{
             //         clientUid: client.uid
             //     })}
             // >
-                <Card key={ index } style={{ alignItems: 'flex-start', marginBottom: 10, marginTop: 10}}>
+                <Card key={ index } style={{ alignItems: 'flex-start', margin: 10}}>
                     <Card.Title
                         title={ client.name }
                         subtitle={ client.uid }
@@ -32,10 +32,11 @@ const Clients = ({ navigation }: any) => {
                 </Card>
             // </TouchableOpacity>
             ))}
-            <Button label={ "Logout" } buttonEvent={ logOut } disabled={ false } />
+
         <Button label={ "Create new staff" } buttonEvent={ () => navigation.navigate("Staff Members")} disabled={ false } />
-        <Button label={ "Create new client" } buttonEvent={ () => navigation.navigate("Form Client")} disabled={ false } />
-    </>
+        <Button label={ "Create new client" } buttonEvent={ () => navigation.navigate("ClientProfileForm")} disabled={ false } />
+
+    </View>
   )
 }
 

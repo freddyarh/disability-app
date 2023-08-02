@@ -8,6 +8,7 @@ import Input from '../components/Input';
 import DropDown from '../components/DropDown';
 import Button from '../components/Button';
 import { colors } from '../styles/colors';
+import { globalStyles } from '../styles/globalStyles';
 
 const ClientProfileForm = () => {
     
@@ -44,9 +45,8 @@ const ClientProfileForm = () => {
     }
 
   return (
-    <>
+    <View style={ globalStyles.container }>
         <KeyboardAvoidingView
-            style={{ flex: 1, backgroundColor: '#fff' }}
             behavior={ ( Platform.OS === 'ios') ? 'padding': 'padding' }
         >
             <View>
@@ -147,7 +147,7 @@ const ClientProfileForm = () => {
                 
             </View>
         </KeyboardAvoidingView>
-    </>
+    </View>
   )
 }
 

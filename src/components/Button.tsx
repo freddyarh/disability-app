@@ -26,18 +26,16 @@ const styles = StyleSheet.create({
       fontWeight: 'bold'
     },
     button: {
-      width: '100%',
-      marginTop: 40,
+      marginTop: 25,
       height: 50,
-      borderRadius: 5,
+      borderRadius: 30,
       backgroundColor: colors.obsidium,
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center'
     },
     buttonDisable: {
-      width: '100%',
-      marginTop: 40,
+      marginVertical: '2%',
       height: 50,
       borderRadius: 5,
       backgroundColor: colors.gray,

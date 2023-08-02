@@ -5,10 +5,12 @@ export interface AuthState {
     token: string | null;
     errorMessage: string;
     user: User | null;
+    forgotId: string | null;
 }
 
 type AuthAction =
     | { type: 'signUp', payload: { token: string, user: User } }
+    | { type: 'forgotPassword', payload: { forgotId: string } }
     | { type: 'addError', payload: string }
     | { type: 'removeError' }
     | { type: 'notAuthenticated' }
@@ -39,6 +41,14 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 errorMessage: '',
                 token: action.payload.token,
                 user: action.payload.user
+            };
+        
+        case 'forgotPassword':
+            return {
+                ...state,
+                status: 'not-authenticated',
+                errorMessage: '',
+                forgotId: action.payload.forgotId 
             };
 
         case 'logout':

@@ -12,24 +12,26 @@ type AuthContextProps = {
     token: string;
     user: User | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
+    forgotId: string;
     signUp: ( user: User ) => void;
     signIn: ( loginData: LoginData ) => void;
     logOut: () => void;
     removeError: () => void;
 }
 
-const authInitialStaate: AuthState = {
+const authInitialState: AuthState = {
     status: 'checking',
     token: null,
     user: null,
-    errorMessage: ''
+    errorMessage: '',
+    forgotId: ''
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: any) => {
 
-    const [state, dispatch] = useReducer(authReducer, authInitialStaate);
+    const [state, dispatch] = useReducer(authReducer, authInitialState);
 
     useEffect(() => {
       
@@ -60,7 +62,7 @@ export const AuthProvider = ({ children }: any) => {
                 })
             })
             .catch(err => {
-                console.log('err ', err);
+                console.log('err ', err.response.data.msg);
                 return dispatch({ type: 'notAuthenticated' });
             });
     }
