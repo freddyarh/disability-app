@@ -19,11 +19,8 @@ export const globalStyles = StyleSheet.create({
     },
     textInput: {
         width: '100%',
-        // height: 50,
-        marginTop: 20,
-        // borderWidth: 0,
+        marginBottom: 20,
         backgroundColor: 'white',
-        // borderWidth: 5,
         borderTopLeftRadius: 20
     },
 });

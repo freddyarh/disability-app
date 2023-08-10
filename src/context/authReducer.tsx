@@ -42,14 +42,6 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 token: action.payload.token,
                 user: action.payload.user
             };
-        
-        case 'forgotPassword':
-            return {
-                ...state,
-                status: 'not-authenticated',
-                errorMessage: '',
-                forgotId: action.payload.forgotId 
-            };
 
         case 'logout':
         case 'notAuthenticated':

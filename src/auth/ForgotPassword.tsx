@@ -28,9 +28,11 @@ export const ForgotPassword = ({ navigation }: any ) => {
         return dispatch({ type: 'addError', payload: resp.data.msg });
       }
 
-      navigation.navigate('ChangePassword');
+      navigation.replace('InsertCode', {
+        id: await resp.data.id
+      });
 
-      return dispatch({ type: 'forgotPassword', payload: { forgotId: resp.data.code }});
+      return dispatch({ type: 'forgotPassword', payload: { forgotId: resp.data.id }});
 
       setEmail("");
       
@@ -41,7 +43,7 @@ export const ForgotPassword = ({ navigation }: any ) => {
     
   }
   return (
-    <View style={ globalStyles.container } >
+    <View style={ globalStyles.container }>
         {/* <Text>Forgot Password</Text> */}
         <Text>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
         <Input label="Email" value={ email } setValue={ setEmail } />

@@ -12,7 +12,6 @@ type AuthContextProps = {
     token: string;
     user: User | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
-    forgotId: string;
     signUp: ( user: User ) => void;
     signIn: ( loginData: LoginData ) => void;
     logOut: () => void;
@@ -24,7 +23,6 @@ const authInitialState: AuthState = {
     token: null,
     user: null,
     errorMessage: '',
-    forgotId: ''
 }
 
 export const AuthContext = createContext({} as AuthContextProps);

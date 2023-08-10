@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useWindowDimensions } from 'react-native';
 
 import { AuthContext } from '../context/AuthContext';
 
@@ -12,11 +14,10 @@ import { LoadingScreen } from '../screens/LoadingScreen';
 import ClientProfile from '../screens/ClientProfile';
 import CreateStaffMembers from '../screens/CreateStaffMembers';
 import StaffMembers from '../screens/StaffMembers';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useWindowDimensions } from 'react-native';
 import { DrawerContent } from './DrawerContent';
-import ChangePassword from '../screens/ChangePassword';
-import InsertCode from '../screens/InsertCode';
+import ChangePassword from '../auth/ChangePassword';
+import InsertCode from '../auth/InsertCode';
+import ClientForm from '../screens/ClientForm';
 
 
 const Stack = createNativeStackNavigator();
@@ -31,8 +32,8 @@ export const AuthNavigator = () => {
     >
       <Stack.Screen name="Login" component={ Login } />
       <Stack.Screen name="ForgotPassword" component={ ForgotPassword } />
-      <Stack.Screen name="ChangePassword" component={ ChangePassword } />
       <Stack.Screen name="InsertCode" component={ InsertCode } />
+      <Stack.Screen name="ChangePassword" component={ ChangePassword } />
     </Stack.Navigator>
   )
 }
@@ -91,6 +92,17 @@ export const DrawerNavigator = () => {
         component={ ClientProfileForm }
         options={{
           title: 'ClientProfileForm',
+          headerTintColor: "white",
+          headerStyle: {
+              backgroundColor: "rgb(99, 81, 159)",
+          },
+        }}
+        />
+      <Drawer.Screen 
+        name={ "Client Form" } 
+        component={ ClientForm }
+        options={{
+          title: 'Client Form',
           headerTintColor: "white",
           headerStyle: {
               backgroundColor: "rgb(99, 81, 159)",

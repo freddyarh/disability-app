@@ -27,13 +27,13 @@ const Clients = ({ navigation }: any) => {
                             clientUid: client.uid
                         })}>Info</ButtonPaper>
                         <ButtonPaper onPress={ () => { console.log("Button Report") } }>Report</ButtonPaper>
-                        <ButtonPaper onPress={ () => { console.log("Button Form") } }>Form</ButtonPaper>
+                        <ButtonPaper onPress={ () => navigation.navigate("Client Form") }>Form</ButtonPaper>
                     </Card.Actions>
                 </Card>
             // </TouchableOpacity>
-            ))}
+        ))}
 
-        <Button label={ "Create new staff" } buttonEvent={ () => navigation.navigate("Staff Members")} disabled={ false } />
+        <Button label={ "Create new staff" } buttonEvent={ () => navigation.navigate("Create Staff Members")} disabled={ false } />
         <Button label={ "Create new client" } buttonEvent={ () => navigation.navigate("ClientProfileForm")} disabled={ false } />
 
     </View>
