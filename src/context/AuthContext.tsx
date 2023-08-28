@@ -18,18 +18,18 @@ type AuthContextProps = {
     removeError: () => void;
 }
 
-const authInitialStaate: AuthState = {
+const authInitialState: AuthState = {
     status: 'checking',
     token: null,
     user: null,
-    errorMessage: ''
+    errorMessage: '',
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: any) => {
 
-    const [state, dispatch] = useReducer(authReducer, authInitialStaate);
+    const [state, dispatch] = useReducer(authReducer, authInitialState);
 
     useEffect(() => {
       
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: any) => {
                 })
             })
             .catch(err => {
-                console.log('err ', err);
+                console.log('err ', err.response.data.msg);
                 return dispatch({ type: 'notAuthenticated' });
             });
     }
@@ -82,7 +82,10 @@ export const AuthProvider = ({ children }: any) => {
     const signIn = async({ email, password }: LoginData ) => {
         try {
 
+            console.log('data')
             const { data } = await disabilityApi.post<LoginResponse>('/auth/login', { email, password });
+
+            console.log('data2', data)
 
             dispatch({ type: 'signUp', payload: {
                 token: data.token,
@@ -93,7 +96,7 @@ export const AuthProvider = ({ children }: any) => {
             await AsyncStorage.setItem('token', data.token);
             
         } catch (error: any) {
-
+            console.log('errtot', error.response.data)
             dispatch({ type: 'addError',
                 payload: error.response.data.msg || 'Incorrect information'
             })

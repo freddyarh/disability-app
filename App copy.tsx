@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, View } from 'react-native';
-import ClientProfileForm from './src/screens/FormClientProfile';
+import CreateClientProfile from './src/screens/FormClientProfile';
 import { SafeAreaView as SafeAreaViewAndroid } from 'react-native-safe-area-context';
 // import Client from './src/screens/Client';
 import { generalStyles } from './src/styles/generalStyle';
@@ -19,7 +19,7 @@ export default function App() {
             }}
           >
           <View>
-            <ClientProfileForm />
+            <CreateClientProfile />
             <StatusBar style="auto" />
           </View>
           </KeyboardAvoidingView>
@@ -35,7 +35,7 @@ export default function App() {
             }}
           > */}
           <View>
-            <ClientProfileForm />
+            <CreateClientProfile />
             <StatusBar style="auto" />
           </View>
           {/* </KeyboardAvoidingView> */}

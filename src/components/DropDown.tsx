@@ -1,29 +1,32 @@
-import React from 'react';
-import DropDownPicker, { ModeInterface } from 'react-native-dropdown-picker';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { StyleSheet } from 'react-native';
 
 interface Props {
     title: string,
-    open: boolean,
-    value: string | null,
     items: Array<object>,
-    setOpen: React.SetStateAction<any>,
+    value: string[],
     setValue: React.SetStateAction<any>,
-    setItems: React.SetStateAction<any>
+    setItems: React.SetStateAction<any>,
+    multiple?: boolean | undefined
 }
 
 const DropDown = ({ 
     title,
-    open,
-    value,
     items,
-    setOpen,
+    value,
     setValue,
-    setItems, 
+    setItems,
+    multiple=false
 }: Props) => {
+
+    const [open, setOpen] = useState(false);
+
   return (
     <>
         <DropDownPicker
+            autoScroll={true}
+            maxHeight={300}
             dropDownDirection="TOP"
             placeholder={ title }
             open={open}
@@ -33,6 +36,8 @@ const DropDown = ({
             setValue={setValue}
             setItems={setItems}
             style={ styles.dropDown }
+            listMode="SCROLLVIEW"
+            multiple={ multiple }
         />
     </>
   )
@@ -41,11 +46,18 @@ const DropDown = ({
 const styles = StyleSheet.create({
     
     dropDown: {
-        backgroundColor:  "#F5F3F3",
-        marginTop: 22,
+        backgroundColor: "white",
         borderRadius: 5,
-        borderColor: "rgb(165,162, 169)"
+        borderColor: "rgb(165,162, 169)",
+        borderTopLeftRadius: 18,
+        borderTopEndRadius: 4,
+        borderBottomEndRadius: 0,
+        borderBottomLeftRadius: 0,
+        borderTopWidth: 27,
+        borderTopColor: 'white',
+        borderBottomColor: 'white',
+        marginBottom: 22
     }
-})
+});
 
-export default DropDown
+export default DropDown;

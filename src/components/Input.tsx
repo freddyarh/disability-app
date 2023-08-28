@@ -1,39 +1,38 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { globalStyles } from '../styles/globalStyles';
 
-interface Input {
+interface Props {
     label: string,
     value: string,
     setValue?: React.SetStateAction<any>,
     onAccion?: () => void,
     secureTextEntry?: boolean,
+    rightEye?: any,
+    rightEyeButton?: any,
+    multiline?: boolean,
     disabled?: boolean;
+    keyboardType?: any;
 }
 
-const Input = ({ label, value, setValue, onAccion, secureTextEntry, disabled=false }: Input ) => {
+const Input = ({ label, value, setValue, onAccion, secureTextEntry, rightEye, rightEyeButton, multiline=false, disabled=false, keyboardType='default' }: Props ) => {
   return (
-    <TextInput
-        mode="outlined"
-        secureTextEntry={ secureTextEntry }
-        onFocus={ onAccion }
-        style={styles.textInput}
-        label={ label }
-        onChangeText={ setValue }
-        value={ value }
-        disabled={ disabled }
-    />
+    <>
+      <TextInput
+          style={ globalStyles.textInput }
+          mode="flat"
+          keyboardType={ keyboardType }
+          secureTextEntry={ secureTextEntry }
+          onFocus={ onAccion }
+          label={ label }
+          onChangeText={ setValue }
+          value={ value }
+          disabled={ disabled }
+          multiline={ multiline }
+          right={rightEye ? <TextInput.Icon icon="eye" onPress={ rightEyeButton }/> : null}
+      />
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-    textInput: {
-      width: '100%',
-      height: 50,
-      marginTop: 20,
-      borderWidth: 0,
-      backgroundColor: '#f1f1f1'
-    },
-});
 
 export default Input;

@@ -1,67 +1,74 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
+import disabilityApi from '../api/disabilityApi';
+import IconGoBack from '../components/IconGoBack';
 import Input from '../components/Input';
 import { Client } from '../interfaces/appInterfaces';
-import { clientJson } from './clientJson';
+import { globalStyles } from '../styles/globalStyles';
 
-const ClientProfile = ({ route }: any ) => {
+const ClientProfile = ({ route, navigation }: any ) => {
 
+    const { height } = useWindowDimensions();
     const { clientUid } = route.params;
+
     const [dataClient, setDataClient] = useState<Client|null>(null);
     
     useEffect(() => {
-        const user = clientJson.find((item) => item.uid === clientUid );
-        setDataClient( user );
-    }, []);
+        getClient();
+    }, [clientUid]);
+    
+    const getClient = async() => {
+
+        const { data } = await disabilityApi.get<Client>(`/clients/${clientUid}`);
+        setDataClient(data);
+    }
 
     if (!dataClient) return null;
     
     return (
-    <View>
+    <View style={[ globalStyles.container, { minHeight: height }]}>
+        <IconGoBack navigation={ navigation }/>
         <Input  
             label={ "Name" } 
-            value={ dataClient.name } 
+            value={ dataClient.client.name } 
             disabled 
         />
 
         <Input  
             label={ "Date of Birth" } 
-            value={ dataClient.dateOfBirth } 
+            value={ dataClient.client.dateOfBirth } 
             disabled 
         />
 
         <Input  
             label={ "Gender" } 
-            value={ dataClient.gender } 
+            value={ dataClient.client.gender } 
             disabled 
         />
 
         <Input 
             label={"NDIS Number"} 
-            value={ dataClient.ndisNumber }
+            value={ JSON.stringify(dataClient.client.ndisNumber)}
             disabled 
         />
         
         <Input 
             label={"Emergency Contact"} 
-            value={ dataClient.emergencyContact }
+            value={ JSON.stringify(dataClient.client.emergencyContact)}
             disabled 
         />
         
         <Input 
             label={"NDIS Goals"} 
-            value={ dataClient.ndisGoals }
-            disabled 
+            value={ dataClient.client.ndisGoals }
+            disabled
         />
         
         <Input 
             label={"Assessment"} 
-            value={ dataClient.assessment }
+            value={ dataClient.client.assessment }
             disabled
         />
-        <Text>
-            { `The state is ${ dataClient.state }` }
-        </Text>
     </View>
   )
 }
