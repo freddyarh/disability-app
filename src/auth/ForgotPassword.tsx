@@ -13,7 +13,6 @@ export const ForgotPassword = ({ navigation }: any ) => {
     token: null,
     user: null,
     errorMessage: '',
-    forgotId: ''
 }
 
   const [state, dispatch] = useReducer(authReducer, authInitialState);
@@ -31,10 +30,6 @@ export const ForgotPassword = ({ navigation }: any ) => {
       navigation.replace('InsertCode', {
         id: await resp.data.id
       });
-
-      return dispatch({ type: 'forgotPassword', payload: { forgotId: resp.data.id }});
-
-      setEmail("");
       
     } catch (error: any) {
       console.log(error);

@@ -3,13 +3,8 @@ import { StyleSheet } from "react-native";
 export const globalStyles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: '4%'
-    },
-    fondo: {
-        flex: 1,
-        backgroundColor: 'white',
-        marginLeft: 20,
-        marginRight: 20,
+        padding: '4%',
+        backgroundColor: "rgb(6, 3, 2)"
     },
     forgotPassword:{
         fontSize: 15,
@@ -21,6 +16,6 @@ export const globalStyles = StyleSheet.create({
         width: '100%',
         marginBottom: 20,
         backgroundColor: 'white',
-        borderTopLeftRadius: 20
+        borderTopLeftRadius: 20,
     },
 });

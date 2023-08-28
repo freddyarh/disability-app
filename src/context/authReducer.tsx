@@ -5,12 +5,10 @@ export interface AuthState {
     token: string | null;
     errorMessage: string;
     user: User | null;
-    forgotId: string | null;
 }
 
 type AuthAction =
     | { type: 'signUp', payload: { token: string, user: User } }
-    | { type: 'forgotPassword', payload: { forgotId: string } }
     | { type: 'addError', payload: string }
     | { type: 'removeError' }
     | { type: 'notAuthenticated' }

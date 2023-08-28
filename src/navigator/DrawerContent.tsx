@@ -42,7 +42,7 @@ export function DrawerContent(props: any) {
                         <View style={styles.row}>
                             <View style={styles.section}>
                                 <Paragraph style={[styles.paragraph, styles.caption]}></Paragraph>
-                                <Caption style={styles.caption}>3 clients</Caption>
+                                <Caption style={styles.caption}>Menu</Caption>
                             </View>
                         </View>
                     </View>

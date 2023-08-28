@@ -9,7 +9,7 @@ import { AuthContext } from '../context/AuthContext';
 import  Login  from '../auth/Login';
 import  ForgotPassword  from '../auth/ForgotPassword';
 import  Clients  from '../screens/Clients';
-import ClientProfileForm from '../screens/ClientProfileForm';
+import CreateClientProfile from '../screens/CreateClientProfile';
 import { LoadingScreen } from '../screens/LoadingScreen';
 import ClientProfile from '../screens/ClientProfile';
 import CreateStaffMembers from '../screens/CreateStaffMembers';
@@ -18,6 +18,7 @@ import { DrawerContent } from './DrawerContent';
 import ChangePassword from '../auth/ChangePassword';
 import InsertCode from '../auth/InsertCode';
 import ClientForm from '../screens/ClientForm';
+import ClientReport from '../screens/ClientReport';
 
 
 const Stack = createNativeStackNavigator();
@@ -30,7 +31,13 @@ export const AuthNavigator = () => {
         headerShown: true,
       }}
     >
-      <Stack.Screen name="Login" component={ Login } />
+      <Stack.Screen name="Login" component={ Login } options={{
+          title: '',
+          headerTintColor: "rgb(99, 81, 159)",
+          headerStyle: {
+            backgroundColor: "rgb(6, 3, 2)"
+          },
+        }}/>
       <Stack.Screen name="ForgotPassword" component={ ForgotPassword } />
       <Stack.Screen name="InsertCode" component={ InsertCode } />
       <Stack.Screen name="ChangePassword" component={ ChangePassword } />
@@ -42,15 +49,19 @@ export const DrawerNavigator = () => {
   const dimensions = useWindowDimensions();
   const isLargeScreen = dimensions.width >= 768;
   return(
-    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />} screenOptions={{
+        drawerType: isLargeScreen ? 'permanent' : 'back',
+        drawerStyle: isLargeScreen ? null : { width: '100%' },
+        overlayColor: 'transparent',
+      }}>
       <Drawer.Screen 
         name={ "Clients" } 
         component={ Clients }
         options={{
-          title: 'Home',
-          headerTintColor: "white",
+          title: 'Clients',
+          headerTintColor: "rgb(133, 187, 157)",
           headerStyle: {
-              backgroundColor: "rgb(99, 81, 159)",
+              backgroundColor: "rgb(6, 3, 2)",
           },
         }}
         />
@@ -59,9 +70,9 @@ export const DrawerNavigator = () => {
         component={ CreateStaffMembers }
         options={{
           title: 'Create Staff Members',
-          headerTintColor: "white",
+          headerTintColor: "rgb(133, 187, 157)",
           headerStyle: {
-              backgroundColor: "rgb(99, 81, 159)",
+              backgroundColor: "rgb(6, 3, 2)",
           },
         }}
         />
@@ -70,9 +81,9 @@ export const DrawerNavigator = () => {
         component={ StaffMembers }
         options={{
           title: 'Staff Members',
-          headerTintColor: "white",
+          headerTintColor: "rgb(133, 187, 157)",
           headerStyle: {
-              backgroundColor: "rgb(99, 81, 159)",
+              backgroundColor: "rgb(6, 3, 2)",
           },
         }}
         />
@@ -81,20 +92,20 @@ export const DrawerNavigator = () => {
         component={ ClientProfile }
         options={{
           title: 'Client Profile',
-          headerTintColor: "white",
+          headerTintColor: "rgb(133, 187, 157)",
           headerStyle: {
-              backgroundColor: "rgb(99, 81, 159)",
+              backgroundColor: "rgb(6, 3, 2)",
           },
         }}
         />
       <Drawer.Screen 
-        name={ "ClientProfileForm" } 
-        component={ ClientProfileForm }
+        name={ "CreateClientProfile" } 
+        component={ CreateClientProfile }
         options={{
-          title: 'ClientProfileForm',
-          headerTintColor: "white",
+          title: 'CreateClientProfile',
+          headerTintColor: "rgb(133, 187, 157)",
           headerStyle: {
-              backgroundColor: "rgb(99, 81, 159)",
+              backgroundColor: "rgb(6, 3, 2)",
           },
         }}
         />
@@ -103,9 +114,20 @@ export const DrawerNavigator = () => {
         component={ ClientForm }
         options={{
           title: 'Client Form',
-          headerTintColor: "white",
+          headerTintColor: "rgb(133, 187, 157)",
           headerStyle: {
-              backgroundColor: "rgb(99, 81, 159)",
+              backgroundColor: "rgb(6, 3, 2)",
+          },
+        }}
+        />
+      <Drawer.Screen 
+        name={ "Client Report" } 
+        component={ ClientReport }
+        options={{
+          title: 'Client Report',
+          headerTintColor: "rgb(133, 187, 157)",
+          headerStyle: {
+              backgroundColor: "rgb(6, 3, 2)",
           },
         }}
         />
