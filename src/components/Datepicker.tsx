@@ -30,7 +30,7 @@ const Datepicker = ({
                 selectedTextColor: "#FFF",
                 mainColor: "#469ab6",
                 textSecondaryColor: "#FFFFFF",
-                borderColor: "rgb(165,162, 169)",
+                borderColor: "rgb(101, 110, 164)",
             }}
             mode={ mode }
             minimumDate={startDate}

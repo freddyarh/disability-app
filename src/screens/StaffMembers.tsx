@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import disabilityApi from '../api/disabilityApi';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Avatar, Card, IconButton } from 'react-native-paper';
 import { User } from '../interfaces/appInterfaces';
 import Button from '../components/Button';
@@ -8,31 +8,33 @@ import { globalStyles } from '../styles/globalStyles';
 import { color } from 'react-native-reanimated';
 import { AuthContext } from '../context/AuthContext';
 import IconGoBack from '../components/IconGoBack';
+import { LoadingScreen } from './LoadingScreen';
 
 export const StaffMembers = ({ navigation }: any) => {
-
-  const [superUsers, setSuperUsers] = useState<User[]>([]);
+  
+  const { height } = useWindowDimensions();
   const [staffUsers, setStaffUsers] = useState<User[]>([]);
 
   useEffect(() => {
     getStaffMembers();
-    console.log('get staff running')
-  }, [])
+  }, []);
 
   const getStaffMembers = async() => {
     const { data: users } = await disabilityApi.get<any>('/users/getAllUsers');
-
+    console.log(users.users)
     setStaffUsers( users.users );
   }
-  const usersSuperAdmin = staffUsers.filter( (user: any) => user.role === 'SUPER_ADMIN' );
-  const usersStaff = staffUsers.filter( (user: any) => user.role === 'STAFF' );
+  const usersSuperAdmin = staffUsers.filter( (user: any) => user?.role === "SUPER_ADMIN" );
+  const usersStaff = staffUsers.filter( (user: any) => user?.role === "STAFF" );
 
-  if ( usersStaff.length === 0 ) return null;
+  if ( usersSuperAdmin.length === 0 ) return <LoadingScreen />;
   
   return (
     <ScrollView>
-      <View style={ globalStyles.container }>
+      <View style={[ globalStyles.container, { minHeight: height } ]}>
       <IconGoBack navigation={ navigation }/>
+      <Button label={ "Create new staff" } onPress={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />
+      <View style={{ marginTop: 20 }}>
         <View>
           <Text style={ styles.title }>Super admin</Text>
           { usersSuperAdmin.map((user) => (
@@ -59,8 +61,8 @@ export const StaffMembers = ({ navigation }: any) => {
             />
             ))}
         </View>
-        <Button label={ "Create a new user" } buttonEvent={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />
       </View>
+      </View> 
     </ScrollView>
   )
 };

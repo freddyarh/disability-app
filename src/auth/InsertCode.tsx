@@ -42,10 +42,10 @@ export const InsertCode = ({ route, navigation }: any) => {
   return (
     <View style={ globalStyles.container }>
         <Text>Please insert the code</Text>
-        <Input label="Code" value={ code } setValue={ (val : string) => {
+        <Input label="Code" value={ code } keyboardType={ "numeric" } setValue={ (val : string) => {
           if( val.length <= 5  ) return setCode(val);
         }} />
-        <Button label="Send" buttonEvent={ handleCode } disabled={false}/>
+        <Button label="Send" onPress={ handleCode } disabled={false}/>
     </View>
   )
 }

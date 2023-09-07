@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { useWindowDimensions, View, Alert, ScrollView } from 'react-native';
 import disabilityApi from '../api/disabilityApi';
+import Button from '../components/Button';
+import DropDown from '../components/DropDown';
 import IconGoBack from '../components/IconGoBack';
 import Input from '../components/Input';
 import { Client } from '../interfaces/appInterfaces';
 import { globalStyles } from '../styles/globalStyles';
+import { LoadingScreen } from './LoadingScreen';
 
 const ClientProfile = ({ route, navigation }: any ) => {
 
@@ -12,64 +15,119 @@ const ClientProfile = ({ route, navigation }: any ) => {
     const { clientUid } = route.params;
 
     const [dataClient, setDataClient] = useState<Client|null>(null);
+    const [dataUsers, setDataUsers] = useState([]);
+    const [emergency, setEmergency] = useState<number | any>("");
+    const [NDISGoals, setNDISGoals] = useState<string>("");
+    const [valueUsers, setValueUsers ] = useState([]);
     
     useEffect(() => {
         getClient();
     }, [clientUid]);
     
+    useEffect(() => {
+        getAllStaff();
+    }, [clientUid]);
+    
     const getClient = async() => {
 
         const { data } = await disabilityApi.get<Client>(`/clients/${clientUid}`);
+        const staffClient: any = data.client.user.map((client: any) => {
+            return  client.uid;
+        });
+        setEmergency(JSON.stringify(data.client.emergencyContact));
+        setNDISGoals(data.client.ndisGoals );
+        setValueUsers(staffClient);
         setDataClient(data);
     }
+    const getAllStaff = async() => {
+        const { data: { users }} = await disabilityApi.get<any>('/users/getAllUsers');
+        const usersList = await users.filter( (item: any) => item.role === 'STAFF' ).map((item: any) => {
+            return {
+              ...item,
+              label: item.email,
+              value: item.uid
+            }
+          });
+        setDataUsers( usersList );
+    }
+    const updateClient = async() => {
+        try {
 
-    if (!dataClient) return null;
+            const { data: { msg }} = await disabilityApi.put<any>(`/clients/updateClient/${clientUid}`, { emergencyContact: Number(emergency), ndisGoals: NDISGoals, user: valueUsers });
+            Alert.alert("Info Success", msg)
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    if (!dataClient) return <LoadingScreen />;
     
     return (
-    <View style={[ globalStyles.container, { minHeight: height }]}>
-        <IconGoBack navigation={ navigation }/>
-        <Input  
-            label={ "Name" } 
-            value={ dataClient.client.name } 
-            disabled 
-        />
+    <ScrollView>
+        <View style={[ globalStyles.container, { minHeight: height }]}>
+            <View style={{ marginBottom: 10 }}>
+                <IconGoBack navigation={ navigation }/>
+            </View>
+            <Input  
+                label={ "Name" } 
+                value={ dataClient.client.name } 
+                disabled 
+            />
 
-        <Input  
-            label={ "Date of Birth" } 
-            value={ dataClient.client.dateOfBirth } 
-            disabled 
-        />
+            <Input  
+                label={ "Date of Birth" } 
+                value={ dataClient.client.dateOfBirth } 
+                disabled 
+            />
 
-        <Input  
-            label={ "Gender" } 
-            value={ dataClient.client.gender } 
-            disabled 
-        />
+            <Input  
+                label={ "Gender" } 
+                value={ dataClient.client.gender } 
+                disabled 
+            />
 
-        <Input 
-            label={"NDIS Number"} 
-            value={ JSON.stringify(dataClient.client.ndisNumber)}
-            disabled 
-        />
-        
-        <Input 
-            label={"Emergency Contact"} 
-            value={ JSON.stringify(dataClient.client.emergencyContact)}
-            disabled 
-        />
-        
-        <Input 
-            label={"NDIS Goals"} 
-            value={ dataClient.client.ndisGoals }
-            disabled
-        />
-        
-        <Input 
-            label={"Assessment"} 
-            value={ dataClient.client.assessment }
-            disabled
-        />
-    </View>
+            <Input 
+                label={"NDIS Number"} 
+                value={ JSON.stringify(dataClient.client.ndisNumber)}
+                disabled 
+            />
+            
+            <Input 
+                label={"Emergency Contact"} 
+                value={ emergency }
+                setValue={ setEmergency }
+                keyboardType={ "numeric" }
+            />
+            
+            <Input 
+                label={"NDIS Goals"} 
+                value={ NDISGoals }
+                setValue={ setNDISGoals }
+            />
+            
+            <Input 
+                label={"Assessment"} 
+                value={ dataClient.client.assessment }
+                disabled
+            />
+
+            <DropDown
+                title={"Select Staff"}
+                items={dataUsers}
+                value={ valueUsers }
+                setItems={setDataUsers}
+                setValue={ setValueUsers }
+                multiple
+            />
+
+            <Button
+                label={ "Update client" }
+                onPress={ updateClient }
+                disabled={ false }
+            />
+        </View>
+    </ScrollView>
   )
 }
 

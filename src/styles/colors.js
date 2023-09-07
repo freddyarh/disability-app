@@ -1,6 +1,5 @@
 export const colors = {
     lightBlue: '#00BCE7',
-    zetifiBlue: '#273691',
     obsidium: '#00053E',
     gradientForm: '#A376F1',
     primary: '#7d5fff',

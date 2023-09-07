@@ -12,7 +12,7 @@ interface Props {
     rightEyeButton?: any,
     multiline?: boolean,
     disabled?: boolean;
-    keyboardType?: any;
+    keyboardType?: "default" | "numeric";
 }
 
 const Input = ({ label, value, setValue, onAccion, secureTextEntry, rightEye, rightEyeButton, multiline=false, disabled=false, keyboardType='default' }: Props ) => {

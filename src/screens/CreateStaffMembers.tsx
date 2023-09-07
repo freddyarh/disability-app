@@ -79,7 +79,7 @@ const CreateStaffMembers = ({ navigation }: any) => {
             setValue={ setValueRole }
         />
 
-        <Button label="Create Staff" buttonEvent={ handleCreateStaff } disabled={false}/>
+        <Button label="Create Staff" onPress={ handleCreateStaff } disabled={false}/>
 
     </View>
   )

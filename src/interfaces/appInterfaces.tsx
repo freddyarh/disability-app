@@ -9,7 +9,7 @@ export interface LoginData {
 };
 
 export interface User {
-    role: string[];
+    role: string;
     state?: boolean;
     name: string;
     lastName: string;

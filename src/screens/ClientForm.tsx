@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import { functionList, promptList, activities, displayedBehaviour } from '../helpers/ClientFormList'
 import Button from '../components/Button';
@@ -13,6 +13,7 @@ import IconGoBack from '../components/IconGoBack';
 
 const ClientForm = ({ route, navigation }: any) => {
 
+    const { height } = useWindowDimensions();
     const { clientUid, clientName } = route.params;
 
     const [date, setDate] = useState("2012/12/20 23:00");
@@ -63,9 +64,9 @@ const ClientForm = ({ route, navigation }: any) => {
     }
   return (
     <ScrollView>
-        <View style={globalStyles.container }>
+        <View style={[globalStyles.container, { minHeight: height - 50 }]}>
         <IconGoBack navigation={ navigation }/>
-            <Text style={ styles.label }>Client Form: { clientName } form</Text>
+            <Text style={ styles.label }>Client name: { clientName }</Text>
             <Text style={ styles.label }>Time</Text>
             <TouchableOpacity>
                 <Input 
@@ -124,7 +125,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 setValue={ setComment }
                 multiline={ true }
             />
-            <Button label="Create" buttonEvent={ handleCLientForm } disabled={false}/>
+            <Button label="Create" onPress={ handleCLientForm } disabled={false}/>
         </View>
     </ScrollView>
   )

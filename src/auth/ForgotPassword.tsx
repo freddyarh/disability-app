@@ -39,11 +39,10 @@ export const ForgotPassword = ({ navigation }: any ) => {
   }
   return (
     <View style={ globalStyles.container }>
-        {/* <Text>Forgot Password</Text> */}
-        <Text>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
+        <Text style={{ color: 'white', marginVertical: 20, fontSize: 16 }}>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
         <Input label="Email" value={ email } setValue={ setEmail } />
 
-        <Button label="Send" buttonEvent={ handleForgotPassword } disabled={false}/>
+        <Button label="Send" onPress={ handleForgotPassword } disabled={false}/>
     </View>
   )
 }

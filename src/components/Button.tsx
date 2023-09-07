@@ -3,15 +3,15 @@ import { colors } from '../../src/styles/colors';
 
 interface Props {
     label: string,
-    buttonEvent: () => void,
+    onPress: () => void,
     disabled: boolean
 }
 
-const Button = ({ label, buttonEvent, disabled } : Props ) => {
+const Button = ({ label, onPress, disabled } : Props ) => {
     return (
         <TouchableOpacity 
             style={ disabled ? styles.buttonDisable : styles.button }
-            onPress={ buttonEvent }
+            onPress={ onPress }
             disabled={ disabled }
         >
             <Text style={styles.text}>{ label }</Text>
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
       marginTop: 25,
       height: 50,
       borderRadius: 30,
-      // backgroundColor: colors.obsidium,
       backgroundColor: "rgb(101, 110, 164)",
       padding: 10,
       alignItems: 'center',

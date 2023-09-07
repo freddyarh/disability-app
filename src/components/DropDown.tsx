@@ -6,7 +6,9 @@ interface Props {
     title: string,
     items: Array<object>,
     value: string[],
+    open: boolean,
     setValue: React.SetStateAction<any>,
+    setOpen: React.SetStateAction<any>,
     setItems: React.SetStateAction<any>,
     multiple?: boolean | undefined
 }
@@ -15,12 +17,14 @@ const DropDown = ({
     title,
     items,
     value,
+    open,
     setValue,
+    setOpen,
     setItems,
     multiple=false
 }: Props) => {
 
-    const [open, setOpen] = useState(false);
+    // const [open, setOpen] = useState(true);
 
   return (
     <>
