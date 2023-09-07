@@ -21,7 +21,7 @@ const ChangePassword = ({ route, navigation }: any) => {
 
       if( resp.status === 200 ){
         Alert.alert("Info", "Your password has changed succesfully");
-        navigation.replace('Login');
+        navigation.navigate('Login');
       }
 
     } catch (error: any) {
@@ -32,7 +32,7 @@ const ChangePassword = ({ route, navigation }: any) => {
     <View style={ globalStyles.container }>
         <Input label="Password" value={ password } setValue={ setPassword } />
         <Input label="Repeat password" value={ repeatPassword } setValue={ setRepeatPassword } />
-        <Button label="Change password" buttonEvent={ handleChangePassword } disabled={false}/>
+        <Button label="Change password" onPress={ handleChangePassword } disabled={false}/>
     </View>
   )
 }

@@ -53,19 +53,21 @@ export function DrawerContent(props: any) {
                                 <Avatar.Icon {...props} icon="home-account" color="white" size={ size } />
                             )}
 
-                            label="Home"
+                            label="Participants"
                             onPress={() => {props.navigation.navigate('Clients')}}
                             labelStyle={ styles.listItem }
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Avatar.Icon {...props} icon="account-multiple" color="white" size={ size } />
-                            )}
+                        { user?.role === 'SUPER_ADMIN' && (
+                            <DrawerItem 
+                                icon={({color, size}) => (
+                                    <Avatar.Icon {...props} icon="account-multiple" color="white" size={ size } />
+                                )}
 
-                            label="Staff Members"
-                            onPress={() => {props.navigation.navigate('Staff Members')}}
-                            labelStyle={ styles.listItem }
-                        />
+                                label="Users"
+                                onPress={() => {props.navigation.navigate('Staff Members')}}
+                                labelStyle={ styles.listItem }
+                            />
+                        )}
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
     },
     bottomDrawerSection: {
         marginBottom: 15,
-        borderTopColor: '#f4f4f4',
+        borderTopColor: "rgb(136, 131, 140)",
         borderTopWidth: 1
     },
     preference: {

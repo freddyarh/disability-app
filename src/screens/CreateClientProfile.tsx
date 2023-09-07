@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Platform, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, Platform, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, useWindowDimensions, Keyboard } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import { gendersOptions, supportNetworkOptions } from '../../assets/RadioDataGender';
 
@@ -13,7 +13,9 @@ import disabilityApi from '../api/disabilityApi';
 import IconGoBack from '../components/IconGoBack';
 
 const CreateClientProfile = ({ navigation }: any) => {
-    
+
+    const { height } = useWindowDimensions();
+
     const [name, setName] = useState("Fredy");
     const [selectedStartDate, setSelectedStartDate] = useState("");
     const [valueGender, setValueGender] = useState([]);
@@ -28,6 +30,9 @@ const CreateClientProfile = ({ navigation }: any) => {
     const [gender, setGender] = useState(gendersOptions);
     const [supportNetworkItems, setSupportNetworkItems] = useState(supportNetworkOptions);
     const [dataUsers, setDataUsers] = useState([]);
+    const [open1, setOpen1] = useState(false);
+    const [open2, setOpen2] = useState(false);
+    const [open3, setOpen3] = useState(false);
 
     useEffect(() => {
         getAllUsers();
@@ -63,6 +68,12 @@ const CreateClientProfile = ({ navigation }: any) => {
     }
 
     const createClient = async() => {
+
+        Keyboard.dismiss();
+        setOpen1(false);
+        setOpen2(false);
+        setOpen3(false);
+        return
         try {
 
             const { data: { msg }} = await disabilityApi.post<any>('/clients/setClient', { name, dateOfBirth: selectedStartDate, gender: valueGender, ndisNumber: NDISNumber, emergencyContact: emergency, ndisGoals: NDISGoals, assessment, supportNetwork: valueSupportNetworkItems, user: valueUsers });
@@ -75,7 +86,7 @@ const CreateClientProfile = ({ navigation }: any) => {
 
   return (
     <ScrollView>
-        <View style={ globalStyles.container }>
+        <View style={[ globalStyles.container, { minHeight: height - 50 } ]}>
             <IconGoBack navigation={ navigation }/>
             <KeyboardAvoidingView
                 behavior={ ( Platform.OS === 'ios') ? 'padding': 'padding' }
@@ -94,7 +105,7 @@ const CreateClientProfile = ({ navigation }: any) => {
                         />
                     </TouchableOpacity>
                     <Datepicker 
-                        mode={ "datepicker" }
+                        mode={ "calendar" }
                         openStartDatePicker={ openStartDatePicker }
                         startDate={ startDate }
                         maxiDate={ maxiDate }
@@ -107,18 +118,26 @@ const CreateClientProfile = ({ navigation }: any) => {
                         title={"Select Gender"}
                         items={ gender }
                         value={ valueGender }
+                        open={ open1 }
+                        setOpen={(val: boolean) => {
+                            setOpen1(val);
+                            setOpen2(false);
+                            setOpen3(false);
+                        }}
                         setItems={setGender}
                         setValue={ setValueGender }
                     />
                     <Input 
                         label={"NDIS Number"} 
                         value={ NDISNumber } 
-                        setValue={ setNDISNumber } 
+                        setValue={ setNDISNumber }
+                        keyboardType={ "numeric" }
                     />
                     <Input 
                         label={"Emergency Contact"} 
                         value={ emergency } 
                         setValue={ setEmergency } 
+                        keyboardType={ "numeric" }
                     />
                     <Input 
                         label={"NDIS Goals"} 
@@ -134,6 +153,12 @@ const CreateClientProfile = ({ navigation }: any) => {
                         title={"Select Support Network"}
                         items={supportNetworkItems}
                         value={ valueSupportNetworkItems }
+                        open={ open2 }
+                        setOpen={(val: boolean) => {
+                            setOpen1(false);
+                            setOpen2(val);
+                            setOpen3(false);
+                        }}
                         setItems={setSupportNetworkItems}
                         setValue={ setValueupportNetworkItems }
                     />
@@ -141,14 +166,19 @@ const CreateClientProfile = ({ navigation }: any) => {
                         title={"Select Staff"}
                         items={dataUsers}
                         value={ valueUsers }
+                        open={ open3 }
+                        setOpen={ (val: boolean) => {
+                            setOpen1(false);
+                            setOpen2(false);
+                            setOpen3(val);
+                        }}
                         setItems={setDataUsers}
                         setValue={ setValueUsers }
                         multiple
                     />
-
                     <Button 
                         label={ "Create client" }
-                        buttonEvent={ createClient }
+                        onPress={ createClient }
                         disabled={ false }
                     />
                 </View>

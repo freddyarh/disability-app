@@ -26,20 +26,21 @@ export const Login = ({ navigation }: Props) => {
     
     signIn({ email , password });
     
-  }
+  };
 
   const iconEye = () => {
     eyeButton ? setEyeButton(false) : setEyeButton(true);
-  }
+  };
   
-  const { height } = useWindowDimensions(); 
+  const { height, width } = useWindowDimensions();
+  const aspectRatio = height/width;
 
   return (
     <ScrollView>
       <View style={[ globalStyles.container, { height: height - 55 } ]}>
           <View style={styles.containerImg}>
             <Image
-              style={[styles.logo, { height: height * 0.3 }]}
+              style={[styles.logo, aspectRatio > 1.6 ? { maxHeight: 200 } : { maxHeight: 290 }, { height: height * 0.3 }]}
               source={require('../../assets/images/logo.jpg')}
               resizeMode="contain"
             /> 
@@ -60,13 +61,13 @@ export const Login = ({ navigation }: Props) => {
           />
           <Button 
             label={ "Login" }
-            buttonEvent={ handleLogin }
+            onPress={ handleLogin }
             disabled={ false }
           />
           <TouchableOpacity
             onPress={ () => navigation.navigate('ForgotPassword') }
           >
-            <Text style={styles.forgotPassword}>Forgot Password</Text>
+            <Text style={styles.forgotPassword}>Forgot Password?</Text>
           </TouchableOpacity>
       </View>
     </ScrollView>
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
   logo: {
     marginBottom:40,
     minWidth: 300,
-    maxHeight: 200,
+    // maxHeight: 200,
   },
   title: {
     color: "rgb(133, 187, 157)",

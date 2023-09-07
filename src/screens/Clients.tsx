@@ -5,32 +5,68 @@ import { Avatar, Card, Button as ButtonPaper } from 'react-native-paper';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import { AuthContext } from '../context/AuthContext';
+import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
+import { LoadingScreen } from './LoadingScreen';
+    
 
 const Clients = ({ navigation }: any) => {
+    const { user } = useContext(AuthContext);
     const { height } = useWindowDimensions();
 
     const [dataClients, setDataClients] = useState<[]>([]);
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        getAllClients();
+        if (user?.role === "SUPER_ADMIN" ) {
+            getAllClients();
+        }
+        getClientsByStaff();
     }, []);
 
     const getAllClients = async() => {
         const { data: { clients }} = await disabilityApi.get<any>('/clients/getAllClients');
-        setDataClients( clients );
+        setDataClients( await clients );
     }
-
+    
+    const getClientsByStaff = async() => {
+        const { data: { clients }} = await disabilityApi.get<any>(`/clients/getClientsByStaff/${user?.uid}`);
+        setDataClients( await clients );
+    }
+    
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
             getAllClients();
             setRefreshing(false);
-        }, 2000);
+        }, 1000);
       }, []);
     
-    if ( dataClients.length === 0 ) return null;
+    if ( dataClients.length === 0 ) return <LoadingScreen />;;
+
+    interface Props {
+        label: string,
+        onPress: () => void,
+        backgroundColor: string
+    }
+
+    const BtnBoxClient = ({ label, onPress, backgroundColor }: Props) => {
+        return (
+            <TouchableOpacity 
+                style={
+                    [
+                        styles.button,
+                        user?.role === "STAFF" ? { width: '100%' } : { width: '33%' }, 
+                        { backgroundColor: backgroundColor }
+                    ]
+                }
+                onPress={ onPress }
+                disabled={ false }
+             >
+                <Text style={styles.btnText}>{ label }</Text>
+            </TouchableOpacity>
+        )
+    }
 
     return (
         <ScrollView
@@ -38,35 +74,63 @@ const Clients = ({ navigation }: any) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
             <View style={[globalStyles.container, { minHeight: height }]}>
-                { dataClients.map( (client, index): any => (
-                    // <TouchableOpacity key={ index } 
-                    //     onPress={ () => navigation.navigate("Client Profile",{
-                    //         clientUid: client.uid
-                    //     })}
-                    // >
-                        <Card key={ index } style={{ alignItems: 'flex-start', margin: 10}}>
-                            <Card.Title
-                                title={ client.name }
-                                subtitle={ client._id }
-                                left={(props) => <Avatar.Icon {...props} icon="account" />}
-                            />
-                            <Card.Actions style={{ flexDirection: 'row' }}>
-                                <ButtonPaper onPress={ () => navigation.navigate("Client Profile", {
-                                    clientUid: client._id
-                                })}>Info</ButtonPaper>
-                                <ButtonPaper onPress={ () => navigation.navigate("Client Report", {
-                                    clientUid: client._id,
-                                    clientName: client.name
-                                }) }>Report</ButtonPaper>
-                                <ButtonPaper onPress={ () => navigation.navigate("Client Form", {
-                                    clientUid: client._id,
-                                    clientName: client.name
-                                }) }>Form</ButtonPaper>
-                            </Card.Actions>
-                        </Card>
-                    // </TouchableOpacity>
+
+                { user?.role === "SUPER_ADMIN" && (
+                    <View style={{ marginBottom: 10 }}>
+                        <Button label={ "Create new client" } onPress={ () => navigation.navigate("CreateClientProfile")} disabled={ false } />
+                    </View>
+                )}
+
+                { dataClients.reverse().map((client, index): any => (
+
+                    <View key={ index } style={[ styles.clientBox, { marginTop: 10 } ]}>
+                        <View style={ styles.btnRow }>
+                            <Text style={{ alignSelf: 'flex-start' }} onPress={() => navigation.goBack()}>
+                                <Avatar.Icon icon="account" color={ 'white' } size={ 40 } style={{ backgroundColor: "rgb(99, 81, 159)" }} />
+                            </Text>
+                            <View style={{ flexDirection: 'column', marginLeft: 20 }}>
+                                <Text style={{ fontSize: 18, marginBottom: 10 }}>{ client.name }</Text>
+                                {/* <Text>{ client.ndisNumber }</Text> */}
+                                { user?.role === "SUPER_ADMIN" && (
+                                    <>
+                                    <Text>Staff</Text>
+                                        { client.user.map(( user, index ): any => (
+                                            <View key={ index } style={{  flexDirection: 'row' }}>
+                                                <Avatar.Icon icon="account-tie" color={ "rgb(99, 81, 159)" } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />
+                                                <Text> { user.name }</Text>
+                                            </View>
+                                        ))}
+                                    </>
+                                )}
+                            </View>
+                        </View>            
+                        <View style={ styles.btnRow }>
+                            <BtnBoxClient 
+                                    label={"Form"} 
+                                    backgroundColor={ "rgb(101, 110, 164)" } 
+                                    onPress={ () => navigation.navigate("Client Form", {
+                                        clientUid: client._id,
+                                        clientName: client.name
+                                    }) }/>
+                            { user?.role === "SUPER_ADMIN" && (
+                                <>
+                                    <BtnBoxClient 
+                                        label={"Report"} 
+                                        backgroundColor={ "rgb(101, 110, 164)" } 
+                                        onPress={ () => navigation.navigate("Client Report", {
+                                            clientUid: client._id,
+                                            clientName: client.name
+                                        }) }/>
+                                    <BtnBoxClient 
+                                        label={"Info"} backgroundColor={ "#AFADBD" } 
+                                        onPress={ () => navigation.navigate("Client Profile", {
+                                            clientUid: client._id
+                                    }) }/>
+                                </>
+                            )}
+                        </View>            
+                    </View>
                 ))}
-                <Button label={ "Create new client" } buttonEvent={ () => navigation.navigate("CreateClientProfile")} disabled={ false } />
             </View>
         </ScrollView>
     )
@@ -80,6 +144,31 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: -10,
         marginLeft: 10
+    },
+    clientBox: {
+        flexDirection: 'column',
+        backgroundColor: colors.white,
+        padding: 20,
+        borderRadius: 10,
+        marginBottom: 10
+    },
+    btnRow: {
+        flexDirection: 'row',
+    },
+    button: {
+        marginTop: 20,
+        marginRight: 5,
+        height: 50,
+        borderRadius: 30,
+        color: 'black',
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    btnText: {
+        fontSize: 14,
+        color: '#fff',
+        fontWeight: 'bold'
     }
   });
 
