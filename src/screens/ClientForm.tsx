@@ -145,7 +145,8 @@ const styles = StyleSheet.create({
     },
     label: {
         margin: 8,
-        color: 'white'
+        color: 'white',
+        fontSize: 18
     }
   });
 

@@ -18,22 +18,6 @@ export interface User {
     uid?: string;
 };
 
-export interface Client {
-    client: {
-        _id:              ID;
-        name:             string;
-        dateOfBirth:      string;
-        gender:           string;
-        ndisNumber:       number;
-        emergencyContact: number;
-        ndisGoals:        string;
-        assessment:       string;
-        supportNetwork:   string;
-        user:             ID[];
-        __v:              number;
-    }
-};
-
 export interface ClientForm {
     _id:           ID;
     clientId:      ID;
@@ -52,4 +36,28 @@ export interface ID {
 export interface Behaviour {
     name: string;
     _id:  ID;
+};
+
+export interface Clients {
+    msg:     string;
+    clients: Client[] | Client;
+};
+
+export interface Client {
+    _id:              string;
+    name:             string;
+    dateOfBirth:      string;
+    gender:           string;
+    ndisNumber:       number;
+    emergencyContact: number;
+    ndisGoals:        string;
+    assessment:       string;
+    supportNetwork:   string;
+    user:             User[];
+    __v:              number;
+};
+
+export interface User {
+    name: string;
+    uid:  string;
 };

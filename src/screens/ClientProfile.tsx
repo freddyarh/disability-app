@@ -30,8 +30,8 @@ const ClientProfile = ({ route, navigation }: any ) => {
     
     const getClient = async() => {
 
-        const { data } = await disabilityApi.get<Client>(`/clients/${clientUid}`);
-        const staffClient: any = data.client.user.map((client: any) => {
+        const { data } = await disabilityApi.get<Client | any>(`/clients/${clientUid}`);
+        const staffClient: any = data.client.user.map((client: Client) => {
             return  client.uid;
         });
         setEmergency(JSON.stringify(data.client.emergencyContact));
