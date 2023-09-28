@@ -80,8 +80,11 @@ export const AuthProvider = ({ children }: any) => {
         }
     };
     const signIn = async({ email, password }: LoginData ) => {
+
         try {
 
+            console.log(email, password)
+            
             const { data } = await disabilityApi.post<LoginResponse>('/auth/login', { email, password });
 
             dispatch({ type: 'signUp', payload: {

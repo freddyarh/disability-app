@@ -5,6 +5,7 @@ import { Avatar, Card, Button as ButtonPaper } from 'react-native-paper';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import { AuthContext } from '../context/AuthContext';
+import { Client, Clients as ClientsInterface } from '../interfaces/appInterfaces';
 import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { LoadingScreen } from './LoadingScreen';
@@ -14,7 +15,7 @@ const Clients = ({ navigation }: any) => {
     const { user } = useContext(AuthContext);
     const { height } = useWindowDimensions();
 
-    const [dataClients, setDataClients] = useState<[]>([]);
+    const [dataClients, setDataClients] = useState<Client[]>([]);
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
@@ -25,13 +26,13 @@ const Clients = ({ navigation }: any) => {
     }, []);
 
     const getAllClients = async() => {
-        const { data: { clients }} = await disabilityApi.get<any>('/clients/getAllClients');
-        setDataClients( await clients );
+        const { data: { clients }} = await disabilityApi.get<ClientsInterface>('/clients/getAllClients');
+        setDataClients( clients );
     }
     
     const getClientsByStaff = async() => {
-        const { data: { clients }} = await disabilityApi.get<any>(`/clients/getClientsByStaff/${user?.uid}`);
-        setDataClients( await clients );
+        const { data: { clients }} = await disabilityApi.get<ClientsInterface>(`/clients/getClientsByStaff/${user?.uid}`);
+        setDataClients( clients );
     }
     
     const onRefresh = useCallback(() => {
@@ -81,7 +82,7 @@ const Clients = ({ navigation }: any) => {
                     </View>
                 )}
 
-                { dataClients.reverse().map((client, index): any => (
+                { dataClients.reverse().map((client, index): Client[] | any => (
 
                     <View key={ index } style={[ styles.clientBox, { marginTop: 10 } ]}>
                         <View style={ styles.btnRow }>
