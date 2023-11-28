@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Dimensions, Text, Image, StyleSheet, ScrollViewComponent, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Dimensions, Text, Image, StyleSheet, ScrollViewComponent, ScrollView, TouchableOpacity, Keyboard } from 'react-native';
 import { BarChart, LineChart } from "react-native-chart-kit";
 import { captureRef } from 'react-native-view-shot';
 import { cacheDirectory, copyAsync, getInfoAsync, makeDirectoryAsync, uploadAsync } from 'expo-file-system';
@@ -19,15 +19,19 @@ const ClientReport = ({ route, navigation }: any ) => {
 
   const { clientUid, clientName } = route.params;
 
-  const [date, setDate] = useState("2012/12/20");
+  const [startDate, setStartDate] = useState("2012/12/20");
+  const [endDate, setEndDate] = useState("2022/12/20");
   const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
+  const [openEndDatePicker, setOpenEndDatePicker] = useState(false);
   const [startedDate, setStartedDate] = useState("12/12/2023");
+  const [endedDate, setEndedDate] = useState("12/12/2023");
 
   const today = new Date();
-  const startDate = getFormatedDate(
+  const initDate = getFormatedDate(
   today.setDate(today.getDate()),
   "1900/01/01"
   );
+
   const maxiDate = getFormatedDate(
   today.setDate(today.getDate() - 1),
   "YYYY/MM/DD"
@@ -36,8 +40,16 @@ const ClientReport = ({ route, navigation }: any ) => {
   function handleChangeStartDate(propDate: any) {
       setStartedDate(propDate);
   }
+  function handleChangeEndDate(propDate: any) {
+    setEndedDate(propDate);
+  }
   const handleOnPressStartDate = () => {
       setOpenStartDatePicker(!openStartDatePicker);
+      Keyboard.dismiss();
+  }
+  const handleOnPressEndDate = () => {
+      setOpenEndDatePicker(!openEndDatePicker);
+      Keyboard.dismiss();
   }
   
   const html = `
@@ -64,14 +76,12 @@ const ClientReport = ({ route, navigation }: any ) => {
   }, []);
   
   useEffect(() => {
-    getFormsByClient();
+    // getFormsByClient();
   }, []);
   
   const getFormsByClient = async() => {
-    const startDate = "2023/08/07";
-    const endDate = "2023/08/09";
     const { data } = await disabilityApi.post<ClientForm>('/clients/getReportByClient/64def105bfc0dc665d293a5e', { startDate, endDate });
-    
+    console.log(data)
   };
 
   const snapshot = async() => {
@@ -170,40 +180,41 @@ const ClientReport = ({ route, navigation }: any ) => {
         <TouchableOpacity>
           <Input 
               label={"Start date"} 
-              value={ date }
+              value={ startDate }
               onAccion={ handleOnPressStartDate }
           />
           </TouchableOpacity>
           <Datepicker 
               mode={ "calendar" }
               openStartDatePicker={ openStartDatePicker }
-              startDate={ startDate }
+              startDate={ initDate }
               maxiDate={ maxiDate }
               startedDate={ startedDate }
               handleChangeStartDate={ handleChangeStartDate }
-              setDate={ setDate }
+              setDate={ setStartDate }
               handleOnPressStartDate={ handleOnPressStartDate }
           />
           <TouchableOpacity>
               <Input 
                   label={"End date"} 
-                  value={ date }
-                  onAccion={ handleOnPressStartDate }
+                  value={ endDate }
+                  onAccion={ handleOnPressEndDate }
               />
           </TouchableOpacity>
           <Datepicker 
               mode={ "calendar" }
-              openStartDatePicker={ openStartDatePicker }
-              startDate={ startDate }
+              openStartDatePicker={ openEndDatePicker }
+              startDate={ startedDate }
               maxiDate={ maxiDate }
-              startedDate={ startedDate }
-              handleChangeStartDate={ handleChangeStartDate }
-              setDate={ setDate }
-              handleOnPressStartDate={ handleOnPressStartDate }
+              startedDate={ endedDate }
+              handleChangeStartDate={ handleChangeEndDate }
+              setDate={ setEndDate }
+              handleOnPressStartDate={ handleOnPressEndDate }
           />
           <Button 
             label={ "Create report" }
-            onPress={ snapshot }
+            // onPress={ snapshot }
+            onPress={ getFormsByClient }
             disabled={ false }
           />
       </View>

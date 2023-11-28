@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useWindowDimensions, View, Alert, ScrollView } from 'react-native';
+import { useWindowDimensions, View, Alert, ScrollView, Keyboard } from 'react-native';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import DropDown from '../components/DropDown';
@@ -19,6 +19,7 @@ const ClientProfile = ({ route, navigation }: any ) => {
     const [emergency, setEmergency] = useState<number | any>("");
     const [NDISGoals, setNDISGoals] = useState<string>("");
     const [valueUsers, setValueUsers ] = useState([]);
+    const [open1, setOpen1] = useState(false);
     
     useEffect(() => {
         getClient();
@@ -51,6 +52,10 @@ const ClientProfile = ({ route, navigation }: any ) => {
         setDataUsers( usersList );
     }
     const updateClient = async() => {
+
+        Keyboard.dismiss();
+        setOpen1(false);
+
         try {
 
             const { data: { msg }} = await disabilityApi.put<any>(`/clients/updateClient/${clientUid}`, { emergencyContact: Number(emergency), ndisGoals: NDISGoals, user: valueUsers });
@@ -118,6 +123,10 @@ const ClientProfile = ({ route, navigation }: any ) => {
                 value={ valueUsers }
                 setItems={setDataUsers}
                 setValue={ setValueUsers }
+                open={ open1 }
+                setOpen={(val: boolean) => {
+                    setOpen1(val);
+                }}
                 multiple
             />
 

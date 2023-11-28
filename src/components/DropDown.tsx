@@ -24,8 +24,6 @@ const DropDown = ({
     multiple=false
 }: Props) => {
 
-    // const [open, setOpen] = useState(true);
-
   return (
     <>
         <DropDownPicker
