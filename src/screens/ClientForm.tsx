@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Keyboard } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import { functionList, promptList, activities, displayedBehaviour } from '../helpers/ClientFormList'
 import Button from '../components/Button';
@@ -28,6 +28,10 @@ const ClientForm = ({ route, navigation }: any) => {
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
     const [startedDate, setStartedDate] = useState("12/12/2023");
     const [comment, setComment] = useState("");
+    const [open1, setOpen1] = useState(false);
+    const [open2, setOpen2] = useState(false);
+    const [open3, setOpen3] = useState(false);
+    const [open4, setOpen4] = useState(false);
 
     const today = new Date();
     const startDate = getFormatedDate(
@@ -45,8 +49,22 @@ const ClientForm = ({ route, navigation }: any) => {
     const handleOnPressStartDate = () => {
         setOpenStartDatePicker(!openStartDatePicker);
     }
+
+    const cleanFields = () => {
+        setValueFunct([]);
+        setValuePrompt([]);
+        setValueBehaviour([]);
+        setValueActivity([]);
+        setComment("");
+    }
             
     const handleCLientForm = async() => {
+
+        Keyboard.dismiss();
+        setOpen1(false);
+        setOpen2(false);
+        setOpen3(false);
+        setOpen4(false);
         
         const behaviour = valueBehaviour.map((item: string) => {
             return {
@@ -56,8 +74,11 @@ const ClientForm = ({ route, navigation }: any) => {
         
         try {
             const resp = await disabilityApi.post<InterfaceClientForm>('/clients/setClientForm', { clientId: clientUid, date, prompt: valuePrompt, behaviour, functionality: valueFunct, activity: valueActivity, comment });
+            console.log(resp)
+            if( resp.status === 200){
+                Alert.alert("Successful info", "Form saved successfully", [{ text: 'Ok', onPress: cleanFields }] );
+            }
         } catch (error: any) {
-            console.log(error);
             Alert.alert('Invalid info', error.response.data.msg);
         }
 
@@ -90,6 +111,13 @@ const ClientForm = ({ route, navigation }: any) => {
                 title={"Select function"}
                 items={ functionality }
                 value={ valueFunct }
+                open={ open1 }
+                setOpen={(val: boolean) => {
+                    setOpen1(val);
+                    setOpen2(false);
+                    setOpen3(false);
+                    setOpen4(false);
+                }}
                 setItems={ setFunctionality }
                 setValue={ setValueFunct }
             />
@@ -98,6 +126,13 @@ const ClientForm = ({ route, navigation }: any) => {
                 title={"Select prompt"}
                 items={ prompt }
                 value={ valuePrompt }
+                open={ open2 }
+                setOpen={(val: boolean) => {
+                    setOpen1(false);
+                    setOpen2(val);
+                    setOpen3(false);
+                    setOpen4(false);
+                }}
                 setItems={ setPrompt }
                 setValue={ setValuePrompt }
             />
@@ -106,6 +141,13 @@ const ClientForm = ({ route, navigation }: any) => {
                 title={"Behaviour"}
                 items={behaviour}
                 value={ valueBehaviour }
+                open={ open3 }
+                setOpen={(val: boolean) => {
+                    setOpen1(false);
+                    setOpen2(false);
+                    setOpen3(val);
+                    setOpen4(false);
+                }}
                 setItems={setBechaviour}
                 setValue={ setValueBehaviour }
                 multiple={ true }
@@ -115,6 +157,13 @@ const ClientForm = ({ route, navigation }: any) => {
                 title={"Activities"}
                 items={activity}
                 value={ valueActivity }
+                open={ open4 }
+                setOpen={(val: boolean) => {
+                    setOpen1(false);
+                    setOpen2(false);
+                    setOpen3(false);
+                    setOpen4(val);
+                }}
                 setItems={setActivity}
                 setValue={ setValueActivity }
             />
