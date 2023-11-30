@@ -107,12 +107,12 @@ export const promptList = [
         value: "REMOVE TRIGGER"
     },
     {
-        id: 3,
+        id: 4,
         label: "Negative reinforcement",
         value: "NEGATIVE REINFORCEMENT"
     },
     {
-        id: 3,
+        id: 5,
         label: "Rxtinction",
         value: "RXTINCTION"
     },
