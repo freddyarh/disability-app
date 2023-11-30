@@ -25,6 +25,8 @@ const ClientReport = ({ route, navigation }: any ) => {
   const [openEndDatePicker, setOpenEndDatePicker] = useState(false);
   const [startedDate, setStartedDate] = useState("12/12/2023");
   const [endedDate, setEndedDate] = useState("12/12/2023");
+  const [data, setData] = useState([]);
+  const [functionalValues, setFunctionalValues] = useState<any>([0, 0, 0]);
 
   const today = new Date();
   const initDate = getFormatedDate(
@@ -51,6 +53,25 @@ const ClientReport = ({ route, navigation }: any ) => {
       setOpenEndDatePicker(!openEndDatePicker);
       Keyboard.dismiss();
   }
+
+  // useEffect(() => {
+  //   getFormsByClient();
+  // }, [clientUid]);
+  
+  const getFormsByClient = async() => {
+    const { data } = await disabilityApi.post<ClientForm>(`/clients/getReportByClient/${clientUid}`, { startDate, endDate });
+    setData( data.formsByClient );
+    console.log(data.formsByClient);
+    const functionalArr = ["WANT SOMETHING", "ESCAPE OR AVOID SOMETHING", "PROTEST OR SHOW DISLIKE FOR SOMETHING"];
+    setFunctionalValues([]);
+    for (const key in functionalArr) {
+      const activity = data.formsByClient.filter((value: ClientForm) => value.functionality === functionalArr[key]);
+      setFunctionalValues((val: any) => [...val, activity.length]);
+    }
+    console.log(functionalValues);
+    // setWs(activity.length);
+    // console.log('activity', activity.length)
+  };
   
   const html = `
   <html>
@@ -70,27 +91,14 @@ const ClientReport = ({ route, navigation }: any ) => {
   const viewToSnapShotRef = useRef();
   const [snapshotImg, setSnapshotImg] = useState<any>();
   const [selectedPrinter, setSelectedPrinter] = useState<any>();
-
-  useEffect(() => {
-    
-  }, []);
   
-  useEffect(() => {
-    // getFormsByClient();
-  }, []);
-  
-  const getFormsByClient = async() => {
-    const { data } = await disabilityApi.post<ClientForm>('/clients/getReportByClient/64def105bfc0dc665d293a5e', { startDate, endDate });
-    console.log(data)
-  };
-
   const snapshot = async() => {
     
     const result = await captureRef( viewToSnapShotRef, {
       fileName: "prueba",
       result: 'tmpfile',
-      height: 300,
-      width: 100,
+      height: 200,
+      width: 160,
       quality: 1,
       format: 'jpg', }).then(
         async(uri) => {
@@ -114,13 +122,13 @@ const ClientReport = ({ route, navigation }: any ) => {
             await Print.printAsync({
               html,
               margins: {
-                left: 20,
+                left: 10,
                 top: 50,
-                right: 20,
-                bottom: 100,
+                right: 10,
+                bottom: 50,
               },
               printerUrl: selectedPrinter?.url, // iOS only
-            });
+            }).catch(err => console.log('This is the error ', err))
         },
         (error) => console.error("Oops, snapshot failed", error)
       );
@@ -220,8 +228,13 @@ const ClientReport = ({ route, navigation }: any ) => {
       </View>
       <View>
         <View ref={ viewToSnapShotRef }>
-          <Text>Client Report</Text>
-          <LineChart
+          <Text>Functionality</Text>
+            <Text>Want somenthing: {`${12}`}</Text>
+            <Text>Escape or avoid something: {`${12}`}</Text>
+            <Text>Protest or show dislike for something: {`${12}`}</Text>
+            <Text>Total: {`${12}`}</Text>
+          
+          {/* <LineChart
             data={line}
             width={Dimensions.get('window').width} // from react-native
             height={220}
@@ -241,32 +254,71 @@ const ClientReport = ({ route, navigation }: any ) => {
               marginVertical: 8,
               borderRadius: 16
             }}
-          />
+          /> */}
           <BarChart
             data={{
               labels: [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
+                "Want something",
+                "Escape or avoid something",
+                "Protest or show dislike for something",
               ],
               datasets: [
                 {
-                  data: [0, 0, 0, 0, 0, 0],
+                  data: functionalValues,
                 },
               ],
             }}
-            verticalLabelRotation={90}
-            width={Dimensions.get('window').width - 16}
+            verticalLabelRotation={10}
+            width={Dimensions.get('window').width}
             height={300}
-            yAxisLabel={'Rs'}
+            // yAxisLabel={'Rs'}
             chartConfig={{
               backgroundColor: '#1cc910',
               backgroundGradientFrom: '#eff3ff',
               backgroundGradientTo: '#efefef',
-              decimalPlaces: 2,
+              decimalPlaces: 0,
+              color: (opacity = 1) => `rgba(0, 90, 0, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+            }}
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
+            />
+          <Text>Prompt</Text>
+            <Text>Redirect: {`${12}`}</Text>
+            <Text>Identify trigger: {`${12}`}</Text>
+            <Text>Remove trigger: {`${12}`}</Text>
+            <Text>Negative reinforcement: {`${12}`}</Text>
+            <Text>Rxtinction: {`${12}`}</Text>
+            <Text>Total: {`${12}`}</Text>
+          <BarChart
+            data={{
+              labels: [
+                "Redirect",
+                "Identify trigger",
+                "Remove trigger",
+                "Negative reinforcement",
+                "Rxtinction",
+                "Total",
+              ],
+              datasets: [
+                {
+                  data: [12, 5, 7, 13, 4, 13],
+                },
+              ],
+            }}
+            verticalLabelRotation={10}
+            width={Dimensions.get('window').width}
+            height={300}
+            // yAxisLabel={'Rs'}
+            chartConfig={{
+              backgroundColor: '#1cc910',
+              backgroundGradientFrom: '#eff3ff',
+              backgroundGradientTo: '#efefef',
+              decimalPlaces: 0,
               color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
               style: {
                 borderRadius: 16,
@@ -277,10 +329,15 @@ const ClientReport = ({ route, navigation }: any ) => {
               borderRadius: 16,
             }}
             />
-
+{/* 
           { snapshotImg && <Text>Preview:</Text> }
-          { snapshotImg && <Image resizeMode='contain' style={ styles.snapshotImag } source={ {uri: snapshotImg} } />}
-
+          { snapshotImg && <Image resizeMode='contain' style={ styles.snapshotImag } source={ {uri: snapshotImg} } />} */}
+          </View>
+          <Button 
+            label={ "Create" }
+            onPress={ snapshot }
+            disabled={ false }
+          />
           <Button 
             label={ "Print" }
             onPress={ print }
@@ -306,7 +363,6 @@ const ClientReport = ({ route, navigation }: any ) => {
             ) : undefined}
           </>
         )}
-        </View>
       </View>
     </ScrollView>
   )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Keyboard } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import { functionList, promptList, activities, displayedBehaviour } from '../helpers/ClientFormList'
@@ -16,7 +16,7 @@ const ClientForm = ({ route, navigation }: any) => {
     const { height } = useWindowDimensions();
     const { clientUid, clientName } = route.params;
 
-    const [date, setDate] = useState("2012/12/20 23:00");
+    const [date, setDate] = useState("0000/00/00 00:00");
     const [prompt, setPrompt] = useState(promptList);
     const [valuePrompt, setValuePrompt] = useState([]);
     const [behaviour, setBechaviour] = useState(displayedBehaviour);
@@ -48,7 +48,13 @@ const ClientForm = ({ route, navigation }: any) => {
     }
     const handleOnPressStartDate = () => {
         setOpenStartDatePicker(!openStartDatePicker);
+        Keyboard.dismiss();
     }
+
+    useEffect(() => {
+        cleanFields();
+    }, [clientUid]);
+    
 
     const cleanFields = () => {
         setValueFunct([]);
