@@ -39,7 +39,7 @@ const ClientForm = ({ route, navigation }: any) => {
     "1900/01/01"
     );
     const maxiDate = getFormatedDate(
-    today.setDate(today.getDate() - 1),
+    today.setDate(today.getDate()),
     "YYYY/MM/DD"
     );
     

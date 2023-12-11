@@ -73,14 +73,17 @@ const CreateClientProfile = ({ navigation }: any) => {
         setOpen1(false);
         setOpen2(false);
         setOpen3(false);
-        return
+
         try {
 
             const { data: { msg }} = await disabilityApi.post<any>('/clients/setClient', { name, dateOfBirth: selectedStartDate, gender: valueGender, ndisNumber: NDISNumber, emergencyContact: emergency, ndisGoals: NDISGoals, assessment, supportNetwork: valueSupportNetworkItems, user: valueUsers });
             Alert.alert("Info Success", msg)
             
         } catch (error) {
-            console.log(error);
+            if( error.response.status === 401){
+                return Alert.alert("Token expired", "Sign in again");
+            }
+            console.log(error.response.status);
         }
     }
 
