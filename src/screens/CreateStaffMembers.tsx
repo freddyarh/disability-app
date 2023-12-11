@@ -15,6 +15,7 @@ const CreateStaffMembers = ({ navigation }: any) => {
   const [email, setEmail] = useState("staff@gmail.com");
   const [password, setPassword] = useState("123456");
   const [repeatPassword, setRepeatPassword] = useState("123456");
+  const [open1, setOpen1] = useState(false);
   const [role, setRole] = useState([]);
   const [valueRole, setValueRole] = useState([]);
   const { signUp } = useContext( AuthContext );
@@ -75,6 +76,10 @@ const CreateStaffMembers = ({ navigation }: any) => {
             title={"Select role"}
             items={ role }
             value={ valueRole }
+            open={ open1 }
+            setOpen={ (val: boolean) => {
+              setOpen1(val);
+            }}
             setItems={ setRole }
             setValue={ setValueRole }
         />

@@ -7,7 +7,7 @@ export const LoadingScreen = () => {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: "black"
+            backgroundColor: 'black'
         }}>
             <ActivityIndicator 
                 size={ 50 }

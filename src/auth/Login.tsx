@@ -92,11 +92,9 @@ const styles = StyleSheet.create({
   logo: {
     marginBottom:40,
     minWidth: 300,
-    // maxHeight: 200,
   },
   title: {
     color: "rgb(133, 187, 157)",
-    // fontWeight: 'bold',
     fontSize: 30
   }
 });
