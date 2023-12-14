@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Platform, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, useWindowDimensions, Keyboard } from 'react-native';
+import { View, Platform, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, useWindowDimensions, Keyboard, Text } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import { gendersOptions, supportNetworkOptions } from '../../assets/RadioDataGender';
 
@@ -90,16 +90,18 @@ const CreateClientProfile = ({ navigation }: any) => {
   return (
     <ScrollView>
         <View style={[ globalStyles.container, { minHeight: height - 50 } ]}>
-            <IconGoBack navigation={ navigation }/>
+            <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' } />
             <KeyboardAvoidingView
                 behavior={ ( Platform.OS === 'ios') ? 'padding': 'padding' }
             >
-                <View>
+                <View style={{ marginTop: 20 }} >
+                    <Text style={ globalStyles.label }>Name</Text>
                     <Input 
                         label={"Name"} 
                         value={ name } 
                         setValue={ setName } 
                     />
+                    <Text style={ globalStyles.label }>Date of Birth</Text>
                     <TouchableOpacity>
                         <Input 
                             label={"Date of Birth"} 
@@ -117,6 +119,7 @@ const CreateClientProfile = ({ navigation }: any) => {
                         setDate={ setSelectedStartDate }
                         handleOnPressStartDate={ handleOnPressStartDate }
                     />
+                    <Text style={ globalStyles.label }>Select Gender</Text>
                     <DropDown
                         title={"Select Gender"}
                         items={ gender }
@@ -130,28 +133,33 @@ const CreateClientProfile = ({ navigation }: any) => {
                         setItems={setGender}
                         setValue={ setValueGender }
                     />
+                    <Text style={ globalStyles.label }>NDIS Number</Text>
                     <Input 
                         label={"NDIS Number"} 
                         value={ NDISNumber } 
                         setValue={ setNDISNumber }
                         keyboardType={ "numeric" }
                     />
+                    <Text style={ globalStyles.label }>Emergency Contact</Text>
                     <Input 
                         label={"Emergency Contact"} 
                         value={ emergency } 
                         setValue={ setEmergency } 
                         keyboardType={ "numeric" }
                     />
+                    <Text style={ globalStyles.label }>NDIS Goals</Text>
                     <Input 
                         label={"NDIS Goals"} 
                         value={ NDISGoals } 
                         setValue={ setNDISGoals } 
                     />
+                    <Text style={ globalStyles.label }>Assessment</Text>
                     <Input 
                         label={"Assessment"} 
                         value={ assessment } 
                         setValue={ setAssessment } 
                     />
+                    <Text style={ globalStyles.label }>Select Support Network</Text>
                     <DropDown
                         title={"Select Support Network"}
                         items={supportNetworkItems}
@@ -165,6 +173,7 @@ const CreateClientProfile = ({ navigation }: any) => {
                         setItems={setSupportNetworkItems}
                         setValue={ setValueupportNetworkItems }
                     />
+                    <Text style={ globalStyles.label }>Select Staff</Text>
                     <DropDown
                         title={"Select Staff"}
                         items={dataUsers}

@@ -10,6 +10,8 @@ import DropDown from '../components/DropDown';
 import disabilityApi from '../api/disabilityApi';
 import { ClientForm as InterfaceClientForm } from '../interfaces/appInterfaces';
 import IconGoBack from '../components/IconGoBack';
+import { Checkbox } from 'react-native-paper';
+import { colors } from '../styles/colors';
 
 const ClientForm = ({ route, navigation }: any) => {
 
@@ -27,6 +29,7 @@ const ClientForm = ({ route, navigation }: any) => {
     const [valueActivity, setValueActivity] = useState([]);
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
     const [startedDate, setStartedDate] = useState("12/12/2023");
+    const [checked, setChecked] = React.useState(false);
     const [comment, setComment] = useState("");
     const [open1, setOpen1] = useState(false);
     const [open2, setOpen2] = useState(false);
@@ -92,7 +95,7 @@ const ClientForm = ({ route, navigation }: any) => {
   return (
     <ScrollView>
         <View style={[globalStyles.container, { minHeight: height - 50 }]}>
-        <IconGoBack navigation={ navigation }/>
+        <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' }/>
             <Text style={ styles.label }>Client name: { clientName }</Text>
             <Text style={ styles.label }>Time</Text>
             <TouchableOpacity>
@@ -173,6 +176,13 @@ const ClientForm = ({ route, navigation }: any) => {
                 setItems={setActivity}
                 setValue={ setValueActivity }
             />
+            <Text style={ styles.label }>Incident Report?</Text>
+            <Checkbox
+                status={checked ? 'checked' : 'unchecked'}
+                onPress={() => {
+                    setChecked(!checked);
+                }}
+                />
             <Text style={ styles.label }>Comments</Text>
             <Input 
                 label="Comments" 
@@ -196,11 +206,11 @@ const styles = StyleSheet.create({
     },
     labelCheckbox: {
         margin: 8,
-        color: 'white'
+        color: colors.white
     },
     label: {
-        margin: 8,
-        color: 'white',
+        margin: 6,
+        color: colors.black,
         fontSize: 18
     }
   });

@@ -45,47 +45,52 @@ const CreateStaffMembers = ({ navigation }: any) => {
 
   return (
     <View style={ globalStyles.container }>
-        <IconGoBack navigation={ navigation }/>
-        {/* <Text>Create staff memeber</Text> */}
-        <Input
-          label={ "Name" }
-          value={ name }
-          setValue={ setName }
-        />
-        <Input 
-          label={ "Last name" }
-          value={ lastName }
-          setValue={ setLastName }
-        />
-        <Input 
-          label={ "Email" }
-          value={ email }
-          setValue={ setEmail }
-        />
-        <Input 
-          label={ "Password" }
-          value={ password }
-          setValue={ setPassword }
-        />
-        <Input 
-          label={ "Repeat password" }
-          value={ repeatPassword }
-          setValue={ setRepeatPassword }
-        />
-        <DropDown
-            title={"Select role"}
-            items={ role }
-            value={ valueRole }
-            open={ open1 }
-            setOpen={ (val: boolean) => {
-              setOpen1(val);
-            }}
-            setItems={ setRole }
-            setValue={ setValueRole }
-        />
-
-        <Button label="Create Staff" onPress={ handleCreateStaff } disabled={false}/>
-
+        <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' } />
+        <View style={{ marginTop: 20 }} >
+          <Text style={ globalStyles.label }>Name</Text>
+          <Input
+            label={ "Name" }
+            value={ name }
+            setValue={ setName }
+          />
+          <Text style={ globalStyles.label }>Last name</Text>
+          <Input 
+            label={ "Last name" }
+            value={ lastName }
+            setValue={ setLastName }
+          />
+          <Text style={ globalStyles.label }>Email</Text>
+          <Input 
+            label={ "Email" }
+            value={ email }
+            setValue={ setEmail }
+          />
+          <Text style={ globalStyles.label }>Password</Text>
+          <Input 
+            label={ "Password" }
+            value={ password }
+            setValue={ setPassword }
+          />
+          <Text style={ globalStyles.label }>Repeat password</Text>
+          <Input 
+            label={ "Repeat password" }
+            value={ repeatPassword }
+            setValue={ setRepeatPassword }
+          />
+          <Text style={ globalStyles.label }>Select role</Text>
+          <DropDown
+              title={"Select role"}
+              items={ role }
+              value={ valueRole }
+              open={ open1 }
+              setOpen={ (val: boolean) => {
+                setOpen1(val);
+              }}
+              setItems={ setRole }
+              setValue={ setValueRole }
+          />
+          <Button label="Create Staff" onPress={ handleCreateStaff } disabled={false}/>
+        </View>
     </View>
   )
 }

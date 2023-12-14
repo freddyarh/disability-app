@@ -1,5 +1,6 @@
 import React from 'react'
 import { ActivityIndicator, View } from 'react-native'
+import { colors } from '../styles/colors'
 
 export const LoadingScreen = () => {
     return (
@@ -7,11 +8,11 @@ export const LoadingScreen = () => {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'black'
+            backgroundColor: colors.white
         }}>
             <ActivityIndicator 
                 size={ 50 }
-                color="white"
+                color={ colors.black }
             />
         </View>
     )

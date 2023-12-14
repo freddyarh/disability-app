@@ -38,7 +38,7 @@ export const Login = ({ navigation }: Props) => {
 
   return (
     <ScrollView>
-      <View style={[ globalStyles.container, { height: height - 55 } ]}>
+      <View style={[ globalStyles.login, { height: height - 55 } ]}>
           <View style={styles.containerImg}>
             <Image
               style={[styles.logo, aspectRatio > 1.6 ? { maxHeight: 200 } : { maxHeight: 290 }, { height: height * 0.3 }]}
