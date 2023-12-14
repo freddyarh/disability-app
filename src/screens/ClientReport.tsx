@@ -62,7 +62,7 @@ const ClientReport = ({ route, navigation }: any ) => {
     setCreateReport(false);
   }, [clientUid]);
   
-  const getFormsByClient = async() => {
+  const createReportByClient = async() => {
 
     setCreateReport(true);
     const { data } = await disabilityApi.post<ClientForm>(`/clients/getReportByClient/${clientUid}`, { startDate, endDate });
@@ -164,10 +164,10 @@ const ClientReport = ({ route, navigation }: any ) => {
             await Print.printAsync({
               html,
               margins: {
-                left: 10,
-                top: 50,
-                right: 10,
-                bottom: 50,
+                left: 8,
+                top: 0,
+                right: 8,
+                bottom: 0,
               },
               printerUrl: selectedPrinter?.url, // iOS only
             }).catch(err => console.log('This is the error ', err))
@@ -188,6 +188,7 @@ const ClientReport = ({ route, navigation }: any ) => {
       <View style={{ padding: '4%', backgroundColor: '#ffff' }}>
       <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' }/>
       <Text style={{ paddingVertical: '4%', fontSize: 18 }}>Client name: { clientName }</Text>
+      <Text style={ globalStyles.label }>Start date</Text>
         <TouchableOpacity>
           <Input 
               label={"Start date"} 
@@ -205,6 +206,7 @@ const ClientReport = ({ route, navigation }: any ) => {
               setDate={ setStartDate }
               handleOnPressStartDate={ handleOnPressStartDate }
           />
+          <Text style={ globalStyles.label }>End date</Text>
           <TouchableOpacity>
             <Input 
                 label={"End date"} 
@@ -224,7 +226,7 @@ const ClientReport = ({ route, navigation }: any ) => {
           />
           <Button 
             label={ "Create report" }
-            onPress={ getFormsByClient }
+            onPress={ createReportByClient }
             disabled={ false }
           />
       </View>

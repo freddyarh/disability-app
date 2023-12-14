@@ -9,6 +9,7 @@ import { color } from 'react-native-reanimated';
 import { AuthContext } from '../context/AuthContext';
 import IconGoBack from '../components/IconGoBack';
 import { LoadingScreen } from './LoadingScreen';
+import { colors } from '../styles/colors';
 
 export const StaffMembers = ({ navigation }: any) => {
   
@@ -32,7 +33,7 @@ export const StaffMembers = ({ navigation }: any) => {
   return (
     <ScrollView>
       <View style={[ globalStyles.container, { minHeight: height } ]}>
-      <IconGoBack navigation={ navigation }/>
+      <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' } />
       <Button label={ "Create new staff" } onPress={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />
       <View style={{ marginTop: 20 }}>
         <View>
@@ -40,8 +41,8 @@ export const StaffMembers = ({ navigation }: any) => {
           { usersSuperAdmin.map((user) => (
               <Card.Title key={ user.uid }
                   title={ `${ user.name } ${ user.lastName }` }
-                  titleStyle={{ color: 'white' }}
-                  subtitleStyle={{ color: 'white' }}
+                  titleStyle={{ color: colors.black }}
+                  subtitleStyle={{ color: colors.black }}
                   subtitle={ user.email }
                   left={(props) => <Avatar.Icon {...props} icon="account" />}
                   right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
@@ -53,8 +54,8 @@ export const StaffMembers = ({ navigation }: any) => {
           { usersStaff.map((user) => (
             <Card.Title key={ user.uid }
             title={ `${ user.name } ${ user.lastName }` }
-            titleStyle={{ color: 'white' }}
-            subtitleStyle={{ color: 'white' }}
+            titleStyle={{ color: colors.black }}
+            subtitleStyle={{ color: colors.black }}
             subtitle={ user.email }
             left={(props) => <Avatar.Icon {...props} icon="account" />}
             right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
@@ -69,7 +70,7 @@ export const StaffMembers = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
   title: {
-    color: "rgb(133, 187, 157)",
+    color: colors.black,
     marginLeft: 10,
     fontSize: 20
   }

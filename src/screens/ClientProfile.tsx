@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useWindowDimensions, View, Alert, ScrollView, Keyboard } from 'react-native';
+import { useWindowDimensions, View, Alert, ScrollView, Keyboard, Text } from 'react-native';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import DropDown from '../components/DropDown';
@@ -72,51 +72,52 @@ const ClientProfile = ({ route, navigation }: any ) => {
     <ScrollView>
         <View style={[ globalStyles.container, { minHeight: height }]}>
             <View style={{ marginBottom: 10 }}>
-                <IconGoBack navigation={ navigation }/>
+                <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' }/>
             </View>
+            <Text style={ globalStyles.label }>Name</Text>
             <Input  
                 label={ "Name" } 
                 value={ dataClient.client.name } 
                 disabled 
             />
-
+            <Text style={ globalStyles.label }>Date of Birth</Text>            
             <Input  
                 label={ "Date of Birth" } 
                 value={ dataClient.client.dateOfBirth } 
                 disabled 
             />
-
+            <Text style={ globalStyles.label }>Gender</Text>
             <Input  
                 label={ "Gender" } 
                 value={ dataClient.client.gender } 
                 disabled 
             />
-
+            <Text style={ globalStyles.label }>NDIS Number</Text>
             <Input 
                 label={"NDIS Number"} 
                 value={ JSON.stringify(dataClient.client.ndisNumber)}
                 disabled 
             />
-            
+            <Text style={ globalStyles.label }>Emergency Contact</Text>      
             <Input 
                 label={"Emergency Contact"} 
                 value={ emergency }
                 setValue={ setEmergency }
                 keyboardType={ "numeric" }
             />
-            
+            <Text style={ globalStyles.label }>NDIS Goals</Text>      
             <Input 
                 label={"NDIS Goals"} 
                 value={ NDISGoals }
                 setValue={ setNDISGoals }
             />
-            
+            <Text style={ globalStyles.label }>Assessment</Text>
             <Input 
                 label={"Assessment"} 
                 value={ dataClient.client.assessment }
                 disabled
             />
-
+            <Text style={ globalStyles.label }>Staffs</Text>
             <DropDown
                 title={"Select Staff"}
                 items={dataUsers}
@@ -129,7 +130,6 @@ const ClientProfile = ({ route, navigation }: any ) => {
                 }}
                 multiple
             />
-
             <Button
                 label={ "Update client" }
                 onPress={ updateClient }

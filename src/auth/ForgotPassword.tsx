@@ -38,7 +38,7 @@ export const ForgotPassword = ({ navigation }: any ) => {
     
   }
   return (
-    <View style={ globalStyles.container }>
+    <View style={ globalStyles.login }>
         <Text style={{ color: 'white', marginVertical: 20, fontSize: 16 }}>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
         <Input label="Email" value={ email } setValue={ setEmail } />
 

@@ -29,7 +29,7 @@ const ChangePassword = ({ route, navigation }: any) => {
     }
   }
   return (
-    <View style={ globalStyles.container }>
+    <View style={ globalStyles.login }>
         <Input label="Password" value={ password } setValue={ setPassword } />
         <Input label="Repeat password" value={ repeatPassword } setValue={ setRepeatPassword } />
         <Button label="Change password" onPress={ handleChangePassword } disabled={false}/>

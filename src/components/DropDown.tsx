@@ -50,14 +50,14 @@ const styles = StyleSheet.create({
     dropDown: {
         backgroundColor: "white",
         borderRadius: 5,
-        borderColor: "rgb(165,162, 169)",
+        borderColor:"rgb(103, 80, 164)",
         borderTopLeftRadius: 18,
         borderTopEndRadius: 4,
-        borderBottomEndRadius: 0,
-        borderBottomLeftRadius: 0,
-        borderTopWidth: 27,
-        borderTopColor: 'white',
-        borderBottomColor: 'white',
+        borderBottomEndRadius: 2,
+        borderBottomLeftRadius: 2,
+        borderTopWidth: 1,
+        paddingTop: 18,
+        paddingBottom: 18,
         marginBottom: 22
     }
 });

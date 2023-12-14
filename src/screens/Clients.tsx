@@ -90,11 +90,11 @@ const Clients = ({ navigation }: any) => {
                                 <Avatar.Icon icon="account" color={ 'white' } size={ 40 } style={{ backgroundColor: "rgb(99, 81, 159)" }} />
                             </Text>
                             <View style={{ flexDirection: 'column', marginLeft: 20 }}>
-                                <Text style={{ fontSize: 18, marginBottom: 10 }}>{ client.name }</Text>
+                                <Text style={{ fontSize: 18, marginBottom: 10, }}>{ client.name }</Text>
                                 {/* <Text>{ client.ndisNumber }</Text> */}
                                 { user?.role === "SUPER_ADMIN" && (
                                     <>
-                                    <Text>Staff</Text>
+                                    <Text style={{ marginBottom: 7 }}>Staff</Text>
                                         { client.user.map(( user, index ): any => (
                                             <View key={ index } style={{  flexDirection: 'row' }}>
                                                 <Avatar.Icon icon="account-tie" color={ "rgb(99, 81, 159)" } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />
@@ -151,7 +151,16 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         padding: 20,
         borderRadius: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        // Box shadow
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        elevation: 6,
     },
     btnRow: {
         flexDirection: 'row',
@@ -161,7 +170,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
         height: 50,
         borderRadius: 30,
-        color: 'black',
+        color: colors.black,
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center'
