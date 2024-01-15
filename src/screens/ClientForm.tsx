@@ -96,7 +96,7 @@ const ClientForm = ({ route, navigation }: any) => {
     <ScrollView>
         <View style={[globalStyles.container, { minHeight: height - 50 }]}>
         <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' }/>
-            <Text style={ styles.label }>Client name: { clientName }</Text>
+        <Text style={{ textAlign: 'center', fontSize: 19, fontWeight: 'bold' }}>{ clientName }</Text>
             <Text style={ styles.label }>Time</Text>
             <TouchableOpacity>
                 <Input 

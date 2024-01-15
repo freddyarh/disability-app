@@ -16,23 +16,28 @@ const Clients = ({ navigation }: any) => {
     const { height } = useWindowDimensions();
 
     const [dataClients, setDataClients] = useState<Client[]>([]);
+    const [status, setStatus] = useState<Number>();
+    const [statusByStaff, setStatusByStaff] = useState<Number>();
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
         if (user?.role === "SUPER_ADMIN" ) {
             getAllClients();
+        }else{
+            getClientsByStaff();
         }
-        getClientsByStaff();
     }, []);
 
     const getAllClients = async() => {
-        const { data: { clients }} = await disabilityApi.get<ClientsInterface>('/clients/getAllClients');
+        const { data: { clients }, status } = await disabilityApi.get<ClientsInterface>('/clients/getAllClients');
         setDataClients( clients );
+        setStatus( status );
     }
     
     const getClientsByStaff = async() => {
-        const { data: { clients }} = await disabilityApi.get<ClientsInterface>(`/clients/getClientsByStaff/${user?.uid}`);
+        const { data: { clients }, status} = await disabilityApi.get<ClientsInterface>(`/clients/getClientsByStaff/${user?.uid}`);
         setDataClients( clients );
+        setStatusByStaff( status );
     }
     
     const onRefresh = useCallback(() => {
@@ -43,7 +48,7 @@ const Clients = ({ navigation }: any) => {
         }, 1000);
       }, []);
     
-    if ( dataClients.length === 0 ) return <LoadingScreen />;;
+    if ( (statusByStaff !== 200) && (status !== 200) ) return <LoadingScreen />;
 
     interface Props {
         label: string,

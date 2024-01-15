@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Dimensions, Text, Image, StyleSheet, ScrollViewComponent, ScrollView, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Dimensions, Text, Image, StyleSheet, ActivityIndicator, ScrollViewComponent, ScrollView, TouchableOpacity, Keyboard } from 'react-native';
 import { BarChart, LineChart } from "react-native-chart-kit";
 import { captureRef } from 'react-native-view-shot';
 import { cacheDirectory, copyAsync, getInfoAsync, makeDirectoryAsync, uploadAsync } from 'expo-file-system';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import * as Print from 'expo-print';
+import { DataTable } from 'react-native-paper';
 import { shareAsync } from 'expo-sharing';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
+import { LoadingScreen } from './LoadingScreen';
 import IconGoBack from '../components/IconGoBack';
 import { ClientForm } from '../interfaces/appInterfaces';
 import { globalStyles } from '../styles/globalStyles';
 import { Platform } from 'react-native';
 import Datepicker from '../components/Datepicker';
 import Input from '../components/Input';
+import { colors } from '../styles/colors';
 
 const ClientReport = ({ route, navigation }: any ) => {
 
@@ -27,7 +30,9 @@ const ClientReport = ({ route, navigation }: any ) => {
   const [startedDate, setStartedDate] = useState("12/12/2023");
   const [endedDate, setEndedDate] = useState("12/12/2023");
   const [createReport, setCreateReport] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [dataComments, setDataComments] = useState([]);
   const [functionalValues, setFunctionalValues] = useState<any>([0, 0, 0]);
   const [promptValues, setPromptValues] = useState<any>([0, 0, 0, 0, 0]);
   const [activitiesValues1, setActivitiesValues1] = useState<any>([0, 0, 0, 0, 0]);
@@ -64,10 +69,19 @@ const ClientReport = ({ route, navigation }: any ) => {
   
   const createReportByClient = async() => {
 
-    setCreateReport(true);
-    const { data } = await disabilityApi.post<ClientForm>(`/clients/getReportByClient/${clientUid}`, { startDate, endDate });
-
+    setLoading(true);
+    const { data, status } = await disabilityApi.post<ClientForm>(`/clients/getReportByClient/${clientUid}`, { startDate, endDate });
+    if( status === 200 ){
+      setLoading( false );
+      setCreateReport(true);
+    }
     setData( data.formsByClient );
+
+    const commentEmpty = data.formsByClient.filter( (value: ClientForm) => {
+      if(value.comment.trim().length !== 0) return value
+    });
+
+    setDataComments(commentEmpty);
 
     const functionalArr = ["WANT SOMETHING", "ESCAPE OR AVOID SOMETHING", "PROTEST OR SHOW DISLIKE FOR SOMETHING"];
     setFunctionalValues([]);
@@ -134,7 +148,7 @@ const ClientReport = ({ route, navigation }: any ) => {
     await captureRef( viewToSnapShotRef, {
       fileName: "prueba",
       result: 'tmpfile',
-      height: 730,
+      height: 1000,
       width: 160,
       quality: 1,
       format: 'jpg', }).then(
@@ -156,8 +170,8 @@ const ClientReport = ({ route, navigation }: any ) => {
                 </p>
               </div>
               <img
-                  src=${ uri }
-                  />
+                src=${ uri }
+              />
               </body>
             </html>
             `;
@@ -187,7 +201,7 @@ const ClientReport = ({ route, navigation }: any ) => {
     <ScrollView>
       <View style={{ padding: '4%', backgroundColor: '#ffff' }}>
       <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' }/>
-      <Text style={{ paddingVertical: '4%', fontSize: 18 }}>Client name: { clientName }</Text>
+      <Text style={{ textAlign: 'center', fontSize: 19, fontWeight: 'bold'}}>{ clientName }</Text>
       <Text style={ globalStyles.label }>Start date</Text>
         <TouchableOpacity>
           <Input 
@@ -230,11 +244,17 @@ const ClientReport = ({ route, navigation }: any ) => {
             disabled={ false }
           />
       </View>
+      { loading && (
+        <View>
+          <LoadingScreen color={ colors.firstColor } />
+        </View>
+      )}
       {
         createReport && (
         <View style={{ backgroundColor: '#ffff'}}>
           <View ref={ viewToSnapShotRef }>
-            <Text style={{ paddingLeft: '4%' }}>Total: {`${data.length}`} forms</Text>
+            {/* <Text style={{ paddingLeft: '4%' }}>Total: {`${data.length}`} forms</Text> */}
+            <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 18, fontWeight: 'bold'}}>Total: {`${data.length}`} forms</Text>
             <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Functionality</Text>
             <Text style={{ paddingLeft: '4%' }}>Want somenthing (WS): {`${functionalValues[0]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Escape or avoid something (EAS): {`${functionalValues[1]}`}</Text>
@@ -391,19 +411,19 @@ const ClientReport = ({ route, navigation }: any ) => {
               }}
               />
             <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Displayed Behaviour</Text>
-            {/* <Text style={{ paddingLeft: '4%' }}>Redirect: {`${promptValues[0]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Identify trigger: {`${promptValues[1]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Remove trigger: {`${promptValues[2]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Negative reinforcement: {`${promptValues[3]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Rxtinction: {`${promptValues[4]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>SELF injury (SID): {`${promptValues[0]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>PICA (Pic): {`${promptValues[1]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Physical Aggression (PAG): {`${promptValues[2]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Anal poking (AP): {`${promptValues[3]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Verbal Aggression (VA): {`${promptValues[4]}`}</Text>
             <BarChart
               data={{
                 labels: [
-                  "Redirect",
-                  "Identify trigger",
-                  "Remove trigger",
-                  "Negative reinforcement",
-                  "Rxtinction"
+                  "SID",
+                  "Pic",
+                  "PAG",
+                  "AP",
+                  "VA"
                 ],
                 datasets: [
                   {
@@ -417,7 +437,7 @@ const ClientReport = ({ route, navigation }: any ) => {
               // yAxisLabel={'Rs'}
               chartConfig={{
                 backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#eff3ff',
+                backgroundGradientFrom: '#ffff',
                 backgroundGradientTo: '#ffff',
                 decimalPlaces: 0,
                 color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
@@ -430,20 +450,19 @@ const ClientReport = ({ route, navigation }: any ) => {
                 borderRadius: 16,
               }}
               />
-            <Text style={{ paddingVertical: '2%', textAlign: 'center', fontSize: 18}}>Prompt</Text>
-            <Text style={{ paddingLeft: '4%' }}>Redirect: {`${promptValues[0]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Identify trigger: {`${promptValues[1]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Remove trigger: {`${promptValues[2]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Negative reinforcement: {`${promptValues[3]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Rxtinction: {`${promptValues[4]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Disruption and destruction of property or environment (DST): {`${promptValues[0]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Stereotyped behaviours (SB): {`${promptValues[1]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Inappropriate vocalisations (IV): {`${promptValues[2]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Innappropriate removal of clothing (IRC): {`${promptValues[3]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Innapropriate or unacceptable sexual behaviour (ISB): {`${promptValues[4]}`}</Text>
             <BarChart
               data={{
                 labels: [
-                  "Redirect",
-                  "Identify trigger",
-                  "Remove trigger",
-                  "Negative reinforcement",
-                  "Rxtinction"
+                  "DST",
+                  "SB",
+                  "IV",
+                  "IRC",
+                  "ISB"
                 ],
                 datasets: [
                   {
@@ -457,7 +476,7 @@ const ClientReport = ({ route, navigation }: any ) => {
               // yAxisLabel={'Rs'}
               chartConfig={{
                 backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#eff3ff',
+                backgroundGradientFrom: '#ffff',
                 backgroundGradientTo: '#ffff',
                 decimalPlaces: 0,
                 color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
@@ -470,20 +489,17 @@ const ClientReport = ({ route, navigation }: any ) => {
                 borderRadius: 16,
               }}
               />
-            <Text style={{ paddingVertical: '2%', textAlign: 'center', fontSize: 18}}>Prompt</Text>
-            <Text style={{ paddingLeft: '4%' }}>Redirect: {`${promptValues[0]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Identify trigger: {`${promptValues[1]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Remove trigger: {`${promptValues[2]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Negative reinforcement: {`${promptValues[3]}`}</Text>
-            <Text style={{ paddingLeft: '4%' }}>Rxtinction: {`${promptValues[4]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Smearing (SMR): {`${promptValues[0]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Stealing (STL): {`${promptValues[1]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Self-induced vomiting and regurgitation (SIV): {`${promptValues[2]}`}</Text>
+            <Text style={{ paddingLeft: '4%' }}>Other: {`${promptValues[3]}`}</Text>
             <BarChart
               data={{
                 labels: [
-                  "Redirect",
-                  "Identify trigger",
-                  "Remove trigger",
-                  "Negative reinforcement",
-                  "Rxtinction"
+                  "SMR",
+                  "STL",
+                  "SIV",
+                  "Other",
                 ],
                 datasets: [
                   {
@@ -497,7 +513,7 @@ const ClientReport = ({ route, navigation }: any ) => {
               // yAxisLabel={'Rs'}
               chartConfig={{
                 backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#eff3ff',
+                backgroundGradientFrom: '#ffff',
                 backgroundGradientTo: '#ffff',
                 decimalPlaces: 0,
                 color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
@@ -509,10 +525,45 @@ const ClientReport = ({ route, navigation }: any ) => {
                 marginVertical: 8,
                 borderRadius: 16,
               }}
-              /> */}
+              />
   {/* 
             { snapshotImg && <Text>Preview:</Text> }
             { snapshotImg && <Image resizeMode='contain' style={ styles.snapshotImag } source={ {uri: snapshotImg} } />} */}
+          <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Comments</Text>
+          {
+            dataComments.length === 0 ? (
+              <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 15 }}>There are no comments to display</Text>
+            ): (
+              <DataTable>
+                { dataComments.map( (val: ClientForm, index) => (
+                  <View key={ index }>
+                      <DataTable.Header>
+                        <DataTable.Title>Date: { val.date }</DataTable.Title>
+                      </DataTable.Header>
+
+                      <DataTable.Header>
+                        <DataTable.Title>Comment</DataTable.Title>
+                      </DataTable.Header>
+
+                      <DataTable.Row>
+                        <View><Text>{ val.comment }</Text></View>
+                      </DataTable.Row>
+
+                      <View
+                        style={{
+                          marginHorizontal: '3%',
+                          marginTop: '4%',
+                          borderBottomColor: 'black',
+                          borderBottomWidth: StyleSheet.hairlineWidth,
+                        }}
+                      />
+                  </View>
+                ))}
+              </DataTable>
+            )
+          }
+
+            
           </View>
           <View style={{ paddingHorizontal: '4%' }}>
             <Button 

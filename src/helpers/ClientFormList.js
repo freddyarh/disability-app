@@ -15,57 +15,57 @@ export const displayedBehaviour = [
         value: "PHYSICAL AGGRESSION (PAG)",
     },
     {
-        id: 6,
+        id: 4,
         label: "Anal poking (AP)",
         value: "ANAL POKING (AP)",
     },
     {
-        id: 7,
+        id: 5,
         label: "Verbal Aggression (VA)",
         value: "VERBAL AGGRESSION (VA)",
     },
     {
-        id: 8,
+        id: 6,
         label: "Disruption and destruction of property or environment (DST)",
         value: "DISRUPTION AND DESTRUCTION OF PROPERTY OR ENVIRONMENT (DST)",
     },
     {
-        id: 9,
+        id: 7,
         label: "Stereotyped behaviours (SB)",
         value: "STEREOTYPED BEHAVIOURS (SB)",
     },
     {
-        id: 10,
+        id: 8,
         label: "Inappropriate vocalisations (IV)",
         value: "INAPPROPRIATE VOCALISATIONS (IV)",
     },
     {
-        id: 11,
+        id: 9,
         label: "Innappropriate removal of clothing (IRC)",
         value: "INNAPPROPRIATE REMOVAL OF CLOTHING (IRC)",
     },
     {
-        id: 12,
+        id: 10,
         label: "Innapropriate or unacceptable sexual behaviour (ISB)",
         value: "INNAPROPRIATE OR UNACCEPTABLE SEXUAL BEHAVIOUR (ISB)",
     },
     {
-        id: 13,
+        id: 11,
         label: "Smearing (SMR)",
         value: "SMEARING (SMR)",
     },
     {
-        id: 14,
+        id: 12,
         label: "Stealing (STL)",
         value: "STEALING (STL)",
     },
     {
-        id: 15,
+        id: 13,
         label: "Self-induced vomiting and regurgitation (SIV)",
         value: "SELF-INDUCED VOMITING AND REGURGITATION (SIV)",
     },
     {
-        id: 16,
+        id: 14,
         label: "Other",
         value: "OTHER",
     }
