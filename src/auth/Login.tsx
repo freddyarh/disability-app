@@ -9,8 +9,8 @@ import { globalStyles } from '../styles/globalStyles';
 interface Props extends NativeStackScreenProps<any, any> {}
 
 export const Login = ({ navigation }: Props) => {
-  const [email, setEmail] = useState("freddyarh13@gmail.com");
-  const [password, setPassword] = useState("111222");
+  const [email, setEmail] = useState("test4@gmail.com");
+  const [password, setPassword] = useState("123456");
   const [eyeButton, setEyeButton] = useState(true);
 
   const { signIn, errorMessage, removeError } = useContext( AuthContext );

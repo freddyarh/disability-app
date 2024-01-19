@@ -6,8 +6,8 @@ import { colors } from '../styles/colors';
 const Datepicker = ({
     mode,
     openStartDatePicker,
-    startDate,
-    maxiDate,
+    maximumDate,
+    minimumDate,
     startedDate,
     handleChangeStartDate,
     setDate,
@@ -33,8 +33,8 @@ const Datepicker = ({
                 borderColor: "rgb(101, 110, 164)",
             }}
             mode={ mode }
-            minimumDate={startDate}
-            maximumDate={maxiDate}
+            minimumDate={minimumDate}
+            maximumDate={maximumDate}
             selected={startedDate}
             onDateChange={handleChangeStartDate}
             onSelectedChange={(date) => setDate(date)}

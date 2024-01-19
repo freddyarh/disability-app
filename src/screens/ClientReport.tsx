@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Dimensions, Text, Image, StyleSheet, ActivityIndicator, ScrollViewComponent, ScrollView, TouchableOpacity, Keyboard } from 'react-native';
-import { BarChart, LineChart } from "react-native-chart-kit";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Keyboard } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
-import { cacheDirectory, copyAsync, getInfoAsync, makeDirectoryAsync, uploadAsync } from 'expo-file-system';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import * as Print from 'expo-print';
-import { DataTable } from 'react-native-paper';
-import { shareAsync } from 'expo-sharing';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import { LoadingScreen } from './LoadingScreen';
@@ -17,17 +13,26 @@ import { Platform } from 'react-native';
 import Datepicker from '../components/Datepicker';
 import Input from '../components/Input';
 import { colors } from '../styles/colors';
+import BarChartComponent from '../components/BarChartComponent';
 
 const ClientReport = ({ route, navigation }: any ) => {
 
+  const setNewFormatDate = (today: Date) => {
+    let newDate = today.toISOString().split('T')[0].split("-").join("/");
+    return newDate;
+  }
+
   const { clientUid, clientName } = route.params;
   const today = new Date();
-  const today_ = today.toISOString().split('T')[0].split("-").join("/");
-  const [startDate, setStartDate] = useState(today_);
+  const today_ = setNewFormatDate(today);
+  const newDate = new Date(today.setFullYear(today.getFullYear() - 1));
+  const dateOneYearLess = setNewFormatDate(newDate);
+
+  const [startDate, setStartDate] = useState(dateOneYearLess);
   const [endDate, setEndDate] = useState(today_);
   const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
   const [openEndDatePicker, setOpenEndDatePicker] = useState(false);
-  const [startedDate, setStartedDate] = useState("12/12/2023");
+  const [startedDate, setStartedDate] = useState(dateOneYearLess);
   const [endedDate, setEndedDate] = useState("12/12/2023");
   const [createReport, setCreateReport] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -49,7 +54,7 @@ const ClientReport = ({ route, navigation }: any ) => {
   );
   
   function handleChangeStartDate(propDate: any) {
-      setStartedDate(propDate);
+    setStartedDate(propDate);
   }
   function handleChangeEndDate(propDate: any) {
     setEndedDate(propDate);
@@ -195,8 +200,6 @@ const ClientReport = ({ route, navigation }: any ) => {
     setSelectedPrinter(printer);
   };
 
-  const screenWidth = Dimensions.get("window").width;
-
   return (
     <ScrollView>
       <View style={{ padding: '4%', backgroundColor: '#ffff' }}>
@@ -214,7 +217,8 @@ const ClientReport = ({ route, navigation }: any ) => {
               mode={ "calendar" }
               openStartDatePicker={ openStartDatePicker }
               startDate={ initDate }
-              maxiDate={ maxiDate }
+              maximumDate={ today_ }
+              minimumDate={ dateOneYearLess }
               startedDate={ startedDate }
               handleChangeStartDate={ handleChangeStartDate }
               setDate={ setStartDate }
@@ -231,9 +235,9 @@ const ClientReport = ({ route, navigation }: any ) => {
           <Datepicker 
               mode={ "calendar" }
               openStartDatePicker={ openEndDatePicker }
-              startDate={ startedDate }
-              maxiDate={ maxiDate }
-              // startedDate={ endedDate }
+              startDate={ today_ }
+              maximumDate={ today_ }
+              minimumDate={ startDate }
               handleChangeStartDate={ handleChangeEndDate }
               setDate={ setEndDate }
               handleOnPressStartDate={ handleOnPressEndDate }
@@ -259,310 +263,95 @@ const ClientReport = ({ route, navigation }: any ) => {
             <Text style={{ paddingLeft: '4%' }}>Want somenthing (WS): {`${functionalValues[0]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Escape or avoid something (EAS): {`${functionalValues[1]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Protest or show dislike for something (PSDS): {`${functionalValues[2]}`}</Text>
-            <BarChart
-              data={{
-                labels: [
-                  "WS",
-                  "EAS",
-                  "PSDS",
-                ],
-                datasets: [
-                  {
-                    data: functionalValues,
-                  },
-                ],
-              }}
-              verticalLabelRotation={0}
-              width={Dimensions.get('window').width}
-              height={300}
-              // yAxisLabel={'Rs'}
-              chartConfig={{
-                backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#ffff',
-                backgroundGradientTo: '#ffff',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(0, 90, 0, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-              }}
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-              />
+            <BarChartComponent labels={ ["WS","EAS","PSDS"] } data={ functionalValues } />
+            
             <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Prompt</Text>
             <Text style={{ paddingLeft: '4%' }}>Redirect (R): {`${promptValues[0]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Identify trigger (IT): {`${promptValues[1]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Remove trigger (RT): {`${promptValues[2]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Negative reinforcement (NR): {`${promptValues[3]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Rxtinction (RX): {`${promptValues[4]}`}</Text>
-            <BarChart
-              data={{
-                labels: [
-                  "R",
-                  "IT",
-                  "RT",
-                  "NR",
-                  "RX"
-                ],
-                datasets: [
-                  {
-                    data: promptValues,
-                  },
-                ],
-              }}
-              verticalLabelRotation={0}
-              width={Dimensions.get('window').width}
-              height={300}
-              // yAxisLabel={'Rs'}
-              chartConfig={{
-                backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#ffff',
-                backgroundGradientTo: '#ffff',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-              }}
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-              />
+            <BarChartComponent 
+              labels={["R","IT","RT","NR","RX"]} 
+              data={ promptValues } 
+            />
+            
             <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Activities</Text>
             <Text style={{ paddingLeft: '4%' }}>At home inside (HI): {`${activitiesValues1[0]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>At home inside with others (HIWO): {`${activitiesValues1[1]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>At home outside (HO): {`${activitiesValues1[2]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>At home outside with others (HOWO): {`${activitiesValues1[3]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>In community (C): {`${activitiesValues1[4]}`}</Text>
-            <BarChart
-              data={{
-                labels: [
-                  "HI",
-                  "HIWO",
-                  "HO",
-                  "HOWO",
-                  "C"
-                ],
-                datasets: [
-                  {
-                    data: activitiesValues1,
-                  },
-                ],
-              }}
-              verticalLabelRotation={0}
-              width={Dimensions.get('window').width}
-              height={300}
-              // yAxisLabel={'Rs'}
-              chartConfig={{
-                backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#ffff',
-                backgroundGradientTo: '#ffff',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-              }}
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-              />
+            <BarChartComponent 
+              labels={["HI","HIWO","HO","HOWO","C"]} 
+              data={ activitiesValues1 } 
+            />
+            
             <Text style={{ paddingLeft: '4%' }}>In community with others (CWO): {`${activitiesValues2[0]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>At specific activity (SA): {`${activitiesValues2[1]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>At specific activity with others (SAWO): {`${activitiesValues2[2]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>At work (W): {`${activitiesValues2[3]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>In transport (T): {`${activitiesValues2[4]}`}</Text>
-            <BarChart
-              data={{
-                labels: [
-                  "CWO",
-                  "SA",
-                  "SAWO",
-                  "W",
-                  "T"
-                ],
-                datasets: [
-                  {
-                    data: activitiesValues2,
-                  },
-                ],
-              }}
-              verticalLabelRotation={0}
-              width={Dimensions.get('window').width}
-              height={300}
-              // yAxisLabel={'Rs'}
-              chartConfig={{
-                backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#ffff',
-                backgroundGradientTo: '#ffff',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-              }}
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-              />
+            <BarChartComponent 
+              labels={[ "CWO","SA","SAWO","W","T"]} 
+              data={ activitiesValues2 } 
+            />
+            
             <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Displayed Behaviour</Text>
             <Text style={{ paddingLeft: '4%' }}>SELF injury (SID): {`${promptValues[0]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>PICA (Pic): {`${promptValues[1]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Physical Aggression (PAG): {`${promptValues[2]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Anal poking (AP): {`${promptValues[3]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Verbal Aggression (VA): {`${promptValues[4]}`}</Text>
-            <BarChart
-              data={{
-                labels: [
-                  "SID",
-                  "Pic",
-                  "PAG",
-                  "AP",
-                  "VA"
-                ],
-                datasets: [
-                  {
-                    data: promptValues,
-                  },
-                ],
-              }}
-              verticalLabelRotation={10}
-              width={Dimensions.get('window').width}
-              height={300}
-              // yAxisLabel={'Rs'}
-              chartConfig={{
-                backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#ffff',
-                backgroundGradientTo: '#ffff',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-              }}
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-              />
+            <BarChartComponent 
+              labels={["SID","Pic","PAG","AP","VA"]} 
+              data={ promptValues } 
+            />
+            
             <Text style={{ paddingLeft: '4%' }}>Disruption and destruction of property or environment (DST): {`${promptValues[0]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Stereotyped behaviours (SB): {`${promptValues[1]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Inappropriate vocalisations (IV): {`${promptValues[2]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Innappropriate removal of clothing (IRC): {`${promptValues[3]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Innapropriate or unacceptable sexual behaviour (ISB): {`${promptValues[4]}`}</Text>
-            <BarChart
-              data={{
-                labels: [
-                  "DST",
-                  "SB",
-                  "IV",
-                  "IRC",
-                  "ISB"
-                ],
-                datasets: [
-                  {
-                    data: promptValues,
-                  },
-                ],
-              }}
-              verticalLabelRotation={10}
-              width={Dimensions.get('window').width}
-              height={300}
-              // yAxisLabel={'Rs'}
-              chartConfig={{
-                backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#ffff',
-                backgroundGradientTo: '#ffff',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-              }}
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-              />
+            <BarChartComponent 
+              labels={["DST","SB","IV","IRC","ISB"]} 
+              data={ promptValues } 
+            />
+            
             <Text style={{ paddingLeft: '4%' }}>Smearing (SMR): {`${promptValues[0]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Stealing (STL): {`${promptValues[1]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Self-induced vomiting and regurgitation (SIV): {`${promptValues[2]}`}</Text>
             <Text style={{ paddingLeft: '4%' }}>Other: {`${promptValues[3]}`}</Text>
-            <BarChart
-              data={{
-                labels: [
-                  "SMR",
-                  "STL",
-                  "SIV",
-                  "Other",
-                ],
-                datasets: [
-                  {
-                    data: promptValues,
-                  },
-                ],
-              }}
-              verticalLabelRotation={10}
-              width={Dimensions.get('window').width}
-              height={300}
-              // yAxisLabel={'Rs'}
-              chartConfig={{
-                backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#ffff',
-                backgroundGradientTo: '#ffff',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-              }}
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-              />
+            <BarChartComponent 
+              labels={["SMR","STL","SIV","Other"]} 
+              data={ [0,0,0,0] } 
+            />
   {/* 
             { snapshotImg && <Text>Preview:</Text> }
             { snapshotImg && <Image resizeMode='contain' style={ styles.snapshotImag } source={ {uri: snapshotImg} } />} */}
           <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Comments</Text>
+
           {
             dataComments.length === 0 ? (
               <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 15 }}>There are no comments to display</Text>
             ): (
-              <DataTable>
-                { dataComments.map( (val: ClientForm, index) => (
-                  <View key={ index }>
-                      <DataTable.Header>
-                        <DataTable.Title>Date: { val.date }</DataTable.Title>
-                      </DataTable.Header>
-
-                      <DataTable.Header>
-                        <DataTable.Title>Comment</DataTable.Title>
-                      </DataTable.Header>
-
-                      <DataTable.Row>
-                        <View><Text>{ val.comment }</Text></View>
-                      </DataTable.Row>
-
-                      <View
-                        style={{
-                          marginHorizontal: '3%',
-                          marginTop: '4%',
-                          borderBottomColor: 'black',
-                          borderBottomWidth: StyleSheet.hairlineWidth,
-                        }}
-                      />
-                  </View>
-                ))}
-              </DataTable>
+             
+              dataComments.map( (val: ClientForm, index) => (
+                <View key={ index } style={{ marginHorizontal: "4%", marginTop: "3%"  }}>
+                  <Text style={{ fontWeight: "bold", marginTop: "0%" }}>Date: <Text style={{ fontWeight: "normal" }}>{ val.date }</Text></Text>
+                  <Text style={{ fontWeight: "bold", marginTop: "1%"  }}>Comment:</Text>
+                  <Text>{ val.comment }</Text>
+                  <View
+                    style={{
+                      marginTop: '4%',
+                      borderBottomColor: colors.firstColor,
+                      borderBottomWidth: StyleSheet.hairlineWidth,
+                    }}
+                  />
+                </View>
+              ))
             )
           }
-
             
           </View>
           <View style={{ paddingHorizontal: '4%' }}>
@@ -598,7 +387,6 @@ const styles = StyleSheet.create({
   snapshotImag: {
     width: 300,
     height: 900,
-    // margin: 16
   },
   spacer: {
     height: 8,

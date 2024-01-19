@@ -13,6 +13,10 @@ const ChangePassword = ({ route, navigation }: any) => {
   const [newPassword, setPassword] = useState("")
   const [repeatPassword, setRepeatPassword] = useState("")
 
+  const navigateToLogin = () => {
+    navigation.navigate('Login');
+  }
+
   const handleChangePassword = async() => {
     
     try {
@@ -20,8 +24,7 @@ const ChangePassword = ({ route, navigation }: any) => {
       const resp = await disabilityApi.put<any>(`/auth/updateUserPassword/${ userId }`, { newPassword, repeatPassword });
 
       if( resp.status === 200 ){
-        Alert.alert("Info", "Your password has changed succesfully");
-        navigation.navigate('Login');
+        Alert.alert("Info", "Your password has changed succesfully", [{ text: 'Ok', onPress: navigateToLogin }]);
       }
 
     } catch (error: any) {
