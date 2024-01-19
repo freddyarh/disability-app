@@ -2,7 +2,7 @@ import React from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { colors } from '../styles/colors'
 
-export const LoadingScreen = () => {
+export const LoadingScreen = ({ color=colors.black }) => {
     return (
         <View style={{ 
             flex: 1,
@@ -12,7 +12,7 @@ export const LoadingScreen = () => {
         }}>
             <ActivityIndicator 
                 size={ 50 }
-                color={ colors.black }
+                color={ color }
             />
         </View>
     )

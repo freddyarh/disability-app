@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Keyboard } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
+import{ AuthContext } from '../context/AuthContext';
 import { functionList, promptList, activities, displayedBehaviour } from '../helpers/ClientFormList'
 import Button from '../components/Button';
 import Datepicker from '../components/Datepicker';
@@ -15,6 +16,7 @@ import { colors } from '../styles/colors';
 
 const ClientForm = ({ route, navigation }: any) => {
 
+    const { user: { uid }} = useContext(AuthContext);
     const { height } = useWindowDimensions();
     const { clientUid, clientName } = route.params;
 
@@ -29,7 +31,7 @@ const ClientForm = ({ route, navigation }: any) => {
     const [valueActivity, setValueActivity] = useState([]);
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
     const [startedDate, setStartedDate] = useState("12/12/2023");
-    const [checked, setChecked] = React.useState(false);
+    const [checked, setChecked] = useState(false);
     const [comment, setComment] = useState("");
     const [open1, setOpen1] = useState(false);
     const [open2, setOpen2] = useState(false);
@@ -64,6 +66,7 @@ const ClientForm = ({ route, navigation }: any) => {
         setValuePrompt([]);
         setValueBehaviour([]);
         setValueActivity([]);
+        setChecked(false);
         setComment("");
     }
             
@@ -82,8 +85,8 @@ const ClientForm = ({ route, navigation }: any) => {
         });
         
         try {
-            const resp = await disabilityApi.post<InterfaceClientForm>('/clients/setClientForm', { clientId: clientUid, date, prompt: valuePrompt, behaviour, functionality: valueFunct, activity: valueActivity, comment });
-            console.log(resp)
+            const resp = await disabilityApi.post<InterfaceClientForm>('/clients/setClientForm', { clientId: clientUid, date, prompt: valuePrompt, behaviour, functionality: valueFunct, activity: valueActivity, incidentReport: checked, comment, userId: uid });
+            
             if( resp.status === 200){
                 Alert.alert("Successful info", "Form saved successfully", [{ text: 'Ok', onPress: cleanFields }] );
             }
@@ -96,7 +99,7 @@ const ClientForm = ({ route, navigation }: any) => {
     <ScrollView>
         <View style={[globalStyles.container, { minHeight: height - 50 }]}>
         <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' }/>
-            <Text style={ styles.label }>Client name: { clientName }</Text>
+        <Text style={{ textAlign: 'center', fontSize: 19, fontWeight: 'bold' }}>{ clientName }</Text>
             <Text style={ styles.label }>Time</Text>
             <TouchableOpacity>
                 <Input 

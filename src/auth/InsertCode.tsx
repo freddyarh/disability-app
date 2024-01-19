@@ -15,8 +15,6 @@ export const InsertCode = ({ route, navigation }: any) => {
   const pattern = /\b\d{5}\b/;
   const regex = new RegExp(pattern);
   const codeValidate = regex.test(code);
-  // console.log(codeValidate)
-
 
 
   const handleCode = async() => {
@@ -40,8 +38,8 @@ export const InsertCode = ({ route, navigation }: any) => {
     
   }
   return (
-    <View style={ globalStyles.container }>
-        <Text>Please insert the code</Text>
+    <View style={ globalStyles.login }>
+        <Text style={{ color: 'white', marginVertical: 20, fontSize: 16 }}>Please insert the code</Text>
         <Input label="Code" value={ code } keyboardType={ "numeric" } setValue={ (val : string) => {
           if( val.length <= 5  ) return setCode(val);
         }} />
