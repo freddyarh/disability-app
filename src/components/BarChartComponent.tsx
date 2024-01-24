@@ -5,9 +5,10 @@ import { BarChart } from "react-native-chart-kit";
 interface Props {
     labels: Array<string>,
     data: number[],
+    fromNumber: number
 }
-const screenWidth = Dimensions.get("window").width;
-const BarChartComponent = ({ labels, data  }: Props) => {
+const { width: screenWidth } = Dimensions.get('window');
+const BarChartComponent = ({ labels, data, fromNumber }: Props) : React.ReactElement => {
 
   return (
     <BarChart
@@ -15,23 +16,25 @@ const BarChartComponent = ({ labels, data  }: Props) => {
         labels,
         datasets: [
             {
-            data: data,
-            },
-        ],
+              data: data,
+            }
+          ],
         }}
+        fromNumber={ fromNumber % 2 === 0 ? fromNumber + 2 : fromNumber + 3 }
+        fromZero={true}
         verticalLabelRotation={0}
         width={ screenWidth }
         height={300}
         // yAxisLabel={'Rs'}
         chartConfig={{
-        backgroundColor: '#1cc910',
-        backgroundGradientFrom: '#ffff',
-        backgroundGradientTo: '#ffff',
-        decimalPlaces: 0,
-        color: (opacity = 1) => `rgba(0, 90, 0, ${opacity})`,
-        style: {
-            borderRadius: 16,
-        },
+          backgroundColor: '#1cc910',
+          backgroundGradientFrom: '#ffff',
+          backgroundGradientTo: '#ffff',
+          decimalPlaces: 0,
+          color: (opacity = 1) => `rgba(0, 90, 0, ${opacity})`,
+          style: {
+              borderRadius: 16,
+          },
         }}
         style={{
         marginVertical: 8,

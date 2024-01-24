@@ -11,11 +11,11 @@ import { globalStyles } from '../styles/globalStyles';
 import { LoadingScreen } from './LoadingScreen';
     
 
-const Clients = ({ navigation }: any) => {
+const Clients = ({ navigation }: any ) => {
     const { user } = useContext(AuthContext);
     const { height } = useWindowDimensions();
 
-    const [dataClients, setDataClients] = useState<Client[]>([]);
+    const [dataClients, setDataClients] = useState<Client | Client[]>([]);
     const [status, setStatus] = useState<Number>();
     const [statusByStaff, setStatusByStaff] = useState<Number>();
     const [refreshing, setRefreshing] = useState(false);
@@ -75,6 +75,7 @@ const Clients = ({ navigation }: any) => {
     }
 
     return (
+        
         <ScrollView
             refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -87,7 +88,7 @@ const Clients = ({ navigation }: any) => {
                     </View>
                 )}
 
-                { dataClients.reverse().map((client, index): Client[] | any => (
+                { dataClients.map((client: Client, index: number): Client[] | any => (
 
                     <View key={ index } style={[ styles.clientBox, { marginTop: 10 } ]}>
                         <View style={ styles.btnRow }>
@@ -139,6 +140,7 @@ const Clients = ({ navigation }: any) => {
                 ))}
             </View>
         </ScrollView>
+    
     )
 }
 
