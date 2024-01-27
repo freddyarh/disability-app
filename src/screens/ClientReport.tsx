@@ -14,13 +14,9 @@ import Datepicker from '../components/Datepicker';
 import Input from '../components/Input';
 import { colors } from '../styles/colors';
 import BarChartComponent from '../components/BarChartComponent';
+import { setNewFormatDate } from '../helpers/setNewFormatDate';
 
 const ClientReport = ({ route, navigation }: any ) => {
-
-  const setNewFormatDate = (today: Date) => {
-    let newDate = today.toISOString().split('T')[0].split("-").join("/");
-    return newDate;
-  }
 
   const { clientUid, clientName } = route.params;
   const today = new Date();
@@ -144,7 +140,7 @@ const ClientReport = ({ route, navigation }: any ) => {
   //   </body>
   // </html>
   // `;
-  const viewToSnapShotRef = useRef();
+  const viewToSnapShotRef = useRef<null >(null);
   const [snapshotImg, setSnapshotImg] = useState<any>();
   const [selectedPrinter, setSelectedPrinter] = useState<any>();
   
@@ -153,8 +149,8 @@ const ClientReport = ({ route, navigation }: any ) => {
     await captureRef( viewToSnapShotRef, {
       fileName: "prueba",
       result: 'tmpfile',
-      height: 1000,
-      width: 160,
+      height: 1200,
+      width: 120,
       quality: 1,
       format: 'jpg', }).then(
         async(uri) => {
@@ -165,8 +161,8 @@ const ClientReport = ({ route, navigation }: any ) => {
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
               </head>
-              <body style="text-align: center;">
-              <div id="test1">
+              <body>
+              <div style="text-align: center;">
                 <h4 style="font-size: 30px; font-family: Helvetica Neue; font-weight: normal; text-align: center;">
                   Report ${clientName}
                 </h4>
@@ -184,9 +180,9 @@ const ClientReport = ({ route, navigation }: any ) => {
               html,
               margins: {
                 left: 8,
-                top: 0,
+                top: 4,
                 right: 8,
-                bottom: 0,
+                bottom: 5,
               },
               printerUrl: selectedPrinter?.url, // iOS only
             }).catch(err => console.log('This is the error ', err))
@@ -356,17 +352,10 @@ const ClientReport = ({ route, navigation }: any ) => {
               ): (
               
                 dataComments.map( (val: ClientForm, index) => (
-                  <View key={ index } style={{ marginHorizontal: "4%", marginTop: "3%"  }}>
+                  <View key={ index } style={{ marginHorizontal: "4%", marginVertical: "3%"  }}>
                     <Text style={{ fontWeight: "bold", marginTop: "0%" }}>Date: <Text style={{ fontWeight: "normal" }}>{ val.date }</Text></Text>
                     <Text style={{ fontWeight: "bold", marginTop: "1%"  }}>Comment:</Text>
                     <Text>{ val.comment }</Text>
-                    <View
-                      style={{
-                        marginTop: '4%',
-                        borderBottomColor: colors.firstColor,
-                        borderBottomWidth: StyleSheet.hairlineWidth,
-                      }}
-                    />
                   </View>
                 ))
               )

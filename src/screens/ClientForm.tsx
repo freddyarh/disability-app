@@ -13,6 +13,7 @@ import { ClientForm as InterfaceClientForm } from '../interfaces/appInterfaces';
 import IconGoBack from '../components/IconGoBack';
 import { Checkbox } from 'react-native-paper';
 import { colors } from '../styles/colors';
+import { setNewFormatDate } from '../helpers/setNewFormatDate';
 
 const ClientForm = ({ route, navigation }: any) => {
 
@@ -20,7 +21,10 @@ const ClientForm = ({ route, navigation }: any) => {
     const { height } = useWindowDimensions();
     const { clientUid, clientName } = route.params;
 
-    const [date, setDate] = useState("0000/00/00 00:00");
+    const _today = new Date();
+    const today_ = setNewFormatDate(_today, true);
+
+    const [date, setDate] = useState(today_);
     const [prompt, setPrompt] = useState(promptList);
     const [valuePrompt, setValuePrompt] = useState([]);
     const [behaviour, setBechaviour] = useState(displayedBehaviour);
@@ -112,7 +116,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 mode={ "datepicker" }
                 openStartDatePicker={ openStartDatePicker }
                 startDate={ startDate }
-                maxiDate={ maxiDate }
+                maximumDate={ today_ }
                 startedDate={ startedDate }
                 handleChangeStartDate={ handleChangeStartDate }
                 setDate={ setDate }
