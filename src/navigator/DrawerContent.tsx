@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import {
     Avatar,
     Title,

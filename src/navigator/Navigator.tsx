@@ -41,21 +41,21 @@ export const AuthNavigator = () => {
         }}/>
       <Stack.Screen name="ForgotPassword" component={ ForgotPassword } options={{
           title: 'Forgot Password',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
         }}/>
       <Stack.Screen name="InsertCode" component={ InsertCode } options={{
           title: 'Insert Code',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
         }}/>
       <Stack.Screen name="ChangePassword" component={ ChangePassword } options={{
           title: 'Change Password',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
@@ -82,7 +82,7 @@ export const DrawerNavigator = () => {
         component={ Clients }
         options={{
           title: 'Participants',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
@@ -93,7 +93,7 @@ export const DrawerNavigator = () => {
         component={ CreateStaffMembers }
         options={{
           title: 'Create Staff Members',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
@@ -104,7 +104,7 @@ export const DrawerNavigator = () => {
         component={ StaffMembers }
         options={{
           title: 'Users',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
@@ -115,7 +115,7 @@ export const DrawerNavigator = () => {
         component={ ClientProfile }
         options={{
           title: 'Client Profile',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
@@ -126,7 +126,7 @@ export const DrawerNavigator = () => {
         component={ CreateClientProfile }
         options={{
           title: 'Create Client Profile',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
@@ -137,7 +137,7 @@ export const DrawerNavigator = () => {
         component={ ClientForm }
         options={{
           title: 'Client Form',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },
@@ -148,7 +148,7 @@ export const DrawerNavigator = () => {
         component={ ClientReport }
         options={{
           title: 'Client Report',
-          headerTintColor: "rgb(133, 187, 157)",
+          headerTintColor: colors.titleColor,
           headerStyle: {
               backgroundColor: "rgb(6, 3, 2)",
           },

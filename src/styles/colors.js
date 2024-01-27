@@ -1,5 +1,6 @@
 export const colors = {
     firstColor: "rgb(101, 110, 164)",
+    titleColor: "rgb(133, 187, 157)",
     lightBlue: '#00BCE7',
     obsidium: '#00053E',
     gradientForm: '#A376F1',

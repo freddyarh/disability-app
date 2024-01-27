@@ -146,7 +146,7 @@ const Clients = ({ navigation }: any ) => {
 
 const styles = StyleSheet.create({
     title: {
-        color: "rgb(133, 187, 157)",
+        color: colors.titleColor,
         fontSize: 30,
         fontWeight: 'bold',
         marginBottom: 20,

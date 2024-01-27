@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import { globalStyles } from '../styles/globalStyles';
+import { colors } from '../styles/colors';
 
 interface Props extends NativeStackScreenProps<any, any> {}
 
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   },
   forgotPassword:{
     fontSize: 15,
-    color: "rgb(133, 187, 157)",
+    color: colors.titleColor,
     marginTop: 15,
     alignSelf: 'flex-end'
   },
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     minWidth: 300,
   },
   title: {
-    color: "rgb(133, 187, 157)",
+    color: colors.titleColor,
     fontSize: 30
   }
 });

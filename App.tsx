@@ -5,7 +5,6 @@ import { Navigator } from './src/navigator/Navigator';
 import { StatusBar } from 'react-native';
 import { colors } from './src/styles/colors';
 import { AuthProvider } from './src/context/AuthContext';
-import DrawerNavigator2 from './src/navigator/Navigator2';
 
 const AppState = ({ children }: any ) => {
   return(
