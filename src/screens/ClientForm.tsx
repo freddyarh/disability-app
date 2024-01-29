@@ -34,7 +34,6 @@ const ClientForm = ({ route, navigation }: any) => {
     const [activity, setActivity] = useState(activities);
     const [valueActivity, setValueActivity] = useState([]);
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
-    const [startedDate, setStartedDate] = useState("12/12/2023");
     const [checked, setChecked] = useState(false);
     const [comment, setComment] = useState("");
     const [open1, setOpen1] = useState(false);
@@ -52,9 +51,6 @@ const ClientForm = ({ route, navigation }: any) => {
     "YYYY/MM/DD"
     );
     
-    function handleChangeStartDate(propDate: any) {
-        setStartedDate(propDate);
-    }
     const handleOnPressStartDate = () => {
         setOpenStartDatePicker(!openStartDatePicker);
         Keyboard.dismiss();
@@ -117,8 +113,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 openStartDatePicker={ openStartDatePicker }
                 startDate={ startDate }
                 maximumDate={ today_ }
-                startedDate={ startedDate }
-                handleChangeStartDate={ handleChangeStartDate }
+                startedDate={ today_ }
                 setDate={ setDate }
                 handleOnPressStartDate={ handleOnPressStartDate }
             />
