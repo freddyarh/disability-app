@@ -34,10 +34,21 @@ const ClientReport = ({ route, navigation }: any ) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<ClientForm[]>([]);
   const [dataComments, setDataComments] = useState<ClientForm[]>([]);
+  const [totalForms, setTotalForms] = useState<number>(0)
+  const [str, setStr] = useState<string>("")
   const [functionalValues, setFunctionalValues] = useState<Array<number>>([0, 0, 0]);
   const [promptValues, setPromptValues] = useState<Array<number>>([0, 0, 0, 0, 0]);
   const [activitiesValues1, setActivitiesValues1] = useState<Array<number>>([0, 0, 0, 0, 0]);
   const [activitiesValues2, setActivitiesValues2] = useState<Array<number>>([0, 0, 0, 0, 0]);
+
+  let viewToSnapShotRef0 = useRef<number>(null);
+  let viewToSnapShotRef1 = useRef<number>(null);
+  let viewToSnapShotRef2 = useRef<number>(null);
+  let viewToSnapShotRef3 = useRef<number>(null);
+  let viewToSnapShotRef4 = useRef<number>(null);
+  let viewToSnapShotRef5 = useRef<number>(null);
+  let viewToSnapShotRef6 = useRef<number>(null);
+  const [selectedPrinter, setSelectedPrinter] = useState<any>();
 
   const initDate = getFormatedDate(
   today.setDate(today.getDate()),
@@ -76,13 +87,18 @@ const ClientReport = ({ route, navigation }: any ) => {
       setLoading( false );
       setCreateReport(true);
     }
+    setTotalForms(data.total);
     setData( data.formsByClient );
-
-    const commentEmpty = data.formsByClient.filter( (value: ClientForm) => {
-      if(value.comment.trim().length !== 0) return value
-    });
-
-    setDataComments(commentEmpty);
+    setDataComments(data.dataComments);
+    const htmlData = data.dataComments.map(value => (
+     "<div  style='margin-top: 18px;'>"+
+        "<p style='font-weight: bold; margin: 0px;'>Date: " + "<span style='font-weight: normal;'>" + value.date + "</span>" + "</p>"+
+        "<p style='font-weight: bold; margin: 0px;'>Comment: " + "<span style='font-weight: normal;'>" + value.comment + "</span>" +"</p>"+
+      "</div>"
+    ))
+    const str = htmlData.join("");
+    setStr(str)
+    console.log(str)
 
     const functionalArr = ["WANT SOMETHING", "ESCAPE OR AVOID SOMETHING", "PROTEST OR SHOW DISLIKE FOR SOMETHING"];
     setFunctionalValues([]);
@@ -140,56 +156,132 @@ const ClientReport = ({ route, navigation }: any ) => {
   //   </body>
   // </html>
   // `;
-  const viewToSnapShotRef = useRef<null >(null);
-  const [snapshotImg, setSnapshotImg] = useState<any>();
-  const [selectedPrinter, setSelectedPrinter] = useState<any>();
   
   const snapshot = async() => {
-    
-    await captureRef( viewToSnapShotRef, {
-      fileName: "prueba",
-      result: 'tmpfile',
-      height: 1200,
-      width: 120,
-      quality: 1,
-      format: 'jpg', }).then(
-        async(uri) => {
-          setSnapshotImg(uri);
-          console.log("Image saved to", uri)
-          const html = `
+
+      let arrUrl: string[] = [];
+
+      interface Props {
+        fileName: string
+        result: 'tmpfile'
+        height: number
+        width: number
+        quality: number
+        format: 'jpg'
+      }
+
+      const ScreenShotDetails: Props = {
+        fileName: "prueba",
+        result: 'tmpfile',
+        height: 120,
+        width: 120,
+        quality: 1,
+        format: 'jpg', 
+      };
+      
+        await captureRef( viewToSnapShotRef0, ScreenShotDetails).then(
+          async(uri) => {
+            console.log(uri)
+            arrUrl.push(uri)
+          },
+          (error) => console.error("Oops, snapshot failed", error)
+          );
+        await captureRef( viewToSnapShotRef1, ScreenShotDetails).then(
+          async(uri) => {
+          arrUrl.push(uri)
+        },
+        (error) => console.error("Oops, snapshot failed", error)
+        );
+        await captureRef( viewToSnapShotRef2, ScreenShotDetails).then(
+          async(uri) => {
+          arrUrl.push(uri)
+        },
+        (error) => console.error("Oops, snapshot failed", error)
+        );
+        await captureRef( viewToSnapShotRef3, ScreenShotDetails).then(
+          async(uri) => {
+          arrUrl.push(uri)
+        },
+        (error) => console.error("Oops, snapshot failed", error)
+        );
+        await captureRef( viewToSnapShotRef4, ScreenShotDetails).then(
+          async(uri) => {
+          arrUrl.push(uri)
+        },
+        (error) => console.error("Oops, snapshot failed", error)
+        );
+        await captureRef( viewToSnapShotRef5, ScreenShotDetails).then(
+          async(uri) => {
+          arrUrl.push(uri)
+        },
+        (error) => console.error("Oops, snapshot failed", error)
+        );
+        await captureRef( viewToSnapShotRef6, ScreenShotDetails).then(
+            async(uri) => {
+              arrUrl.push(uri);
+            
+            const html = `
             <html>
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
               </head>
               <body>
-              <div style="text-align: center;">
-                <h4 style="font-size: 30px; font-family: Helvetica Neue; font-weight: normal; text-align: center;">
-                  Report ${clientName}
-                </h4>
-                <p style="font-size: 18px; font-family: Helvetica Neue; font-weight: normal; margin-left: 23px;">
-                  From: ${startDate} To: ${endDate}
-                </p>
-              </div>
-              <img
-                src=${ uri }
-              />
+                <div style="text-align: center;">
+                  <div style="padding: 3px; background-color: rgba(100, 156, 198, 0.15);">
+                    <h1 style="text-align: center;">
+                      Report ${clientName}
+                    </h1>
+                  </div>
+                  <p style="font-size: 18px; font-family: Helvetica Neue; font-weight: normal; margin-left: 23px;">
+                    <span style="font-weight: bold;">From:</span> ${startDate} <span style="font-weight: bold;">To:</span> ${endDate}
+                  </p>
+                  </div>
+                  <div>
+                    <p style="font-size: 18px; font-family: Helvetica Neue; font-weight: normal; margin-left: 23px;">
+                    <span style="font-weight: bold;">Total:</span> ${ totalForms } forms
+                    </p>
+                  </div>
+                  <table>
+                  <tr>
+                    <td><img src=${ arrUrl[0] }/></td>
+                    <td><img src=${ arrUrl[1] }/></td>
+                  </tr>
+                  <tr>
+                    <td><img src=${ arrUrl[2] }/></td>
+                    <td><img src=${ arrUrl[3] }/></td>
+                  </tr>
+                  <tr>
+                    <td><img src=${ arrUrl[4] }/></td>
+                    <td><img src=${ arrUrl[5] }/></td>
+                  </tr>
+                  <tr>
+                    <td><img src=${ arrUrl[6] }/></td>
+                  </tr>
+                  </table>
+                  <div style="margin-top: 10">
+                    <h2 style="text-align: center;">
+                      Comments
+                    </h2>
+                    ${str}
+                  </div>
               </body>
             </html>
             `;
-            await Print.printAsync({
+
+          await Print.printAsync({
               html,
               margins: {
-                left: 8,
-                top: 4,
-                right: 8,
-                bottom: 5,
-              },
-              printerUrl: selectedPrinter?.url, // iOS only
-            }).catch(err => console.log('This is the error ', err))
-        },
-        (error) => console.error("Oops, snapshot failed", error)
-      );
-  }
+                  left: 15,
+                  top: 15,
+                  right: 14,
+                  bottom: 20,
+                },
+                printerUrl: selectedPrinter?.url, // iOS only
+              }).catch(err => console.log('This is the error ', err))
+          },
+            (error) => console.error("Oops, snapshot failed", error)
+          );
+  };
 
   const selectPrinter = async () => {
     const printer = await Print.selectPrinterAsync(); // iOS only
@@ -262,8 +354,8 @@ const ClientReport = ({ route, navigation }: any ) => {
         {
           createReport && (
           <View style={{ backgroundColor: '#ffff'}}>
-            <View ref={ viewToSnapShotRef }>
-              <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 18, fontWeight: 'bold'}}>Total: {`${ data.length }`} forms</Text>
+            <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 18, fontWeight: 'bold'}}>Total: {`${ totalForms }`} forms</Text>
+            <View ref={ viewToSnapShotRef0 } collapsable={false}>
               <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Functionality</Text>
               <Text style={{ paddingLeft: '4%' }}>Want somenthing (WS): {`${functionalValues[0]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>Escape or avoid something (EAS): {`${functionalValues[1]}`}</Text>
@@ -273,7 +365,8 @@ const ClientReport = ({ route, navigation }: any ) => {
                 data={ functionalValues } 
                 fromNumber={ data.length } 
               />
-              
+            </View>
+            <View ref={ viewToSnapShotRef1 } collapsable={false}>
               <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Prompt</Text>
               <Text style={{ paddingLeft: '4%' }}>Redirect (R): {`${promptValues[0]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>Identify trigger (IT): {`${promptValues[1]}`}</Text>
@@ -285,7 +378,8 @@ const ClientReport = ({ route, navigation }: any ) => {
                 data={ promptValues } 
                 fromNumber={ data.length }
               />
-              
+            </View>
+            <View ref={ viewToSnapShotRef2 } collapsable={false}>
               <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Activities</Text>
               <Text style={{ paddingLeft: '4%' }}>At home inside (HI): {`${activitiesValues1[0]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>At home inside with others (HIWO): {`${activitiesValues1[1]}`}</Text>
@@ -297,7 +391,9 @@ const ClientReport = ({ route, navigation }: any ) => {
                 data={ activitiesValues1 } 
                 fromNumber={ data.length }
               />
-              
+            </View>
+            <View ref={ viewToSnapShotRef3 } collapsable={false}>
+              <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Activities</Text>
               <Text style={{ paddingLeft: '4%' }}>In community with others (CWO): {`${activitiesValues2[0]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>At specific activity (SA): {`${activitiesValues2[1]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>At specific activity with others (SAWO): {`${activitiesValues2[2]}`}</Text>
@@ -307,8 +403,9 @@ const ClientReport = ({ route, navigation }: any ) => {
                 labels={[ "CWO","SA","SAWO","W","T"]} 
                 data={ activitiesValues2 } 
                 fromNumber={ data.length }
-              />
-              
+                />
+            </View>  
+            <View ref={ viewToSnapShotRef4 } collapsable={false}>
               <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Displayed Behaviour</Text>
               <Text style={{ paddingLeft: '4%' }}>SELF injury (SID): {`${promptValues[0]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>PICA (Pic): {`${promptValues[1]}`}</Text>
@@ -319,8 +416,10 @@ const ClientReport = ({ route, navigation }: any ) => {
                 labels={["SID","Pic","PAG","AP","VA"]} 
                 data={ promptValues } 
                 fromNumber={ data.length }
-              />
-              
+                />
+            </View>  
+            <View ref={ viewToSnapShotRef5 } collapsable={false}>
+              <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Displayed Behaviour</Text>
               <Text style={{ paddingLeft: '4%' }}>Disruption and destruction of property or environment (DST): {`${promptValues[0]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>Stereotyped behaviours (SB): {`${promptValues[1]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>Inappropriate vocalisations (IV): {`${promptValues[2]}`}</Text>
@@ -330,8 +429,10 @@ const ClientReport = ({ route, navigation }: any ) => {
                 labels={["DST","SB","IV","IRC","ISB"]} 
                 data={ promptValues } 
                 fromNumber={ data.length }
-              />
-              
+                />
+            </View>  
+            <View ref={ viewToSnapShotRef6 } collapsable={false}>
+              <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Displayed Behaviour</Text>
               <Text style={{ paddingLeft: '4%' }}>Smearing (SMR): {`${promptValues[0]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>Stealing (STL): {`${promptValues[1]}`}</Text>
               <Text style={{ paddingLeft: '4%' }}>Self-induced vomiting and regurgitation (SIV): {`${promptValues[2]}`}</Text>
@@ -340,7 +441,8 @@ const ClientReport = ({ route, navigation }: any ) => {
                 labels={["SMR","STL","SIV","Other"]} 
                 data={ [0,0,0,0] } 
                 fromNumber={ data.length }
-              />
+                />
+            </View>  
     {/* 
               { snapshotImg && <Text>Preview:</Text> }
               { snapshotImg && <Image resizeMode='contain' style={ styles.snapshotImag } source={ {uri: snapshotImg} } />} */}
@@ -360,8 +462,7 @@ const ClientReport = ({ route, navigation }: any ) => {
                 ))
               )
             }
-              
-            </View>
+
             <View style={{ paddingHorizontal: '4%' }}>
               <Button 
                 label={ "Create PDF" }
@@ -369,20 +470,6 @@ const ClientReport = ({ route, navigation }: any ) => {
                 disabled={ false }
               />
               <View style={styles.spacer} />
-              {Platform.OS === 'ios' && (
-                <>
-                  <View style={styles.spacer} />
-                  <Button 
-                  label={ "Select printer" }
-                  onPress={ selectPrinter }
-                  disabled={ false }
-                />
-                  <View style={styles.spacer} />
-                  {selectedPrinter ? (
-                    <Text style={styles.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text>
-                  ) : undefined}
-                </>
-              )}
             </View>
           </View>
           )

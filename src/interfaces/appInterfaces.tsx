@@ -18,6 +18,13 @@ export interface User {
     uid?: string;
 };
 
+export interface ClientForms {
+    msj:           string;
+    total:         number;
+    formsByClient: ClientForm[];
+    dataComments:  ClientForm[];
+}
+
 export interface ClientForm {
     _id:           ID;
     clientId:      ID;
@@ -27,6 +34,7 @@ export interface ClientForm {
     prompt:        string;
     behaviour:     Behaviour[];
     comment:       string;
+    userId:        string;
 };
 
 export interface ID {
