@@ -22,7 +22,7 @@ export const StaffMembers = ({ navigation }: any) => {
 
   const getStaffMembers = async() => {
     const { data: users } = await disabilityApi.get<any>('/users/getAllUsers');
-    console.log(users.users)
+    console.log(users)
     setStaffUsers( users.users );
   }
   const usersSuperAdmin = staffUsers.filter( (user: any) => user?.role === "SUPER_ADMIN" );

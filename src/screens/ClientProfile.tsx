@@ -72,7 +72,7 @@ const ClientProfile = ({ route, navigation }: any ) => {
     <ScrollView>
         <View style={[ globalStyles.container, { minHeight: height }]}>
             <View style={{ marginBottom: 10 }}>
-                <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' }/>
+                <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgba(100, 156, 198, 0.15)' }/>
             </View>
             <Text style={ globalStyles.label }>Name</Text>
             <Input  
