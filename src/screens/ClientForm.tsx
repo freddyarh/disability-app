@@ -10,10 +10,10 @@ import { globalStyles } from '../styles/globalStyles';
 import DropDown from '../components/DropDown';
 import disabilityApi from '../api/disabilityApi';
 import { ClientForm as InterfaceClientForm } from '../interfaces/appInterfaces';
-import IconGoBack from '../components/IconGoBack';
 import { Checkbox } from 'react-native-paper';
 import { colors } from '../styles/colors';
 import { setNewFormatDate } from '../helpers/setNewFormatDate';
+import ScreenTitle from '../components/ScreenTitle';
 
 const ClientForm = ({ route, navigation }: any) => {
 
@@ -97,9 +97,8 @@ const ClientForm = ({ route, navigation }: any) => {
     }
   return (
     <ScrollView>
+        <ScreenTitle navigation={ navigation } clientName={ clientName } />
         <View style={[globalStyles.container, { minHeight: height - 50 }]}>
-        <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' }/>
-        <Text style={{ textAlign: 'center', fontSize: 19, fontWeight: 'bold', backgroundColor: 'rgba(100, 156, 198, 0.15)', padding: 10, marginVertical: 15 }}>{ clientName }</Text>
             <Text style={ styles.label }>Time</Text>
             <TouchableOpacity>
                 <Input 
