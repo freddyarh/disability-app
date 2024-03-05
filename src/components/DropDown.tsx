@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { StyleSheet } from 'react-native';
+import { colors } from '../styles/colors';
 
 interface Props {
     title: string,
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     dropDown: {
         backgroundColor: "white",
         borderRadius: 5,
-        borderColor:"rgb(103, 80, 164)",
+        borderColor: colors.aquaDark,
         borderTopLeftRadius: 18,
         borderTopEndRadius: 4,
         borderBottomEndRadius: 2,

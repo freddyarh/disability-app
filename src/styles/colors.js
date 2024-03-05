@@ -1,5 +1,10 @@
 export const colors = {
+    aquaDark: "rgba(52, 92, 184, 1)",
+    aquaGreen: "#2596be",
+    aquaMiddle: "rgba(52, 92, 184, 0.8)",
+    aquaMist: "rgba(52, 92, 184, 0.6)",
     firstColor: "rgb(101, 110, 164)",
+    forestGreen: "#25be32",
     titleColor: "rgb(133, 187, 157)",
     lightBlue: '#00BCE7',
     obsidium: '#00053E',

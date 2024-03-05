@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         display: "flex",
         padding: 13,
         flexDirection: "row",
-        backgroundColor: 'rgba(100, 156, 198, 0.15)',
+        backgroundColor: colors.aquaDark,
         alignItems: 'center'
     },
     title : { 
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: "center",
+        color: colors.white
     }
   });
 

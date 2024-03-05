@@ -14,6 +14,7 @@ import {
 } from '@react-navigation/drawer';
 
 import{ AuthContext } from '../context/AuthContext';
+import { colors } from '../styles/colors';
 
 
 export function DrawerContent(props: any) {
@@ -32,8 +33,8 @@ export function DrawerContent(props: any) {
                             resizeMode="contain"
                         />  */}
                         {/* </View> */}
-                        <View style={{flexDirection:'row',marginTop: 15}}>
-                            <Avatar.Icon {...props} icon="account" color="white" size={ 50 } />
+                        <View style={{flexDirection:'row', marginTop: 15}}>
+                            <Avatar.Icon {...props} icon="account" style={{ backgroundColor: colors.aquaDark }} color="white" size={ 50 } />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
                                 <Title style={styles.title}>{ user?.name + " " + user?.lastName}</Title>
                                 <Caption style={styles.caption}>{ user?.email }</Caption>
@@ -50,7 +51,7 @@ export function DrawerContent(props: any) {
                     <Drawer.Section style={styles.drawerSection}>
                         <DrawerItem 
                             icon={({color, size}) => (
-                                <Avatar.Icon {...props} icon="home-account" color="white" size={ size } />
+                                <Avatar.Icon {...props} icon="home-account" style={{ backgroundColor: colors.aquaDark }} color="white" size={ size } />
                             )}
 
                             label="Participants"
@@ -60,7 +61,7 @@ export function DrawerContent(props: any) {
                         { user?.role === 'SUPER_ADMIN' && (
                             <DrawerItem 
                                 icon={({color, size}) => (
-                                    <Avatar.Icon {...props} icon="account-multiple" color="white" size={ size } />
+                                    <Avatar.Icon {...props} icon="account-multiple" style={{ backgroundColor: colors.aquaDark }} color="white" size={ size } />
                                 )}
 
                                 label="Users"
@@ -74,7 +75,7 @@ export function DrawerContent(props: any) {
             <Drawer.Section style={styles.bottomDrawerSection}>
                 <DrawerItem 
                     icon={({color, size}) => (
-                        <Avatar.Icon {...props} icon="logout" color="white" size={ size } />
+                        <Avatar.Icon {...props} icon="logout" style={{ backgroundColor: colors.aquaDark }} color="white" size={ size } />
                     )}
                     label="Sign Out"
                     onPress={ logOut }
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     listItem: {
         fontSize: 15, 
         // fontFamily: 'FieldGeoRegular', 
-        color: "gray"
+        color: colors.black
     },
     row: {
       marginTop: 20,
