@@ -5,8 +5,6 @@ import { Avatar, Card, IconButton } from 'react-native-paper';
 import { User } from '../interfaces/appInterfaces';
 import Button from '../components/Button';
 import { globalStyles } from '../styles/globalStyles';
-import { color } from 'react-native-reanimated';
-import { AuthContext } from '../context/AuthContext';
 import IconGoBack from '../components/IconGoBack';
 import { LoadingScreen } from './LoadingScreen';
 import { colors } from '../styles/colors';
@@ -22,7 +20,6 @@ export const StaffMembers = ({ navigation }: any) => {
 
   const getStaffMembers = async() => {
     const { data: users } = await disabilityApi.get<any>('/users/getAllUsers');
-    console.log(users)
     setStaffUsers( users.users );
   }
   const usersSuperAdmin = staffUsers.filter( (user: any) => user?.role === "SUPER_ADMIN" );
@@ -32,37 +29,37 @@ export const StaffMembers = ({ navigation }: any) => {
   
   return (
     <ScrollView>
-      <View style={[ globalStyles.container, { minHeight: height } ]}>
-      <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' } />
-      <Button label={ "Create new staff" } onPress={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />
-      <View style={{ marginTop: 20 }}>
-        <View>
-          <Text style={ styles.title }>Super admin</Text>
-          { usersSuperAdmin.map((user) => (
+      <View style={[ globalStyles.container, { minHeight: height }]}>
+        <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist } />
+        <Button label={ "Create new staff" } onPress={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />
+        <View style={{ marginTop: 20 }}>
+          <View>
+            <Text style={ styles.title }>Super admin</Text>
+            { usersSuperAdmin.map((user) => (
+                <Card.Title key={ user.uid }
+                    title={ `${ user.name } ${ user.lastName }` }
+                    titleStyle={{ color: colors.black }}
+                    subtitleStyle={{ color: colors.black }}
+                    subtitle={ user.email }
+                    left={(props) => <Avatar.Icon {...props} color={ "white" } style={{ backgroundColor: colors.aquaMist }} icon="account" />}
+                    right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
+                  />
+                ))}
+          </View>
+          <View>
+            <Text style={ styles.title }>Staff</Text>
+            { usersStaff.map((user) => (
               <Card.Title key={ user.uid }
-                  title={ `${ user.name } ${ user.lastName }` }
-                  titleStyle={{ color: colors.black }}
-                  subtitleStyle={{ color: colors.black }}
-                  subtitle={ user.email }
-                  left={(props) => <Avatar.Icon {...props} icon="account" />}
-                  right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
-                />
+              title={ `${ user.name } ${ user.lastName }` }
+              titleStyle={{ color: colors.black }}
+              subtitleStyle={{ color: colors.black }}
+              subtitle={ user.email }
+              left={(props) => <Avatar.Icon {...props} color={ "white" } style={{ backgroundColor: colors.aquaMist }} icon="account" />}
+              right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
+              />
               ))}
+          </View>
         </View>
-        <View>
-          <Text style={ styles.title }>Staff</Text>
-          { usersStaff.map((user) => (
-            <Card.Title key={ user.uid }
-            title={ `${ user.name } ${ user.lastName }` }
-            titleStyle={{ color: colors.black }}
-            subtitleStyle={{ color: colors.black }}
-            subtitle={ user.email }
-            left={(props) => <Avatar.Icon {...props} icon="account" />}
-            right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
-            />
-            ))}
-        </View>
-      </View>
       </View> 
     </ScrollView>
   )

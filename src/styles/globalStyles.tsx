@@ -24,10 +24,10 @@ export const globalStyles = StyleSheet.create({
         borderWidth: 1,
         borderBottomWidth: 0.8,
         borderTopWidth: 0.8,
-        borderBottomColor: "rgb(103, 80, 164)",
-        borderTopColor: "rgb(103, 80, 164)",
+        borderBottomColor: colors.aquaDark,
+        borderTopColor: colors.aquaDark,
         backgroundColor: colors.white,
-        borderColor: "rgb(103, 80, 164)",
+        borderColor: colors.aquaDark,
         borderTopLeftRadius: 20,
     },
     label: {

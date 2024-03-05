@@ -34,6 +34,7 @@ export interface ClientForm {
     prompt:        string;
     behaviour:     Behaviour[];
     comment:       string;
+    incidentReport: boolean;
     userId:        string;
 };
 

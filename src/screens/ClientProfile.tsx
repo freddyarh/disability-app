@@ -6,6 +6,7 @@ import DropDown from '../components/DropDown';
 import IconGoBack from '../components/IconGoBack';
 import Input from '../components/Input';
 import { Client } from '../interfaces/appInterfaces';
+import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { LoadingScreen } from './LoadingScreen';
 
@@ -72,7 +73,7 @@ const ClientProfile = ({ route, navigation }: any ) => {
     <ScrollView>
         <View style={[ globalStyles.container, { minHeight: height }]}>
             <View style={{ marginBottom: 10 }}>
-                <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgba(100, 156, 198, 0.15)' }/>
+                <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist }/>
             </View>
             <Text style={ globalStyles.label }>Name</Text>
             <Input  

@@ -46,7 +46,7 @@ export const Login = ({ navigation }: Props) => {
               source={require('../../assets/images/logo.jpg')}
               resizeMode="contain"
             /> 
-          <Text style={styles.title}>Login</Text>
+          <Text style={[styles.title, {marginBottom: width > 700 ? 25 : 0}]}>Login</Text>
           </View>
           <Input 
             label={ "User" }

@@ -41,7 +41,7 @@ export const InsertCode = ({ route, navigation }: any) => {
     <View style={ globalStyles.login }>
         <Text style={{ color: 'white', marginVertical: 20, fontSize: 16 }}>Please insert the code</Text>
         <Input label="Code" value={ code } keyboardType={ "numeric" } setValue={ (val : string) => {
-          if( val.length <= 5  ) return setCode(val);
+          if( val.length <= 6  ) return setCode(val);
         }} />
         <Button label="Send" onPress={ handleCode } disabled={false}/>
     </View>
