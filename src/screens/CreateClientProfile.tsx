@@ -90,7 +90,7 @@ const CreateClientProfile = ({ navigation }: any) => {
   return (
     <ScrollView>
         <View style={[ globalStyles.container, { minHeight: height - 50 } ]}>
-            <IconGoBack navigation={ navigation } color={ 'black' } backgroundColor={ 'rgb(242, 242, 242)' } />
+            <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist } />
             <KeyboardAvoidingView 
                 behavior={ ( Platform.OS === 'ios') ? 'padding': 'padding' }
             >

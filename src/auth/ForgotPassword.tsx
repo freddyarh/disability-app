@@ -16,7 +16,7 @@ export const ForgotPassword = ({ navigation }: any ) => {
 }
 
   const [state, dispatch] = useReducer(authReducer, authInitialState);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("freddyarh13@gmail.com");
 
   const handleForgotPassword = async() => {
 

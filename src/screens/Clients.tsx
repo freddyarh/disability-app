@@ -93,17 +93,16 @@ const Clients = ({ navigation }: any ) => {
                     <View key={ index } style={[ styles.clientBox, { marginTop: 10 } ]}>
                         <View style={ styles.btnRow }>
                             <Text style={{ alignSelf: 'flex-start' }} onPress={() => navigation.goBack()}>
-                                <Avatar.Icon icon="account" color={ 'white' } size={ 40 } style={{ backgroundColor: "rgb(99, 81, 159)" }} />
+                                <Avatar.Icon icon="account" color={ 'white' } size={ 40 } style={{ backgroundColor: colors.aquaGreen }} />
                             </Text>
                             <View style={{ flexDirection: 'column', marginLeft: 20 }}>
                                 <Text style={{ fontSize: 18, marginBottom: 10, }}>{ client.name }</Text>
-                                {/* <Text>{ client.ndisNumber }</Text> */}
                                 { user?.role === "SUPER_ADMIN" && (
                                     <>
                                     <Text style={{ marginBottom: 7 }}>Staff</Text>
                                         { client.user.map(( user, index ): any => (
                                             <View key={ index } style={{  flexDirection: 'row' }}>
-                                                <Avatar.Icon icon="account-tie" color={ "rgb(99, 81, 159)" } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />
+                                                <Avatar.Icon icon="account-tie" color={ colors.aquaGreen } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />
                                                 <Text> { user.name }</Text>
                                             </View>
                                         ))}
@@ -114,7 +113,7 @@ const Clients = ({ navigation }: any ) => {
                         <View style={ styles.btnRow }>
                             <BtnBoxClient 
                                     label={"Form"} 
-                                    backgroundColor={ "rgb(101, 110, 164)" } 
+                                    backgroundColor={ colors.aquaDark } 
                                     onPress={ () => navigation.navigate("Client Form", {
                                         clientUid: client._id,
                                         clientName: client.name
@@ -123,13 +122,13 @@ const Clients = ({ navigation }: any ) => {
                                 <>
                                     <BtnBoxClient 
                                         label={"Report"} 
-                                        backgroundColor={ "rgb(101, 110, 164)" } 
+                                        backgroundColor={ colors.aquaMist } 
                                         onPress={ () => navigation.navigate("Client Report", {
                                             clientUid: client._id,
                                             clientName: client.name
                                         }) }/>
                                     <BtnBoxClient 
-                                        label={"Info"} backgroundColor={ "#AFADBD" } 
+                                        label={"Info"} backgroundColor={ colors.aquaMiddle } 
                                         onPress={ () => navigation.navigate("Client Profile", {
                                             clientUid: client._id
                                     }) }/>

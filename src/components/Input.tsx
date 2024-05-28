@@ -19,6 +19,7 @@ const Input = ({ label, value, setValue, onAccion, secureTextEntry, rightEye, ri
   return (
     <>
       <TextInput
+          autoCorrect={ false }
           style={ globalStyles.textInput }
           mode="flat"
           keyboardType={ keyboardType }
