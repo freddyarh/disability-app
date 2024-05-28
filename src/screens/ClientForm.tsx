@@ -88,10 +88,10 @@ const ClientForm = ({ route, navigation }: any) => {
             const resp = await disabilityApi.post<InterfaceClientForm>('/clients/setClientForm', { clientId: clientUid, date, prompt: valuePrompt, behaviour, functionality: valueFunct, activity: valueActivity, incidentReport: checked, comment, userId: uid });
             
             if( resp.status === 200){
-                Alert.alert("Successful info", "Form saved successfully", [{ text: 'Ok', onPress: cleanFields }] );
+                Alert.alert("Success", "Form saved successfully", [{ text: 'Ok', onPress: cleanFields }] );
             }
         } catch (error: any) {
-            Alert.alert('Invalid info', error.response.data.msg);
+            Alert.alert('Invalid information', error.response.data.msg);
         }
 
     }
@@ -182,6 +182,10 @@ const ClientForm = ({ route, navigation }: any) => {
                 status={checked ? 'checked' : 'unchecked'}
                 onPress={() => {
                     setChecked(!checked);
+                    setOpen1(false);
+                    setOpen2(false);
+                    setOpen3(false);
+                    setOpen4(false);
                 }}
                 />
             <Text style={ styles.label }>Comments</Text>

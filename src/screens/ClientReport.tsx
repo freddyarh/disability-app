@@ -14,7 +14,6 @@ import { globalStyles } from '../styles/globalStyles';
 import Datepicker from '../components/Datepicker';
 import Input from '../components/Input';
 import { colors } from '../styles/colors';
-import BarChartComponent from '../components/BarChartComponent';
 import { setNewFormatDate } from '../helpers/setNewFormatDate';
 import ScreenTitle from '../components/ScreenTitle';
 
@@ -102,9 +101,7 @@ const ClientReport = ({ route, navigation }: any ) => {
   const graphDescription = (labels: any): string => {
 
     const dataLabels = labels.map((value: any) => (
-      `<div>
-        <p style='margin: 0px;'> - ${value.alias} (${value.label}): ${value.value}</p>
-      </div>`
+      `<p style='margin: 0px;'> - ${value.alias} (${value.label}): ${value.value}</p>`
     ));
 
     return dataLabels.join("");
@@ -228,30 +225,28 @@ const ClientReport = ({ route, navigation }: any ) => {
                     <span style="font-weight: bold;">Total:</span> ${ totalForms } forms
                     </p>
                   </div>
-                  <div>
-                  <tr>
-                    <h3>Functionality</h3>
-                    ${functionalityLabels}
-                    <div>
-                      <div><img src=${ arrUrl[0] }/></div>
-                    </div>
-                  </div>
-                  <div>
-                    <h3>Activities</h3>
-                    ${activitiesLabels}
-                    <div><img src=${ arrUrl[1] }/></div>
-                  </div>
-                  <div>
-                    <h3>Prompt</h3>
-                    ${promptLabels}
-                    <div><img src=${ arrUrl[2] }/></div>
-                  </div>
-                  <div>
-                    <h3>Behaviour</h3>
-                    ${behaviourLabels}
-                    <div><img src=${ arrUrl[3] }/></div>
-                  </div>
-                  </div>
+                  <table>
+                    <tr>
+                      <h3>Functionality</h3>
+                      ${functionalityLabels}
+                      <img src=${ arrUrl[0] } width="500" height=${ functionalValues.length * 60 } />
+                    </tr>
+                    <tr>
+                      <h3>Activities</h3>
+                      ${activitiesLabels}
+                      <img src=${ arrUrl[1] } width="500" height=${ activitiesValues.length * 60 }/>
+                    </tr>
+                    <tr>
+                      <h3>Prompt</h3>
+                      ${promptLabels}
+                      <img src=${ arrUrl[2] } width="500" height=${ promptValues.length * 60 } />
+                    </tr>
+                    <tr>
+                      <h3>Behaviour</h3>
+                      ${behaviourLabels}
+                      <img src=${ arrUrl[3] } width="500" height=${ behaviour.length * 55 } />
+                    </tr>
+                  </table>
                   <div style="margin-top: 10">
                     <h2 style="text-align: center;">
                       Comments
@@ -476,11 +471,6 @@ const ClientReport = ({ route, navigation }: any ) => {
                       </View>
                     ))
                   }
-                  {/* <BarChartComponent 
-                    labels={["R","IT","RT","NR","RX"]} 
-                    data={ promptValues } 
-                    fromNumber={ data.length }
-                  /> */}
                   <View ref={ viewToSnapShotRef3 } collapsable={false}>
                   <View style={{ flexDirection: 'row', height: behaviour.length * 45, paddingVertical: 8 }}>
                     <YAxis

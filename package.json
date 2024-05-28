@@ -25,7 +25,6 @@
     "jest-expo": "^49.0.0",
     "react": "18.2.0",
     "react-native": "0.72.10",
-    "react-native-chart-kit": "^6.12.0",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-modern-datepicker": "^1.0.0-beta.91",
@@ -47,6 +46,7 @@
   "private": true,
   "jest": {
     "preset": "jest-expo",
+    "setupFiles": ["./setupTests.js"],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
     ]

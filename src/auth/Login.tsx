@@ -20,7 +20,7 @@ export const Login = ({ navigation }: Props) => {
 
     if( errorMessage.length === 0 ) return;
     
-    Alert.alert( "Lgoin Incorrect", errorMessage, [{ text: 'Ok', onPress: removeError }] );
+    Alert.alert( "Login Error", errorMessage, [{ text: 'Ok', onPress: removeError }] );
     
   }, [ errorMessage ]);
   

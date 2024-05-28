@@ -34,7 +34,7 @@ export function DrawerContent(props: any) {
                         />  */}
                         {/* </View> */}
                         <View style={{flexDirection:'row', marginTop: 15}}>
-                            <Avatar.Icon {...props} icon="account" style={{ backgroundColor: colors.aquaDark }} color="white" size={ 50 } />
+                            <Avatar.Icon {...props} icon="account" style={{ backgroundColor: colors.aquaGreen }} color="white" size={ 50 } />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
                                 <Title style={styles.title}>{ user?.name + " " + user?.lastName}</Title>
                                 <Caption style={styles.caption}>{ user?.email }</Caption>
@@ -51,7 +51,7 @@ export function DrawerContent(props: any) {
                     <Drawer.Section style={styles.drawerSection}>
                         <DrawerItem 
                             icon={({color, size}) => (
-                                <Avatar.Icon {...props} icon="home-account" style={{ backgroundColor: colors.aquaDark }} color="white" size={ size } />
+                                <Avatar.Icon {...props} icon="home-account" style={{ backgroundColor: colors.aquaGreen }} color="white" size={ size } />
                             )}
 
                             label="Participants"
@@ -61,7 +61,7 @@ export function DrawerContent(props: any) {
                         { user?.role === 'SUPER_ADMIN' && (
                             <DrawerItem 
                                 icon={({color, size}) => (
-                                    <Avatar.Icon {...props} icon="account-multiple" style={{ backgroundColor: colors.aquaDark }} color="white" size={ size } />
+                                    <Avatar.Icon {...props} icon="account-multiple" style={{ backgroundColor: colors.aquaGreen }} color="white" size={ size } />
                                 )}
 
                                 label="Users"
@@ -75,7 +75,7 @@ export function DrawerContent(props: any) {
             <Drawer.Section style={styles.bottomDrawerSection}>
                 <DrawerItem 
                     icon={({color, size}) => (
-                        <Avatar.Icon {...props} icon="logout" style={{ backgroundColor: colors.aquaDark }} color="white" size={ size } />
+                        <Avatar.Icon {...props} icon="logout" style={{ backgroundColor: colors.aquaGreen }} color="white" size={ size } />
                     )}
                     label="Sign Out"
                     onPress={ logOut }

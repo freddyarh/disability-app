@@ -11,22 +11,25 @@ import { globalStyles } from '../styles/globalStyles';
 import Datepicker from '../components/Datepicker';
 import disabilityApi from '../api/disabilityApi';
 import IconGoBack from '../components/IconGoBack';
+import { setNewFormatDate } from '../helpers/setNewFormatDate';
 
 const CreateClientProfile = ({ navigation }: any) => {
 
     const { height } = useWindowDimensions();
 
-    const [name, setName] = useState("Fredy");
-    const [selectedStartDate, setSelectedStartDate] = useState("");
+    const _today = new Date();
+    const today_ = setNewFormatDate(_today);
+
+    const [date, setDate] = useState(today_);
+    const [name, setName] = useState("");
     const [valueGender, setValueGender] = useState([]);
     const [NDISNumber, setNDISNumber] = useState("")
-    const [emergency, setEmergency] = useState<number | any>("");
-    const [NDISGoals, setNDISGoals] = useState<string>("The goals are here");
-    const [assessment, setAssessment] = useState<string>("This is the assessment");
+    const [emergency, setEmergency] = useState<any>("");
+    const [NDISGoals, setNDISGoals] = useState<string>("");
+    const [assessment, setAssessment] = useState<string>("");
     const [valueSupportNetworkItems, setValueupportNetworkItems] = useState([]);
     const [valueUsers, setValueUsers ] = useState([]);
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
-    const [startedDate, setStartedDate] = useState("12/12/2023");
     const [gender, setGender] = useState(gendersOptions);
     const [supportNetworkItems, setSupportNetworkItems] = useState(supportNetworkOptions);
     const [dataUsers, setDataUsers] = useState([]);
@@ -43,16 +46,10 @@ const CreateClientProfile = ({ navigation }: any) => {
         today.setDate(today.getDate()),
         "1900/01/01"
         );
-    const maxiDate = getFormatedDate(
-        today.setDate(today.getDate() - 1),
-        "YYYY/MM/DD"
-    );
 
-    function handleChangeStartDate(propDate: any) {
-        setStartedDate(propDate);
-    }
     const handleOnPressStartDate = () => {
         setOpenStartDatePicker(!openStartDatePicker);
+        Keyboard.dismiss();
     }
 
     const getAllUsers = async() => {
@@ -67,6 +64,17 @@ const CreateClientProfile = ({ navigation }: any) => {
         setDataUsers( usersList );
     }
 
+    const resetFields = () => {
+        setName("");
+        setValueGender([]);
+        setNDISNumber("");
+        setEmergency("");
+        setNDISGoals("");
+        setAssessment("");
+        setValueupportNetworkItems([]);
+        setValueUsers([]);
+    };
+
     const createClient = async() => {
 
         Keyboard.dismiss();
@@ -75,15 +83,21 @@ const CreateClientProfile = ({ navigation }: any) => {
         setOpen3(false);
 
         try {
-
-            const { data: { msg }} = await disabilityApi.post<any>('/clients/setClient', { name, dateOfBirth: selectedStartDate, gender: valueGender, ndisNumber: NDISNumber, emergencyContact: emergency, ndisGoals: NDISGoals, assessment, supportNetwork: valueSupportNetworkItems, user: valueUsers });
-            Alert.alert("Info Success", msg)
+            const nameTrim = name.trim();
+            const NDISGoalsTrim = NDISGoals.trim();
+            const assessmentTrim = assessment.trim();
             
-        } catch (error) {
+            const { data: { msg, status }} = await disabilityApi.post<any>('/clients/setClient', { name: nameTrim, dateOfBirth: date, gender: valueGender, ndisNumber: NDISNumber, emergencyContact: emergency, ndisGoals: NDISGoalsTrim, assessment: assessmentTrim, supportNetwork: valueSupportNetworkItems, user: valueUsers });
+            
+            Alert.alert("Success", msg, [{ text: 'Ok', onPress: resetFields }]);
+            
+        } catch (error: any) {
+            
             if( error.response.status === 401){
                 return Alert.alert("Token expired", "Sign in again");
             }
-            console.log(error.response.status);
+            console.log(error);
+            Alert.alert('Invalid information', error.response.data.msg);
         }
     }
 
@@ -97,7 +111,7 @@ const CreateClientProfile = ({ navigation }: any) => {
                 <View style={{ marginTop: 20 }} >
                     <Text style={ globalStyles.label }>Name</Text>
                     <Input 
-                        label={"Name"} 
+                        label={ "Name" } 
                         value={ name } 
                         setValue={ setName } 
                     />
@@ -105,7 +119,7 @@ const CreateClientProfile = ({ navigation }: any) => {
                     <TouchableOpacity>
                         <Input 
                             label={"Date of Birth"} 
-                            value={ selectedStartDate }
+                            value={ date }
                             onAccion={ handleOnPressStartDate }
                         />
                     </TouchableOpacity>
@@ -113,10 +127,9 @@ const CreateClientProfile = ({ navigation }: any) => {
                         mode={ "calendar" }
                         openStartDatePicker={ openStartDatePicker }
                         startDate={ startDate }
-                        maxiDate={ maxiDate }
-                        startedDate={ startedDate }
-                        handleChangeStartDate={ handleChangeStartDate }
-                        setDate={ setSelectedStartDate }
+                        maximumDate={ today_ }
+                        startedDate={ today_ }
+                        setDate={ setDate }
                         handleOnPressStartDate={ handleOnPressStartDate }
                     />
                     <Text style={ globalStyles.label }>Select Gender</Text>

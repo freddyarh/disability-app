@@ -122,7 +122,7 @@ const Clients = ({ navigation }: any ) => {
                                 <>
                                     <BtnBoxClient 
                                         label={"Report"} 
-                                        backgroundColor={ colors.aquaMist } 
+                                        backgroundColor={ colors.aquaGreen } 
                                         onPress={ () => navigation.navigate("Client Report", {
                                             clientUid: client._id,
                                             clientName: client.name

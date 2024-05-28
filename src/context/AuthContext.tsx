@@ -12,7 +12,7 @@ type AuthContextProps = {
     token: string;
     user: User | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
-    signUp: ( user: User ) => void;
+    signUp: ( user: User ) => any;
     signIn: ( loginData: LoginData ) => void;
     logOut: () => void;
     removeError: () => void;
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: any) => {
         const token = await AsyncStorage.getItem('token');
         
         // Not token, not authenticate
-            if( !token ) return dispatch({ type: 'notAuthenticated' });
+        if( !token ) return dispatch({ type: 'notAuthenticated' });
         //There is token
         disabilityApi.get('/auth')
             .then(async(resp) => {
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: any) => {
                 })
             })
             .catch(err => {
-                console.log('err ', err.response.data.msg);
+                console.log('err ', err.response?.data.msg);
                 return dispatch({ type: 'notAuthenticated' });
             });
     }
@@ -70,23 +70,22 @@ export const AuthProvider = ({ children }: any) => {
         
         try {
 
-            const { data } = await disabilityApi.post<User>('/users/createUser', { name, lastName, email, password, role });
-            Alert.alert('Info', data?.msg);
+            const { data, status } = await disabilityApi.post<User>('/users/createUser', { name, lastName, email, password, role });
+            Alert.alert('Success', data?.msg);
+            return status;
             
         } catch (error: any) {
 
             console.log(error);
-            Alert.alert('Invalid info', error.response.data.msg);
+            Alert.alert('Invalid information', error.response?.data.msg);
         }
     };
     const signIn = async({ email, password }: LoginData ) => {
 
         try {
 
-            console.log(email, password)
-            
             const { data } = await disabilityApi.post<LoginResponse>('/auth/login', { email, password });
-
+            
             dispatch({ type: 'signUp', payload: {
                 token: data.token,
                 user: data.user
@@ -96,9 +95,9 @@ export const AuthProvider = ({ children }: any) => {
             await AsyncStorage.setItem('token', data.token);
             
         } catch (error: any) {
-            console.log('err', error.response.data)
+            console.log('err', error.response?.data)
             dispatch({ type: 'addError',
-                payload: error.response.data.msg || 'Incorrect information'
+                payload: error.response?.data.msg || 'Incorrect information'
             })
         }
     };

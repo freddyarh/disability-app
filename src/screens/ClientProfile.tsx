@@ -60,7 +60,7 @@ const ClientProfile = ({ route, navigation }: any ) => {
         try {
 
             const { data: { msg }} = await disabilityApi.put<any>(`/clients/updateClient/${clientUid}`, { emergencyContact: Number(emergency), ndisGoals: NDISGoals, user: valueUsers });
-            Alert.alert("Info Success", msg)
+            Alert.alert("Success", msg)
             
         } catch (error) {
             console.log(error);

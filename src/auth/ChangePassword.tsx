@@ -24,7 +24,7 @@ const ChangePassword = ({ route, navigation }: any) => {
       const resp = await disabilityApi.put<any>(`/auth/updateUserPassword/${ userId }`, { newPassword, repeatPassword });
 
       if( resp.status === 200 ){
-        Alert.alert("Info", "Your password has changed succesfully", [{ text: 'Ok', onPress: navigateToLogin }]);
+        Alert.alert("Success", "Your password has changed succesfully", [{ text: 'Ok', onPress: navigateToLogin }]);
       }
 
     } catch (error: any) {

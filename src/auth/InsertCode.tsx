@@ -33,7 +33,7 @@ export const InsertCode = ({ route, navigation }: any) => {
       
     } catch (error: any) {
       console.log('error', error.response.data.msg);
-      Alert.alert('Invalid info', error.response.data.msg || 'Code invalid');
+      Alert.alert('Invalid information', error.response.data.msg || 'Code invalid');
     }
     
   }

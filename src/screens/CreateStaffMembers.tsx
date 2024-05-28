@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, useWindowDimensions, ScrollView } from 'react-native';
+import { Text, View, useWindowDimensions, ScrollView, Alert, Keyboard } from 'react-native';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import DropDown from '../components/DropDown';
@@ -13,11 +13,11 @@ const CreateStaffMembers = ({ navigation }: any) => {
 
   const { height } = useWindowDimensions();
 
-  const [name, setName] = useState("staff");
-  const [lastName, setLastName] = useState("staff lastName");
-  const [email, setEmail] = useState("staff@gmail.com");
-  const [password, setPassword] = useState("123456");
-  const [repeatPassword, setRepeatPassword] = useState("123456");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
   const [open1, setOpen1] = useState(false);
   const [role, setRole] = useState([]);
   const [valueRole, setValueRole] = useState([]);
@@ -40,10 +40,25 @@ const CreateStaffMembers = ({ navigation }: any) => {
     });
     setRole( roleList );
   };
+
+  const resetFields = () => {
+
+    setName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+    setRepeatPassword("");
+    setValueRole([]);
+    Keyboard.dismiss();
+
+  };
   
-  const handleCreateStaff = () => {
+  const handleCreateStaff = async() => {
+
+    if( password !== repeatPassword ) return Alert.alert("Invalid information","Password and repeat password are not the same");
     
-    signUp({ name, lastName, email, password, role: valueRole });
+    const resp = await signUp({ name, lastName, email, password, role: valueRole });
+    if( resp === 200 ) return resetFields();
   };
 
   return (

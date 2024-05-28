@@ -16,24 +16,26 @@ export const ForgotPassword = ({ navigation }: any ) => {
 }
 
   const [state, dispatch] = useReducer(authReducer, authInitialState);
-  const [email, setEmail] = useState("freddyarh13@gmail.com");
+  const [email, setEmail] = useState("");
 
   const handleForgotPassword = async() => {
 
     try {
       const resp = await disabilityApi.post<any>('/auth/forgotPassword', { email });
-
+      
       if(resp.status !== 200){
         return dispatch({ type: 'addError', payload: resp.data.msg });
-      }
+      };
 
-      navigation.replace('InsertCode', {
-        id: await resp.data.id
-      });
+      if(resp.status === 200){
+        navigation.replace('InsertCode', {
+          id: await resp.data.id
+        });
+      };
       
     } catch (error: any) {
       console.log(error);
-      Alert.alert('Invalid info', error.response.data.msg);
+      Alert.alert('Invalid information', error.response.data.msg);
     }
     
   }
