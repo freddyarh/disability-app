@@ -34,9 +34,33 @@ const ChangePassword = ({ route, navigation }: any) => {
   }
   return (
     <View style={ globalStyles.login }>
-        <Input label="New password" value={ newPassword } setValue={ setPassword } />
-        <Input label="Repeat password" value={ repeatPassword } setValue={ setRepeatPassword } />
-        <Button label="Change password" onPress={ handleChangePassword } disabled={false}/>
+      <View style={{ marginBottom: 15 }}>
+          <Input 
+            label="New password"
+            placeholder={ "New password" }
+            backgroundInputColor={"black"}
+            inputTextColor="white"
+            value={ newPassword } 
+            setValue={ setPassword }
+            rightEye={ true }
+          />
+      </View>
+      <View>
+        <Input 
+          label="Repeat password"
+          placeholder={ "Repeat password" }
+          backgroundInputColor={"black"}
+          inputTextColor="white"
+          value={ repeatPassword } 
+          setValue={ setRepeatPassword }
+          rightEye={ true } 
+        />
+      </View>
+        <Button 
+          label="Change password" 
+          onPress={ handleChangePassword } 
+          disabled={false}
+        />
     </View>
   )
 }

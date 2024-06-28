@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import {
     Avatar,
     Title,
@@ -99,18 +99,16 @@ const styles = StyleSheet.create({
         maxHeight: 200,
     },
     title: {
-      fontSize: 16,
+      fontSize: Platform.OS === 'android' ? 18 : 17,
       marginTop: 3,
       fontWeight: 'bold',
     },
     caption: {
-      fontSize: 14,
-      lineHeight: 14,
-    //   fontFamily: 'FieldGeoRegular', 
+      fontSize: Platform.OS === 'android' ? 18 : 17,
       color: "gray"
     },
     listItem: {
-        fontSize: 15, 
+        fontSize: Platform.OS === 'android' ? 18 : 17, 
         // fontFamily: 'FieldGeoRegular', 
         color: colors.black
     },

@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { Alert, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthContext } from '../context/AuthContext';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import { globalStyles } from '../styles/globalStyles';
 import { colors } from '../styles/colors';
+import { TextInput } from 'react-native-paper';
 
 interface Props extends NativeStackScreenProps<any, any> {}
 
 export const Login = ({ navigation }: Props) => {
-  const [email, setEmail] = useState("test4@gmail.com");
-  const [password, setPassword] = useState("123456");
-  const [eyeButton, setEyeButton] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
 
   const { signIn, errorMessage, removeError } = useContext( AuthContext );
   
@@ -29,10 +30,6 @@ export const Login = ({ navigation }: Props) => {
     signIn({ email , password });
     
   };
-
-  const iconEye = () => {
-    eyeButton ? setEyeButton(false) : setEyeButton(true);
-  };
   
   const { height, width } = useWindowDimensions();
   const aspectRatio = height/width;
@@ -42,27 +39,44 @@ export const Login = ({ navigation }: Props) => {
       <View style={[ globalStyles.login, { height: height - 55 } ]}>
           <View style={styles.containerImg}>
             <Image
-              style={[styles.logo, aspectRatio > 1.6 ? { maxHeight: 200 } : { maxHeight: 290 }, { height: height * 0.3 }]}
+              style={[styles.logo, aspectRatio > 1.6 ? { maxHeight: 200, height: height * 0.3  } : { maxHeight: 270, height: height * 0.3  }]}
               source={require('../../assets/images/logo.jpg')}
               resizeMode="contain"
             /> 
-          <Text style={[styles.title, {marginBottom: width > 700 ? 25 : 0}]}>Login</Text>
           </View>
-          <Input 
-            label={ "User" }
-            value={ email }
-            setValue={ setEmail }
-          />
-          <Input 
-            label={ "Password" }
-            value={ password }
-            setValue={ setPassword }
-            secureTextEntry={ eyeButton }
-            rightEye={ true }
-            rightEyeButton={ iconEye }
-          />
+          <View style={ styles.containLoginInput }>
+            <View style={[ styles.iconInputLogin, { flexGrow: 1.3 }]}>
+              <TextInput.Icon icon="email" iconColor={colors.titleColor} size={29}/> 
+            </View>
+            <View  style={ styles.inputLogin }>
+              <Input 
+                label={ "Email" }
+                placeholder={ "Email" }
+                value={ email }
+                setValue={ setEmail }
+                backgroundInputColor={"black"}
+                inputTextColor="white"
+              />
+            </View>
+            </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}>
+            <View style={[ styles.iconInputLogin, { flexGrow: 1.5 }]}>
+              <TextInput.Icon icon="lock" iconColor={colors.titleColor} size={29}/> 
+            </View>
+            <View  style={ styles.inputLogin }>
+              <Input 
+                label={ "Password" }
+                placeholder={ "Your password" }
+                value={ password }
+                setValue={ setPassword }
+                rightEye={ true }
+                backgroundInputColor={"black"}
+                inputTextColor="white"
+              />
+            </View>
+          </View>
           <Button 
-            label={ "Login" }
+            label={ "Sign in" }
             onPress={ handleLogin }
             disabled={ false }
           />
@@ -82,21 +96,36 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   forgotPassword:{
-    fontSize: 15,
+    fontSize: Platform.OS === 'android' ? 17 : 17,
     color: colors.titleColor,
-    marginTop: 15,
+    marginTop: 24,
+    fontWeight: "bold",
     alignSelf: 'flex-end'
   },
   containerImg: {
     alignItems: 'center'
   },
   logo: {
-    marginBottom:40,
+    marginBottom: Platform.OS === 'android' ? 7 : 15,
     minWidth: 300,
   },
   title: {
     color: colors.titleColor,
     fontSize: 30
+  },
+  containLoginInput: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 15
+  },
+  iconInputLogin: {
+    height: '30%', 
+    marginRight: 7
+  },
+  inputLogin: {
+    flexGrow: 10, 
+    maxWidth: '89%', 
+    minWidth: '89%'
   }
 });
 

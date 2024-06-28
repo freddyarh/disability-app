@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 7.6.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "URL_DEV": "https://api.respondability.com.au/api"
+      }
+    },
+    "production": {
+      "env": {
+        "URL_PRO": "https://api.respondability.com.au/api"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

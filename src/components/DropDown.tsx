@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 5,
         borderColor: colors.aquaDark,
-        borderTopLeftRadius: 18,
+        borderTopLeftRadius: 4,
         borderTopEndRadius: 4,
         borderBottomEndRadius: 2,
         borderBottomLeftRadius: 2,
         borderTopWidth: 1,
         paddingTop: 18,
         paddingBottom: 18,
-        marginBottom: 22
+        marginBottom: 12
     }
 });
 

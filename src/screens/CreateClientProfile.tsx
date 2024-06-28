@@ -113,7 +113,7 @@ const CreateClientProfile = ({ navigation }: any) => {
                     <Input 
                         label={ "Name" } 
                         value={ name } 
-                        setValue={ setName } 
+                        setValue={ setName }
                     />
                     <Text style={ globalStyles.label }>Date of Birth</Text>
                     <TouchableOpacity>

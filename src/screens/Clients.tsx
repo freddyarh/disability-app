@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { RefreshControl, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { Platform, RefreshControl, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Card, Button as ButtonPaper } from 'react-native-paper';
 import disabilityApi from '../api/disabilityApi';
@@ -15,10 +15,10 @@ const Clients = ({ navigation }: any ) => {
     const { user } = useContext(AuthContext);
     const { height } = useWindowDimensions();
 
-    const [dataClients, setDataClients] = useState<Client | Client[]>([]);
+    const [dataClients, setDataClients] = useState<Client[]>([]);
     const [status, setStatus] = useState<Number>();
     const [statusByStaff, setStatusByStaff] = useState<Number>();
-    const [refreshing, setRefreshing] = useState(false);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
     useEffect(() => {
         if (user?.role === "SUPER_ADMIN" ) {
@@ -43,8 +43,13 @@ const Clients = ({ navigation }: any ) => {
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
-            getAllClients();
-            setRefreshing(false);
+            if (user?.role === "SUPER_ADMIN" ) {
+                getAllClients();
+                setRefreshing(false);
+            }else{
+                getClientsByStaff();
+                setRefreshing(false);
+            }
         }, 1000);
       }, []);
     
@@ -96,14 +101,14 @@ const Clients = ({ navigation }: any ) => {
                                 <Avatar.Icon icon="account" color={ 'white' } size={ 40 } style={{ backgroundColor: colors.aquaGreen }} />
                             </Text>
                             <View style={{ flexDirection: 'column', marginLeft: 20 }}>
-                                <Text style={{ fontSize: 18, marginBottom: 10, }}>{ client.name }</Text>
+                                <Text style={{ fontSize: Platform.OS === 'android' ? 20 : 17, marginBottom: 10, }}>{ client.name }</Text>
                                 { user?.role === "SUPER_ADMIN" && (
                                     <>
-                                    <Text style={{ marginBottom: 7 }}>Staff</Text>
+                                    <Text style={{ marginBottom: 7, fontSize: Platform.OS === 'android' ? 17 : 15 }}>Staff</Text>
                                         { client.user.map(( user, index ): any => (
                                             <View key={ index } style={{  flexDirection: 'row' }}>
                                                 <Avatar.Icon icon="account-tie" color={ colors.aquaGreen } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />
-                                                <Text> { user.name }</Text>
+                                                <Text style={{ fontSize: Platform.OS === 'android' ? 17 : 15 }}> { user.name }</Text>
                                             </View>
                                         ))}
                                     </>
@@ -179,10 +184,10 @@ const styles = StyleSheet.create({
         color: colors.black,
         padding: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     btnText: {
-        fontSize: 14,
+        fontSize: Platform.OS === 'android' ? 18 : 16,
         color: '#fff',
         fontWeight: 'bold'
     }

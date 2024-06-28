@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import disabilityApi from '../api/disabilityApi';
-import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, useWindowDimensions, RefreshControl } from 'react-native';
 import { Avatar, Card, IconButton } from 'react-native-paper';
 import { User } from '../interfaces/appInterfaces';
 import Button from '../components/Button';
@@ -13,6 +13,7 @@ export const StaffMembers = ({ navigation }: any) => {
   
   const { height } = useWindowDimensions();
   const [staffUsers, setStaffUsers] = useState<User[]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
     getStaffMembers();
@@ -22,13 +23,26 @@ export const StaffMembers = ({ navigation }: any) => {
     const { data: users } = await disabilityApi.get<any>('/users/getAllUsers');
     setStaffUsers( users.users );
   }
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+    
+        getStaffMembers();
+        setRefreshing(false);
+        
+    }, 1000);
+  }, []);
   const usersSuperAdmin = staffUsers.filter( (user: any) => user?.role === "SUPER_ADMIN" );
   const usersStaff = staffUsers.filter( (user: any) => user?.role === "STAFF" );
 
   if ( usersSuperAdmin.length === 0 ) return <LoadingScreen />;
   
   return (
-    <ScrollView>
+    <ScrollView
+        refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={[ globalStyles.container, { minHeight: height }]}>
         <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist } />
         <Button label={ "Create new staff" } onPress={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />

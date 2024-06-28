@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity} from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { colors } from '../../src/styles/colors';
 
 interface Props {
@@ -21,7 +21,7 @@ const Button = ({ label, onPress, disabled } : Props ) => {
 
 const styles = StyleSheet.create({
     text: {
-      fontSize: 14,
+      fontSize: Platform.OS === 'android' ? 17 : 17,
       color: '#fff',
       fontWeight: 'bold'
     },

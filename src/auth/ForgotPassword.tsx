@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert, Platform, Text, View } from 'react-native';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -41,8 +41,15 @@ export const ForgotPassword = ({ navigation }: any ) => {
   }
   return (
     <View style={ globalStyles.login }>
-        <Text style={{ color: 'white', marginVertical: 20, fontSize: 16 }}>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
-        <Input label="Email" value={ email } setValue={ setEmail } />
+        <Text style={{ color: 'white', marginVertical: 20, fontSize: Platform.OS === 'android' ? 20 : 17 }}>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
+        <Input 
+          label="Email"
+          placeholder={ "Email" }
+          backgroundInputColor={"black"}
+          inputTextColor="white"
+          value={ email }
+          setValue={ setEmail }
+        />
 
         <Button label="Send" onPress={ handleForgotPassword } disabled={false}/>
     </View>

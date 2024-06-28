@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { StyleSheet } from "react-native";
 import { colors } from "./colors";
 
@@ -19,19 +20,17 @@ export const globalStyles = StyleSheet.create({
         alignSelf: 'flex-end'
     },
     textInput: {
-        width: '100%',
-        marginBottom: 15,
         borderWidth: 1,
         borderBottomWidth: 0.8,
         borderTopWidth: 0.8,
         borderBottomColor: colors.aquaDark,
         borderTopColor: colors.aquaDark,
-        backgroundColor: colors.white,
         borderColor: colors.aquaDark,
-        borderTopLeftRadius: 20,
+        fontSize: Platform.OS === 'android' ? 17 : 16,
+        marginBottom: 12,
     },
     label: {
-        margin: 6,
+        marginVertical: 6,
         color: colors.black,
         fontSize: 18
     }

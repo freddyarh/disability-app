@@ -99,7 +99,7 @@ const ClientForm = ({ route, navigation }: any) => {
     <ScrollView>
         <ScreenTitle navigation={ navigation } clientName={ clientName } />
         <View style={[globalStyles.container, { minHeight: height - 50 }]}>
-            <Text style={ styles.label }>Time</Text>
+            <Text style={ globalStyles.label }>Time</Text>
             <TouchableOpacity>
                 <Input 
                     label={"Time"} 
@@ -116,7 +116,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 setDate={ setDate }
                 handleOnPressStartDate={ handleOnPressStartDate }
             />
-            <Text style={ styles.label }>Function</Text>
+            <Text style={[ globalStyles.label, {marginTop: 6} ]}>Function</Text>
             <DropDown
                 title={"Select function"}
                 items={ functionality }
@@ -131,7 +131,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 setItems={ setFunctionality }
                 setValue={ setValueFunct }
             />
-            <Text style={ styles.label }>Prompt</Text>
+            <Text style={ globalStyles.label }>Prompt</Text>
             <DropDown
                 title={"Select prompt"}
                 items={ prompt }
@@ -146,7 +146,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 setItems={ setPrompt }
                 setValue={ setValuePrompt }
             />
-            <Text style={ styles.label }>Displayed Behaviour</Text>
+            <Text style={ globalStyles.label }>Displayed Behaviour</Text>
             <DropDown
                 title={"Behaviour"}
                 items={behaviour}
@@ -162,7 +162,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 setValue={ setValueBehaviour }
                 multiple={ true }
             />
-            <Text style={ styles.label }>Activities</Text>
+            <Text style={ globalStyles.label }>Activities</Text>
             <DropDown
                 title={"Activities"}
                 items={activity}
@@ -177,7 +177,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 setItems={setActivity}
                 setValue={ setValueActivity }
             />
-            <Text style={ styles.label }>Incident Report?</Text>
+            <Text style={ globalStyles.label }>Incident Report?</Text>
             <Checkbox
                 status={checked ? 'checked' : 'unchecked'}
                 onPress={() => {
@@ -188,7 +188,7 @@ const ClientForm = ({ route, navigation }: any) => {
                     setOpen4(false);
                 }}
                 />
-            <Text style={ styles.label }>Comments</Text>
+            <Text style={ globalStyles.label }>Comments</Text>
             <Input 
                 label="Comments" 
                 value={ comment } 
@@ -212,11 +212,6 @@ const styles = StyleSheet.create({
     labelCheckbox: {
         margin: 8,
         color: colors.white
-    },
-    label: {
-        margin: 6,
-        color: colors.black,
-        fontSize: 18
     }
   });
 
