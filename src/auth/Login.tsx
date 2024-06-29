@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   iconInputLogin: {
-    height: '30%', 
+    height: '45%', 
     marginRight: 7
   },
   inputLogin: {
