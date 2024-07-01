@@ -183,7 +183,6 @@ const ClientReport = ({ route, navigation }: any ) => {
       
         await captureRef( viewToSnapShotRef0, screenShotDetails(functionalValues.length)).then(
           async(uri) => {
-            console.log(uri)
             arrUrl.push(uri)
           },
           (error) => console.error("Oops, snapshot failed", error)
@@ -365,7 +364,7 @@ const ClientReport = ({ route, navigation }: any ) => {
                   ))
                 }
                 <View ref={ viewToSnapShotRef0 } collapsable={false}>
-                <View style={{ flexDirection: 'row', height: functionalValues.length * 50, paddingVertical: 8 }}>
+                <View style={{ flexDirection: 'row', height: functionalValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
                   <YAxis
                       data={functionalValues}
                       yAccessor={({ index }) => index}
@@ -400,7 +399,7 @@ const ClientReport = ({ route, navigation }: any ) => {
                   ))
                 }
                 <View ref={ viewToSnapShotRef1 } collapsable={false}>
-                <View style={{ flexDirection: 'row', height: activitiesValues.length * 50, paddingVertical: 8 }}>
+                <View style={{ flexDirection: 'row', height: activitiesValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
                   <YAxis
                       data={activitiesValues}
                       yAccessor={({ index }) => index}
@@ -436,7 +435,7 @@ const ClientReport = ({ route, navigation }: any ) => {
                     ))
                   }
                   <View ref={ viewToSnapShotRef2 } collapsable={false}>
-                  <View style={{ flexDirection: 'row', height: promptValues.length * 50, paddingVertical: 8 }}>
+                  <View style={{ flexDirection: 'row', height: promptValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
                     <YAxis
                         data={promptValues}
                         yAccessor={({ index }) => index}
@@ -472,7 +471,7 @@ const ClientReport = ({ route, navigation }: any ) => {
                     ))
                   }
                   <View ref={ viewToSnapShotRef3 } collapsable={false}>
-                  <View style={{ flexDirection: 'row', height: behaviour.length * 45, paddingVertical: 8 }}>
+                  <View style={{ flexDirection: 'row', height: behaviour.length * 45, paddingVertical: 8, paddingLeft: 5 }}>
                     <YAxis
                         data={behaviour}
                         yAccessor={({ index }) => index}
