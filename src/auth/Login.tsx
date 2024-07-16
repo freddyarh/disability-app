@@ -48,7 +48,7 @@ export const Login = ({ navigation }: Props) => {
             <View style={[ styles.iconInputLogin, { flexGrow: 1.3 }]}>
               <TextInput.Icon icon="email" iconColor={colors.titleColor} size={29}/> 
             </View>
-            <View  style={ styles.inputLogin }>
+            <View  style={ [styles.inputLogin, aspectRatio > 1.6 ? { maxWidth: '89%'} : { maxWidth: '94%'} ] }>
               <Input 
                 label={ "Email" }
                 placeholder={ "Email" }
@@ -63,7 +63,7 @@ export const Login = ({ navigation }: Props) => {
             <View style={[ styles.iconInputLogin, { flexGrow: 1.5 }]}>
               <TextInput.Icon icon="lock" iconColor={colors.titleColor} size={29}/> 
             </View>
-            <View  style={ styles.inputLogin }>
+            <View  style={ [styles.inputLogin, aspectRatio > 1.6 ? { maxWidth: '89%'} : { maxWidth: '94%'} ] }>
               <Input 
                 label={ "Password" }
                 placeholder={ "Your password" }
@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
   },
   inputLogin: {
     flexGrow: 10, 
-    maxWidth: '89%', 
     minWidth: '89%'
   }
 });

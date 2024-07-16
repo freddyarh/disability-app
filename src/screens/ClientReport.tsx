@@ -183,6 +183,7 @@ const ClientReport = ({ route, navigation }: any ) => {
       
         await captureRef( viewToSnapShotRef0, screenShotDetails(functionalValues.length)).then(
           async(uri) => {
+            
             arrUrl.push(uri)
           },
           (error) => console.error("Oops, snapshot failed", error)

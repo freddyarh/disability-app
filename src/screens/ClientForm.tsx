@@ -177,7 +177,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 setItems={setActivity}
                 setValue={ setValueActivity }
             />
-            <Text style={ globalStyles.label }>Incident Report?</Text>
+            <Text nativeID="clientFormCheckbox" style={ globalStyles.label }>Incident Report?</Text>
             <Checkbox
                 status={checked ? 'checked' : 'unchecked'}
                 onPress={() => {

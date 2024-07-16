@@ -24,13 +24,13 @@ const Datepicker = ({
     <View style={styles.modalView}>
         <DatePicker
             options={{
-                backgroundColor: colors.obsidium,
-                textHeaderColor: "#469ab6",
-                textDefaultColor: colors.white,
-                selectedTextColor: "#FFF",
-                mainColor: "#469ab6",
-                textSecondaryColor: "#FFFFFF",
-                borderColor: "rgb(101, 110, 164)",
+                backgroundColor: colors.white,
+                textHeaderColor: colors.black,
+                textDefaultColor: colors.black,
+                selectedTextColor: colors.white,
+                mainColor: colors.titleColor,
+                textSecondaryColor: 'rgba(52, 92, 184, 1)',
+                borderColor: 'rgba(52, 92, 184, 1)',
             }}
             mode={ mode }
             minimumDate={minimumDate}
@@ -40,8 +40,8 @@ const Datepicker = ({
             onSelectedChange={(date) => setDate(date)}
             onTimeChange={(date) => console.log(date)}
         />
-        <TouchableOpacity onPress={handleOnPressStartDate}>
-            <Text style={{ color: "white" }}>Close</Text>
+        <TouchableOpacity style={{ justifyContent: 'center', backgroundColor: 'rgba(52, 92, 184, 1)', height: 40, width: 110, marginBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, borderTopStartRadius: 10, borderTopEndRadius: 10, marginTop: -25 }} onPress={handleOnPressStartDate}>
+            <Text style={{ color: colors.white, textAlign: 'center' }}>Close</Text>
         </TouchableOpacity>
     </View>
     </View>
@@ -56,15 +56,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     modalView: {
-        margin: 20,
-        backgroundColor: colors.obsidium,
-        borderColor: "rgb(165,162, 169)",
+        backgroundColor: 'rgba(255, 255, 255, 1)',
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 20,
-        padding: 35,
-        width: "98%",
-        shadowColor: "#000",
+        borderBottomStartRadius: 10,
+        borderBottomEndRadius: 10,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+        borderColor: 'rgba(52, 92, 184, 1)',
+        borderWidth: 1,
+        paddingTop: 10,
+        width: "90%",
+        // shadowColor: "#000",
         shadowOffset: {
             width: 0,
             height: 2,

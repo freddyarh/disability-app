@@ -104,7 +104,7 @@ const Clients = ({ navigation }: any ) => {
                                 <Text style={{ fontSize: Platform.OS === 'android' ? 20 : 17, marginBottom: 10, }}>{ client.name }</Text>
                                 { user?.role === "SUPER_ADMIN" && (
                                     <>
-                                    <Text style={{ marginBottom: 7, fontSize: Platform.OS === 'android' ? 17 : 15 }}>Staff</Text>
+                                    <Text style={{ marginBottom: 7, fontSize: Platform.OS === 'android' ? 17 : 15, color: 'rgba(52, 92, 184, 1)' }}>Staff</Text>
                                         { client.user.map(( user, index ): any => (
                                             <View key={ index } style={{  flexDirection: 'row' }}>
                                                 <Avatar.Icon icon="account-tie" color={ colors.aquaGreen } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />

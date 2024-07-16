@@ -56,7 +56,7 @@ export const StaffMembers = ({ navigation }: any) => {
                     subtitleStyle={{ color: colors.black }}
                     subtitle={ user.email }
                     left={(props) => <Avatar.Icon {...props} color={ "white" } style={{ backgroundColor: colors.aquaMist }} icon="account" />}
-                    right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
+                    // right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
                   />
                 ))}
           </View>
@@ -69,7 +69,7 @@ export const StaffMembers = ({ navigation }: any) => {
               subtitleStyle={{ color: colors.black }}
               subtitle={ user.email }
               left={(props) => <Avatar.Icon {...props} color={ "white" } style={{ backgroundColor: colors.aquaMist }} icon="account" />}
-              right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
+              // right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
               />
               ))}
           </View>
