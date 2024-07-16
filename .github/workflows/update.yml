@@ -31,5 +31,5 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Publish update
-        run: eas update --auto
+      - name: Publish production android
+        run: eas build --profile production --platform android
