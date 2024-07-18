@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Keyboard } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Keyboard } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
+import Animated, { FadeIn } from 'react-native-reanimated';
 import{ AuthContext } from '../context/AuthContext';
 import { functionList, promptList, activities, displayedBehaviour } from '../helpers/ClientFormList'
 import Button from '../components/Button';
@@ -96,9 +97,9 @@ const ClientForm = ({ route, navigation }: any) => {
 
     }
   return (
-    <ScrollView>
+    <Animated.ScrollView entering={ FadeIn.duration(500)}>
         <ScreenTitle navigation={ navigation } clientName={ clientName } />
-        <View style={[globalStyles.container, { minHeight: height - 50 }]}>
+        <View style={[globalStyles.container]}>
             <Text style={ globalStyles.label }>Time</Text>
             <TouchableOpacity>
                 <Input 
@@ -197,7 +198,7 @@ const ClientForm = ({ route, navigation }: any) => {
             />
             <Button label="Create" onPress={ handleCLientForm } disabled={false}/>
         </View>
-    </ScrollView>
+    </Animated.ScrollView>
   )
 }
 

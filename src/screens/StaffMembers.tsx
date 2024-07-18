@@ -1,6 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import disabilityApi from '../api/disabilityApi';
-import { ScrollView, StyleSheet, Text, View, useWindowDimensions, RefreshControl } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions, RefreshControl } from 'react-native';
 import { Avatar, Card, IconButton } from 'react-native-paper';
 import { User } from '../interfaces/appInterfaces';
 import Button from '../components/Button';
@@ -8,6 +8,7 @@ import { globalStyles } from '../styles/globalStyles';
 import IconGoBack from '../components/IconGoBack';
 import { LoadingScreen } from './LoadingScreen';
 import { colors } from '../styles/colors';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 export const StaffMembers = ({ navigation }: any) => {
   
@@ -39,11 +40,11 @@ export const StaffMembers = ({ navigation }: any) => {
   if ( usersSuperAdmin.length === 0 ) return <LoadingScreen />;
   
   return (
-    <ScrollView
+    <Animated.ScrollView
         refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      <View style={[ globalStyles.container, { minHeight: height }]}>
+      } entering={ FadeIn.duration(500)}>
+      <View style={[ globalStyles.container ]}>
         <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist } />
         <Button label={ "Create new staff" } onPress={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />
         <View style={{ marginTop: 20 }}>
@@ -75,7 +76,7 @@ export const StaffMembers = ({ navigation }: any) => {
           </View>
         </View>
       </View> 
-    </ScrollView>
+    </Animated.ScrollView>
   )
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Platform, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, useWindowDimensions, Keyboard, Text } from 'react-native';
+import { View, Platform, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Alert, useWindowDimensions, Keyboard, Text } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import { gendersOptions, supportNetworkOptions } from '../../assets/RadioDataGender';
 
@@ -12,6 +12,7 @@ import Datepicker from '../components/Datepicker';
 import disabilityApi from '../api/disabilityApi';
 import IconGoBack from '../components/IconGoBack';
 import { setNewFormatDate } from '../helpers/setNewFormatDate';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 const CreateClientProfile = ({ navigation }: any) => {
 
@@ -102,8 +103,8 @@ const CreateClientProfile = ({ navigation }: any) => {
     }
 
   return (
-    <ScrollView>
-        <View style={[ globalStyles.container, { minHeight: height - 50 } ]}>
+    <Animated.ScrollView entering={ FadeIn.duration(500) }>
+        <View style={[ globalStyles.container ]}>
             <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist } />
             <KeyboardAvoidingView 
                 behavior={ ( Platform.OS === 'ios') ? 'padding': 'padding' }
@@ -209,7 +210,7 @@ const CreateClientProfile = ({ navigation }: any) => {
                 </View>
             </KeyboardAvoidingView>
         </View>
-    </ScrollView>
+    </Animated.ScrollView>
   )
 }
 

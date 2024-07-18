@@ -25,6 +25,7 @@ const Input = ({ label, placeholder, accessibilityLabelledBy="", value, setValue
   const [eyeButton, setEyeButton] = useState(true);
 
   const iconEye = useCallback(() => {
+    
     setEyeButton(!eyeButton);
   }, [eyeButton]);
 
@@ -33,6 +34,7 @@ const Input = ({ label, placeholder, accessibilityLabelledBy="", value, setValue
     <>
       <TextInput
           accessibilityLabel="input"
+          autoCapitalize={"none"}
           accessibilityLabelledBy={ accessibilityLabelledBy }
           textColor={ disabled ? 'gray' : inputTextColor}
           autoCorrect={ false }

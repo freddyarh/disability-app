@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Alert, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { AuthContext } from '../context/AuthContext';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -35,8 +36,8 @@ export const Login = ({ navigation }: Props) => {
   const aspectRatio = height/width;
 
   return (
-    <ScrollView>
-      <View style={[ globalStyles.login, { height: height - 55 } ]}>
+    // <Animated.ScrollView entering={ FadeIn.duration(500) }>
+      <Animated.View style={[ globalStyles.container, { marginTop: -10 }]} entering={ FadeIn.duration(500) }>
           <View style={styles.containerImg}>
             <Image
               style={[styles.logo, aspectRatio > 1.6 ? { maxHeight: 200, height: height * 0.3  } : { maxHeight: 270, height: height * 0.3  }]}
@@ -85,8 +86,8 @@ export const Login = ({ navigation }: Props) => {
           >
             <Text style={styles.forgotPassword}>Forgot Password?</Text>
           </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </Animated.View>
+    
   )
 }
 
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
   containLoginInput: {
     flexDirection: 'row', 
     alignItems: 'center', 
-    marginBottom: 15
+    marginBottom: 4
   },
   iconInputLogin: {
     height: '45%', 

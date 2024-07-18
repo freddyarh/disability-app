@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, useWindowDimensions, ScrollView, Alert, Keyboard } from 'react-native';
+import { Text, View, useWindowDimensions, Alert, Keyboard } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import DropDown from '../components/DropDown';
@@ -62,8 +63,8 @@ const CreateStaffMembers = ({ navigation }: any) => {
   };
 
   return (
-    <ScrollView>
-      <View style={[ globalStyles.container, { minHeight: height }]}>
+    <Animated.ScrollView entering={ FadeIn.duration(500) }>
+      <View style={[ globalStyles.container ]}>
           <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist } />
           <View style={{ marginTop: 20 }} >
             <Text style={ globalStyles.label }>Name</Text>
@@ -111,7 +112,7 @@ const CreateStaffMembers = ({ navigation }: any) => {
             <Button label="Create Staff" onPress={ handleCreateStaff } disabled={false}/>
           </View>
       </View>
-    </ScrollView>
+    </Animated.ScrollView>
   )
 }
 

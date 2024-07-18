@@ -4,14 +4,7 @@ import { colors } from "./colors";
 
 export const globalStyles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: '4%',
-        backgroundColor: colors.white
-    },
-    login: {
-        flex: 1,
-        padding: '4%',
-        backgroundColor: "rgb(6, 3, 2)"
     },
     forgotPassword:{
         fontSize: 15,

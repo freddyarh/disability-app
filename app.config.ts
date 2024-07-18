@@ -5,7 +5,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "Respond Ability",
   slug: "RespondAbility",
-  version: "1.0.6",
+  version: "1.0.7",
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "light",
@@ -29,7 +29,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: "com.RespondAbility",
-    versionCode: 6,
+    versionCode: 7,
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#000000"
@@ -38,7 +38,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       image: "./assets/splash.png",
       resizeMode: "contain",
       backgroundColor: "#000000"
-    }
+    },
+    "softwareKeyboardLayoutMode": "pan"
   },
   web: {
     favicon: "./assets/favicon.png"

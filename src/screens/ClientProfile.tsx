@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useWindowDimensions, View, Alert, ScrollView, Keyboard, Text } from 'react-native';
+import { useWindowDimensions, View, Alert, Keyboard, Text } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import DropDown from '../components/DropDown';
@@ -70,8 +71,8 @@ const ClientProfile = ({ route, navigation }: any ) => {
     if (!dataClient) return <LoadingScreen />;
     
     return (
-    <ScrollView>
-        <View style={[ globalStyles.container, { minHeight: height }]}>
+    <Animated.ScrollView entering={ FadeIn.duration(500)}>
+        <View style={[ globalStyles.container ]}>
             <View style={{ marginBottom: 10 }}>
                 <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist }/>
             </View>
@@ -144,7 +145,7 @@ const ClientProfile = ({ route, navigation }: any ) => {
                 disabled={ false }
             />
         </View>
-    </ScrollView>
+    </Animated.ScrollView>
   )
 }
 
