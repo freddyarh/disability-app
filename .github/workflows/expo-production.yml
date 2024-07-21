@@ -2,8 +2,6 @@ name: expo production
 on: 
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   update:
