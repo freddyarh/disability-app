@@ -18,5 +18,5 @@ export const colors = {
     danger: '#FF0D0E',
     gray: '#666666',
     grayLight: '#ccc',
-    black: '#0a0a0a',
+    black: "rgb(6, 3, 2)",
   };

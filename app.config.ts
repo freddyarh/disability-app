@@ -5,14 +5,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "Respond Ability",
   slug: "RespondAbility",
-  version: "1.0.6",
+  version: "1.0.8",
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "light",
   splash: {
     image: "./assets/splash.png",
     resizeMode: "contain",
-    backgroundColor: "#000000"
+    backgroundColor: "#060302"
   },
   assetBundlePatterns: [
     "**/*"
@@ -24,21 +24,23 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     splash: {
       image: "./assets/splash.png",
       resizeMode: "contain",
-      backgroundColor: "#000000"
+      backgroundColor: "#060302"
     }
   },
   android: {
+    backgroundColor: "#060302",
     package: "com.RespondAbility",
-    versionCode: 6,
+    versionCode: 8,
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
-      backgroundColor: "#000000"
+      backgroundColor: "#060302"
     },
     splash: {
       image: "./assets/splash.png",
       resizeMode: "contain",
-      backgroundColor: "#000000"
-    }
+      backgroundColor: "#060302"
+    },
+    "softwareKeyboardLayoutMode": "pan"
   },
   web: {
     favicon: "./assets/favicon.png"

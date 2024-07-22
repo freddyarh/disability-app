@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useWindowDimensions } from 'react-native';
@@ -33,31 +32,43 @@ export const AuthNavigator = () => {
       }}
     >
       <Stack.Screen name="Login" component={ Login } options={{
+          contentStyle: {
+            backgroundColor: colors.black
+          },
           title: '',
           headerTintColor: "rgb(99, 81, 159)",
           headerStyle: {
-            backgroundColor: "rgb(6, 3, 2)"
+            backgroundColor: colors.black
           },
         }}/>
       <Stack.Screen name="ForgotPassword" component={ ForgotPassword } options={{
+          contentStyle: {
+            backgroundColor: colors.black
+          },
           title: 'Forgot Password',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}/>
       <Stack.Screen name="InsertCode" component={ InsertCode } options={{
+          contentStyle: {
+            backgroundColor: colors.black
+          },
           title: 'Insert Code',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}/>
       <Stack.Screen name="ChangePassword" component={ ChangePassword } options={{
+          contentStyle: {
+            backgroundColor: colors.black
+          },
           title: 'Change Password',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}/>
     </Stack.Navigator>
@@ -81,10 +92,13 @@ export const DrawerNavigator = () => {
         name={ "Clients" } 
         component={ Clients }
         options={{
+          sceneContainerStyle: {
+            backgroundColor: colors.white,
+          },
           title: 'Participants',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}
         />
@@ -92,10 +106,13 @@ export const DrawerNavigator = () => {
         name={ "Create Staff Members" } 
         component={ CreateStaffMembers }
         options={{
+          sceneContainerStyle: {
+            backgroundColor: colors.white,
+          },
           title: 'Create Staff Members',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}
         />
@@ -103,10 +120,13 @@ export const DrawerNavigator = () => {
         name={ "Staff Members" } 
         component={ StaffMembers }
         options={{
+          sceneContainerStyle: {
+            backgroundColor: colors.white,
+          },
           title: 'Users',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}
         />
@@ -114,10 +134,13 @@ export const DrawerNavigator = () => {
         name={ "Client Profile" } 
         component={ ClientProfile }
         options={{
+          sceneContainerStyle: {
+            backgroundColor: colors.white,
+          },
           title: 'Client Profile',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}
         />
@@ -125,32 +148,41 @@ export const DrawerNavigator = () => {
         name={ "CreateClientProfile" } 
         component={ CreateClientProfile }
         options={{
+          sceneContainerStyle: {
+            backgroundColor: colors.white,
+          },
           title: 'Create Client Profile',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}
         />
-      <Drawer.Screen 
+      <Drawer.Screen
         name={ "Client Form" } 
         component={ ClientForm }
         options={{
+          sceneContainerStyle: {
+            backgroundColor: colors.white,
+          },
           title: 'Client Form',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+              backgroundColor: colors.black,
           },
         }}
         />
-      <Drawer.Screen 
+      <Drawer.Screen
         name={ "Client Report" } 
         component={ ClientReport }
         options={{
+          sceneContainerStyle: {
+            backgroundColor: colors.white,
+          },
           title: 'Client Report',
           headerTintColor: colors.titleColor,
           headerStyle: {
-              backgroundColor: "rgb(6, 3, 2)",
+            backgroundColor: colors.black,
           },
         }}
         />
@@ -165,8 +197,6 @@ export const Navigator = () => {
   if ( status === 'checking' ) return <LoadingScreen color={ colors.titleColor } backgroundColor={ colors.black } />
 
   return (
-    // <NavigationContainer>
-
     <>
       {
         ( status !== 'authenticated') 
@@ -178,7 +208,5 @@ export const Navigator = () => {
           )
         }
     </>
-
-    // </NavigationContainer>
   );
 }

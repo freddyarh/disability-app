@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Platform, RefreshControl, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { Avatar, Card, Button as ButtonPaper } from 'react-native-paper';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
@@ -81,11 +81,11 @@ const Clients = ({ navigation }: any ) => {
 
     return (
         
-        <ScrollView
+        <Animated.ScrollView
             refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-            <View style={[globalStyles.container, { minHeight: height }]}>
+        } entering={ FadeIn.duration(500)}>
+            <View style={[globalStyles.container]}>
 
                 { user?.role === "SUPER_ADMIN" && (
                     <View style={{ marginBottom: 10 }}>
@@ -98,7 +98,7 @@ const Clients = ({ navigation }: any ) => {
                     <View key={ index } style={[ styles.clientBox, { marginTop: 10 } ]}>
                         <View style={ styles.btnRow }>
                             <Text style={{ alignSelf: 'flex-start' }} onPress={() => navigation.goBack()}>
-                                <Avatar.Icon icon="account" color={ 'white' } size={ 40 } style={{ backgroundColor: colors.aquaGreen }} />
+                                <Avatar.Icon icon="account" color={ colors.white } size={ 40 } style={{ backgroundColor: colors.aquaGreen }} />
                             </Text>
                             <View style={{ flexDirection: 'column', marginLeft: 20 }}>
                                 <Text style={{ fontSize: Platform.OS === 'android' ? 20 : 17, marginBottom: 10, }}>{ client.name }</Text>
@@ -143,7 +143,7 @@ const Clients = ({ navigation }: any ) => {
                     </View>
                 ))}
             </View>
-        </ScrollView>
+        </Animated.ScrollView>
     
     )
 }

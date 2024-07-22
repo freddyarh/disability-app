@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react'
-import { Alert, Text, View } from 'react-native'
+import { Alert, View } from 'react-native'
+import Animated, { FadeIn } from 'react-native-reanimated';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -33,8 +34,8 @@ const ChangePassword = ({ route, navigation }: any) => {
     }
   }
   return (
-    <View style={ globalStyles.login }>
-      <View style={{ marginBottom: 15 }}>
+    <Animated.View style={ globalStyles.container } entering={ FadeIn.duration(500) }>
+      <View style={{ marginBottom: 4 }}>
           <Input 
             label="New password"
             placeholder={ "New password" }
@@ -61,7 +62,7 @@ const ChangePassword = ({ route, navigation }: any) => {
           onPress={ handleChangePassword } 
           disabled={false}
         />
-    </View>
+    </Animated.View>
   )
 }
 

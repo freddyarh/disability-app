@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Text, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -38,7 +39,7 @@ export const InsertCode = ({ route, navigation }: any) => {
     
   }
   return (
-    <View style={ globalStyles.login }>
+    <Animated.View style={ globalStyles.container } entering={ FadeIn.duration(500) }>
         <Text style={{ color: 'white', marginVertical: 20, fontSize: 16 }}>Please insert the code</Text>
         <Input 
           label="Code" 
@@ -52,7 +53,7 @@ export const InsertCode = ({ route, navigation }: any) => {
           }}
         />
         <Button label="Send" onPress={ handleCode } disabled={false}/>
-    </View>
+    </Animated.View>
   )
 }
 

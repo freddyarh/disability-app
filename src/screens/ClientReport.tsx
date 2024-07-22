@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Keyboard, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard, Dimensions } from 'react-native';
 import { BarChart, Grid, YAxis } from 'react-native-svg-charts';
 import { Text as TextSVG } from 'react-native-svg';
 import * as scale from 'd3-scale';
@@ -16,6 +16,7 @@ import Input from '../components/Input';
 import { colors } from '../styles/colors';
 import { setNewFormatDate } from '../helpers/setNewFormatDate';
 import ScreenTitle from '../components/ScreenTitle';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 const ClientReport = ({ route, navigation }: any ) => {
 
@@ -287,248 +288,237 @@ const ClientReport = ({ route, navigation }: any ) => {
       </TextSVG>
   )));
 
-  return (
-    <>
-      <View style={{ 
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: colors.white 
-      }}/>
-          
-      <ScrollView>
-       <ScreenTitle navigation={ navigation } clientName={ clientName } />
-        <View style={{ padding: '4%' }}>
-       <Text style={ globalStyles.label }>Start date</Text>
+  return (  
+    <Animated.ScrollView entering={ FadeIn.duration(500) }>
+      <ScreenTitle navigation={ navigation } clientName={ clientName } />
+      <View style={globalStyles.container}>
+      <Text style={ globalStyles.label }>Start date</Text>
+        <TouchableOpacity>
+          <Input 
+              label={"Start date"} 
+              value={ startDate }
+              onPressIn={ handleOnPressStartDate }
+          />
+          </TouchableOpacity>
+          <Datepicker 
+              mode={ "calendar" }
+              openStartDatePicker={ openStartDatePicker }
+              startDate={ initDate }
+              maximumDate={ today_ }
+              minimumDate={ dateOneYearLess }
+              startedDate={ startedDate }
+              handleChangeStartDate={ handleChangeStartDate }
+              setDate={ setStartDate }
+              handleOnPressStartDate={ handleOnPressStartDate }
+          />
+          <Text style={ globalStyles.label }>End date</Text>
           <TouchableOpacity>
             <Input 
-                label={"Start date"} 
-                value={ startDate }
-                onAccion={ handleOnPressStartDate }
+                label={"End date"} 
+                value={ endDate }
+                onPressIn={ handleOnPressEndDate }
             />
-            </TouchableOpacity>
-            <Datepicker 
-                mode={ "calendar" }
-                openStartDatePicker={ openStartDatePicker }
-                startDate={ initDate }
-                maximumDate={ today_ }
-                minimumDate={ dateOneYearLess }
-                startedDate={ startedDate }
-                handleChangeStartDate={ handleChangeStartDate }
-                setDate={ setStartDate }
-                handleOnPressStartDate={ handleOnPressStartDate }
-            />
-            <Text style={ globalStyles.label }>End date</Text>
-            <TouchableOpacity>
-              <Input 
-                  label={"End date"} 
-                  value={ endDate }
-                  onAccion={ handleOnPressEndDate }
-              />
-            </TouchableOpacity>
-            <Datepicker 
-                mode={ "calendar" }
-                openStartDatePicker={ openEndDatePicker }
-                startDate={ today_ }
-                maximumDate={ today_ }
-                minimumDate={ startDate }
-                handleChangeStartDate={ handleChangeEndDate }
-                setDate={ setEndDate }
-                handleOnPressStartDate={ handleOnPressEndDate }
-            />
-            <Button 
-              label={ "Create report" }
-              onPress={ createReportByClient }
-              disabled={ false }
-            />
+          </TouchableOpacity>
+          <Datepicker 
+              mode={ "calendar" }
+              openStartDatePicker={ openEndDatePicker }
+              startDate={ today_ }
+              maximumDate={ today_ }
+              minimumDate={ startDate }
+              handleChangeStartDate={ handleChangeEndDate }
+              setDate={ setEndDate }
+              handleOnPressStartDate={ handleOnPressEndDate }
+          />
+          <Button 
+            label={ "Create report" }
+            onPress={ createReportByClient }
+            disabled={ false }
+          />
+      </View>
+      { loading && (
+        <View>
+          <LoadingScreen color={ colors.firstColor } />
         </View>
-        { loading && (
-          <View>
-            <LoadingScreen color={ colors.firstColor } />
-          </View>
-        )}
-        {
-          createReport && (
-            totalForms === 0 ? (
-              <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 18, fontWeight: 'bold'}}>Total: {`${ totalForms }`} forms</Text>
-            ) : (
-            <View style={{ backgroundColor: '#ffff'}}>
-              <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 18, fontWeight: 'bold'}}>Total: {`${ totalForms }`} forms</Text>
-                <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Functionality</Text>
-                {
-                  functionalValues.map((name, index) => (
-                    <View key={index}>
-                      <Text style={{ paddingLeft: '4%' }}>{ `- ${name.alias} (${name.label}): ${name.value}` }</Text>
-                    </View>
-                  ))
-                }
-                <View ref={ viewToSnapShotRef0 } collapsable={false}>
-                <View style={{ flexDirection: 'row', height: functionalValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
-                  <YAxis
-                      data={functionalValues}
-                      yAccessor={({ index }) => index}
-                      scale={scale.scaleBand}
-                      contentInset={{ top: 10, bottom: 10 }}
-                      spacing={0.2}
-                      formatLabel={(_, index) => functionalValues[ index ].label}
-                  />
-                  <BarChart
-                      style={{ flex: 1, marginLeft: 8 }}
-                      data={functionalValues}
-                      horizontal={true}
-                      yAccessor={({ item }) => item.value}
-                      yMax={ functionalityMaxCounts > 0 ? functionalityMaxCounts + 0.7 : totalForms + 0.2 }
-                      yMin={0}
-                      svg={{ fill: colors.forestGreen }}
-                      contentInset={{ top: 10, bottom: 10 }}
-                      spacing={0.2}
-                      gridMin={0}
-                  >
-                      <Grid direction={Grid.Direction.VERTICAL}/>
-                      <Labels />
-                  </BarChart>
-                </View>
-              </View>
-                <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Activities</Text>
-                {
-                  activitiesValues.map((name, index) => (
-                    <View key={index}>
-                      <Text style={{ paddingLeft: '4%' }}>{ `- ${name.alias} (${name.label}): ${name.value}` }</Text>
-                    </View>
-                  ))
-                }
-                <View ref={ viewToSnapShotRef1 } collapsable={false}>
-                <View style={{ flexDirection: 'row', height: activitiesValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
-                  <YAxis
-                      data={activitiesValues}
-                      yAccessor={({ index }) => index}
-                      scale={scale.scaleBand}
-                      contentInset={{ top: 10, bottom: 10 }}
-                      spacing={0.2}
-                      formatLabel={(_, index) => activitiesValues[ index ].label}
-                  />
-                  <BarChart
-                      style={{ flex: 1, marginLeft: 8 }}
-                      data={activitiesValues}
-                      horizontal={true}
-                      yAccessor={({ item }) => item.value}
-                      yMax={ activitiesMaxCounts > 0 ? activitiesMaxCounts + 0.7 : totalForms + 0.2 }
-                      yMin={0}
-                      svg={{ fill: colors.forestGreen }}
-                      contentInset={{ top: 10, bottom: 10 }}
-                      spacing={0.2}
-                      gridMin={0}
-                  >
-                      <Grid direction={Grid.Direction.VERTICAL}/>
-                      <Labels />
-                  </BarChart>
-                </View>
-              </View>
-
-                <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Prompt</Text>
-                  {
-                    promptValues.map((name, index) => (
-                      <View key={index}>
-                      <Text style={{ paddingLeft: '4%' }}>{ `- ${name.alias} (${name.label}): ${name.value}` }</Text>
-                    </View>
-                    ))
-                  }
-                  <View ref={ viewToSnapShotRef2 } collapsable={false}>
-                  <View style={{ flexDirection: 'row', height: promptValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
-                    <YAxis
-                        data={promptValues}
-                        yAccessor={({ index }) => index}
-                        scale={scale.scaleBand}
-                        contentInset={{ top: 10, bottom: 10 }}
-                        spacing={0.2}
-                        formatLabel={(_, index) => promptValues[ index ].label}
-                    />
-                    <BarChart
-                        style={{ flex: 1, marginLeft: 8 }}
-                        data={promptValues}
-                        horizontal={true}
-                        yAccessor={({ item }) => item.value}
-                        yMax={ promptMaxCounts > 0 ? promptMaxCounts + 0.7 : totalForms + 0.2 }
-                        yMin={0}
-                        svg={{ fill: colors.forestGreen }}
-                        contentInset={{ top: 10, bottom: 10 }}
-                        spacing={0.2}
-                        gridMin={0}
-                    >
-                        <Grid direction={Grid.Direction.VERTICAL}/>
-                        <Labels />
-                    </BarChart>
-                </View>
-              </View>
-              
-                <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Behaviour</Text>
-                  {
-                    behaviour.map((name, index) => (
-                      <View key={index}>
-                        <Text style={{ paddingLeft: '4%' }}>{ `- ${name.alias} (${name.label}): ${name.value}` }</Text>
-                      </View>
-                    ))
-                  }
-                  <View ref={ viewToSnapShotRef3 } collapsable={false}>
-                  <View style={{ flexDirection: 'row', height: behaviour.length * 45, paddingVertical: 8, paddingLeft: 5 }}>
-                    <YAxis
-                        data={behaviour}
-                        yAccessor={({ index }) => index}
-                        scale={scale.scaleBand}
-                        contentInset={{ top: 10, bottom: 10 }}
-                        spacing={0.2}
-                        formatLabel={(_, index) => behaviour[ index ].label}
-                    />
-                    <BarChart
-                        style={{ flex: 1, marginLeft: 8 }}
-                        data={behaviour}
-                        horizontal={true}
-                        yAccessor={({ item }) => item.value}
-                        yMax={ behaviourMaxCounts > 0 ? behaviourMaxCounts + 0.7 : totalForms + 0.2 }
-                        yMin={0}
-                        svg={{ fill: colors.forestGreen }}
-                        contentInset={{ top: 10, bottom: 10 }}
-                        spacing={0.2}
-                        gridMin={0}
-                    >
-                        <Grid direction={Grid.Direction.VERTICAL}/>
-                        <Labels />
-                    </BarChart>
-                </View>
-              </View>  
-              <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Comments</Text>
-
+      )}
+      {
+        createReport && (
+          totalForms === 0 ? (
+            <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 18, fontWeight: 'bold'}}>Total: {`${ totalForms }`} forms</Text>
+          ) : (
+          <Animated.View style={{ backgroundColor: '#ffff'}} entering={ FadeIn.duration(500) }>
+            <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 18, fontWeight: 'bold'}}>Total: {`${ totalForms }`} forms</Text>
+              <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Functionality</Text>
               {
-                dataComments.length === 0 ? (
-                  <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 15 }}>There are no comments to display</Text>
-                ): (
-                
-                  dataComments.map( (val: ClientForm, index) => (
-                    <View key={ index } style={{ marginHorizontal: "4%", marginVertical: "3%"  }}>
-                      <Text style={{ fontWeight: "bold", marginTop: "0%" }}>Date: <Text style={{ fontWeight: "normal" }}>{ val.date }</Text></Text>
-                      <Text style={{ fontWeight: "bold", marginTop: "1%"  }}>Comment:</Text>
-                      <Text>{ val.comment }</Text>
-                      <Text style={{ fontWeight: "bold", marginTop: "1%"  }}>Incident report: <Text style={{ fontWeight: "normal" }}>{ val.incidentReport ? "Yes" : "No" }</Text></Text>
-                    </View>
-                  ))
-                )
+                functionalValues.map((name, index) => (
+                  <View key={index}>
+                    <Text style={{ paddingLeft: '4%' }}>{ `- ${name.alias} (${name.label}): ${name.value}` }</Text>
+                  </View>
+                ))
               }
-              <View style={{ paddingHorizontal: '4%' }}>
-                <Button 
-                  label={ "Create PDF" }
-                  onPress={ snapshot }
-                  disabled={ false }
+              <View ref={ viewToSnapShotRef0 } collapsable={false}>
+              <View style={{ flexDirection: 'row', height: functionalValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
+                <YAxis
+                    data={functionalValues}
+                    yAccessor={({ index }) => index}
+                    scale={scale.scaleBand}
+                    contentInset={{ top: 10, bottom: 10 }}
+                    spacing={0.2}
+                    formatLabel={(_, index) => functionalValues[ index ].label}
                 />
-                <View style={styles.spacer} />
+                <BarChart
+                    style={{ flex: 1, marginLeft: 8 }}
+                    data={functionalValues}
+                    horizontal={true}
+                    yAccessor={({ item }) => item.value}
+                    yMax={ functionalityMaxCounts > 0 ? functionalityMaxCounts + 0.7 : totalForms + 0.2 }
+                    yMin={0}
+                    svg={{ fill: colors.forestGreen }}
+                    contentInset={{ top: 10, bottom: 10 }}
+                    spacing={0.2}
+                    gridMin={0}
+                >
+                    <Grid direction={Grid.Direction.VERTICAL}/>
+                    <Labels />
+                </BarChart>
               </View>
             </View>
-            )
+              <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Activities</Text>
+              {
+                activitiesValues.map((name, index) => (
+                  <View key={index}>
+                    <Text style={{ paddingLeft: '4%' }}>{ `- ${name.alias} (${name.label}): ${name.value}` }</Text>
+                  </View>
+                ))
+              }
+              <View ref={ viewToSnapShotRef1 } collapsable={false}>
+              <View style={{ flexDirection: 'row', height: activitiesValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
+                <YAxis
+                    data={activitiesValues}
+                    yAccessor={({ index }) => index}
+                    scale={scale.scaleBand}
+                    contentInset={{ top: 10, bottom: 10 }}
+                    spacing={0.2}
+                    formatLabel={(_, index) => activitiesValues[ index ].label}
+                />
+                <BarChart
+                    style={{ flex: 1, marginLeft: 8 }}
+                    data={activitiesValues}
+                    horizontal={true}
+                    yAccessor={({ item }) => item.value}
+                    yMax={ activitiesMaxCounts > 0 ? activitiesMaxCounts + 0.7 : totalForms + 0.2 }
+                    yMin={0}
+                    svg={{ fill: colors.forestGreen }}
+                    contentInset={{ top: 10, bottom: 10 }}
+                    spacing={0.2}
+                    gridMin={0}
+                >
+                    <Grid direction={Grid.Direction.VERTICAL}/>
+                    <Labels />
+                </BarChart>
+              </View>
+            </View>
+
+              <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Prompt</Text>
+                {
+                  promptValues.map((name, index) => (
+                    <View key={index}>
+                    <Text style={{ paddingLeft: '4%' }}>{ `- ${name.alias} (${name.label}): ${name.value}` }</Text>
+                  </View>
+                  ))
+                }
+                <View ref={ viewToSnapShotRef2 } collapsable={false}>
+                <View style={{ flexDirection: 'row', height: promptValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
+                  <YAxis
+                      data={promptValues}
+                      yAccessor={({ index }) => index}
+                      scale={scale.scaleBand}
+                      contentInset={{ top: 10, bottom: 10 }}
+                      spacing={0.2}
+                      formatLabel={(_, index) => promptValues[ index ].label}
+                  />
+                  <BarChart
+                      style={{ flex: 1, marginLeft: 8 }}
+                      data={promptValues}
+                      horizontal={true}
+                      yAccessor={({ item }) => item.value}
+                      yMax={ promptMaxCounts > 0 ? promptMaxCounts + 0.7 : totalForms + 0.2 }
+                      yMin={0}
+                      svg={{ fill: colors.forestGreen }}
+                      contentInset={{ top: 10, bottom: 10 }}
+                      spacing={0.2}
+                      gridMin={0}
+                  >
+                      <Grid direction={Grid.Direction.VERTICAL}/>
+                      <Labels />
+                  </BarChart>
+              </View>
+            </View>
+            
+              <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Behaviour</Text>
+                {
+                  behaviour.map((name, index) => (
+                    <View key={index}>
+                      <Text style={{ paddingLeft: '4%' }}>{ `- ${name.alias} (${name.label}): ${name.value}` }</Text>
+                    </View>
+                  ))
+                }
+                <View ref={ viewToSnapShotRef3 } collapsable={false}>
+                <View style={{ flexDirection: 'row', height: behaviour.length * 45, paddingVertical: 8, paddingLeft: 5 }}>
+                  <YAxis
+                      data={behaviour}
+                      yAccessor={({ index }) => index}
+                      scale={scale.scaleBand}
+                      contentInset={{ top: 10, bottom: 10 }}
+                      spacing={0.2}
+                      formatLabel={(_, index) => behaviour[ index ].label}
+                  />
+                  <BarChart
+                      style={{ flex: 1, marginLeft: 8 }}
+                      data={behaviour}
+                      horizontal={true}
+                      yAccessor={({ item }) => item.value}
+                      yMax={ behaviourMaxCounts > 0 ? behaviourMaxCounts + 0.7 : totalForms + 0.2 }
+                      yMin={0}
+                      svg={{ fill: colors.forestGreen }}
+                      contentInset={{ top: 10, bottom: 10 }}
+                      spacing={0.2}
+                      gridMin={0}
+                  >
+                      <Grid direction={Grid.Direction.VERTICAL}/>
+                      <Labels />
+                  </BarChart>
+              </View>
+            </View>  
+            <Text style={{ paddingVertical: '4%', textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>Comments</Text>
+
+            {
+              dataComments.length === 0 ? (
+                <Text style={{ paddingVertical: '4%', paddingHorizontal: '4%', fontSize: 15 }}>There are no comments to display</Text>
+              ): (
+              
+                dataComments.map( (val: ClientForm, index) => (
+                  <View key={ index } style={{ marginHorizontal: "4%", marginVertical: "3%"  }}>
+                    <Text style={{ fontWeight: "bold", marginTop: "0%" }}>Date: <Text style={{ fontWeight: "normal" }}>{ val.date }</Text></Text>
+                    <Text style={{ fontWeight: "bold", marginTop: "1%"  }}>Comment:</Text>
+                    <Text>{ val.comment }</Text>
+                    <Text style={{ fontWeight: "bold", marginTop: "1%"  }}>Incident report: <Text style={{ fontWeight: "normal" }}>{ val.incidentReport ? "Yes" : "No" }</Text></Text>
+                  </View>
+                ))
+              )
+            }
+            <View style={{ paddingHorizontal: '4%' }}>
+              <Button 
+                label={ "Create PDF" }
+                onPress={ snapshot }
+                disabled={ false }
+              />
+              <View style={styles.spacer} />
+            </View>
+          </Animated.View>
           )
-        }
-      </ScrollView>
-    </>
+        )
+      }
+    </Animated.ScrollView>
   )
 };
 

@@ -1,5 +1,6 @@
 import React, { useReducer, useState } from 'react';
 import { Alert, Platform, Text, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -40,12 +41,14 @@ export const ForgotPassword = ({ navigation }: any ) => {
     
   }
   return (
-    <View style={ globalStyles.login }>
-        <Text style={{ color: 'white', marginVertical: 20, fontSize: Platform.OS === 'android' ? 20 : 17 }}>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
+    <View style={ globalStyles.container }>
+        <Text nativeID="formForgotPassword" style={{ color: 'white', marginVertical: 20, fontSize: Platform.OS === 'android' ? 20 : 17 }}>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
         <Input 
           label="Email"
+          accessibilityLabelledBy={"formForgotPassword"}
+          textContentType={"emailAddress"}
           placeholder={ "Email" }
-          backgroundInputColor={"black"}
+          backgroundInputColor={"black"}ß
           inputTextColor="white"
           value={ email }
           setValue={ setEmail }
