@@ -47,10 +47,12 @@ export const Login = ({ navigation }: Props) => {
           </View>
           <View style={ styles.containLoginInput }>
             <View style={[ styles.iconInputLogin, { flexGrow: 1.3 }]}>
-              <TextInput.Icon icon="email" iconColor={colors.titleColor} size={29}/> 
+              <TextInput.Icon nativeID="formLoginEmail" icon="email" iconColor={colors.titleColor} size={29}/> 
             </View>
             <View  style={ [styles.inputLogin, aspectRatio > 1.6 ? { maxWidth: '89%'} : { maxWidth: '94%'} ] }>
-              <Input 
+              <Input
+                accessibilityLabelledBy={'formLoginEmail'}  
+                textContentType={"emailAddress"}
                 label={ "Email" }
                 placeholder={ "Email" }
                 value={ email }
@@ -62,10 +64,12 @@ export const Login = ({ navigation }: Props) => {
             </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}>
             <View style={[ styles.iconInputLogin, { flexGrow: 1.5 }]}>
-              <TextInput.Icon icon="lock" iconColor={colors.titleColor} size={29}/> 
+              <TextInput.Icon nativeID="formLoginPassword" icon="lock" iconColor={colors.titleColor} size={29}/> 
             </View>
             <View  style={ [styles.inputLogin, aspectRatio > 1.6 ? { maxWidth: '89%'} : { maxWidth: '94%'} ] }>
-              <Input 
+              <Input
+                accessibilityLabelledBy={'formLoginPassword'}
+                textContentType={"password"}
                 label={ "Password" }
                 placeholder={ "Your password" }
                 value={ password }

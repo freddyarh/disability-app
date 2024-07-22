@@ -24,7 +24,7 @@ export const globalStyles = StyleSheet.create({
     },
     label: {
         marginVertical: 6,
-        color: colors.black,
+        color: colors.aquaDark,
         fontSize: 18
     }
 });

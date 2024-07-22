@@ -19,7 +19,6 @@ import ScreenTitle from '../components/ScreenTitle';
 const ClientForm = ({ route, navigation }: any) => {
 
     const { user: { uid }} = useContext(AuthContext);
-    const { height } = useWindowDimensions();
     const { clientUid, clientName } = route.params;
 
     const _today = new Date();
@@ -105,7 +104,7 @@ const ClientForm = ({ route, navigation }: any) => {
                 <Input 
                     label={"Time"} 
                     value={ date }
-                    onAccion={ handleOnPressStartDate }
+                    onPressIn={ handleOnPressStartDate }
                 />
             </TouchableOpacity>
             <Datepicker 
@@ -180,6 +179,7 @@ const ClientForm = ({ route, navigation }: any) => {
             />
             <Text nativeID="clientFormCheckbox" style={ globalStyles.label }>Incident Report?</Text>
             <Checkbox
+                testID="clientFormCheckbox"
                 status={checked ? 'checked' : 'unchecked'}
                 onPress={() => {
                     setChecked(!checked);

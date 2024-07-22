@@ -297,7 +297,7 @@ const ClientReport = ({ route, navigation }: any ) => {
           <Input 
               label={"Start date"} 
               value={ startDate }
-              onAccion={ handleOnPressStartDate }
+              onPressIn={ handleOnPressStartDate }
           />
           </TouchableOpacity>
           <Datepicker 
@@ -316,7 +316,7 @@ const ClientReport = ({ route, navigation }: any ) => {
             <Input 
                 label={"End date"} 
                 value={ endDate }
-                onAccion={ handleOnPressEndDate }
+                onPressIn={ handleOnPressEndDate }
             />
           </TouchableOpacity>
           <Datepicker 

@@ -6,13 +6,13 @@ import { globalStyles } from '../styles/globalStyles';
 interface Props {
     label: string,
     placeholder?: string,
-    accessibilityLabelledBy?: string;
+    textContentType?: "none" | "password" | "emailAddress" | 'familyName'| 'givenName' | 'jobTitle' | 'location' | 'middleName' | 'name',
+    accessibilityLabelledBy?: string,
     value: string,
     setValue?: React.SetStateAction<any>,
     onAccion?: () => void,
-    secureTextEntry?: boolean,
+    onPressIn?: () => void,
     rightEye?: any,
-    rightEyeButton?: any,
     multiline?: boolean,
     disabled?: boolean;
     keyboardType?: "default" | "numeric";
@@ -20,7 +20,7 @@ interface Props {
     inputTextColor?: "white" | "black";
 }
 
-const Input = ({ label, placeholder, accessibilityLabelledBy="", value, setValue, onAccion, secureTextEntry, rightEye, rightEyeButton, multiline=false, disabled=false, keyboardType='default', backgroundInputColor="white", inputTextColor="black"}: Props ) => {
+const Input = ({ label, placeholder, textContentType="none", accessibilityLabelledBy="", value, setValue, onAccion, onPressIn, rightEye, multiline=false, disabled=false, keyboardType='default', backgroundInputColor="white", inputTextColor="black"}: Props ) => {
   
   const [eyeButton, setEyeButton] = useState(true);
 
@@ -29,10 +29,11 @@ const Input = ({ label, placeholder, accessibilityLabelledBy="", value, setValue
     setEyeButton(!eyeButton);
   }, [eyeButton]);
 
-  const eye = eyeButton ? <TextInput.Icon icon="eye" size={33} iconColor={ colors.titleColor } onPress={ iconEye }/> : <TextInput.Icon icon="eye-off" size={33} iconColor={ colors.titleColor } onPress={ iconEye } />;
+  const eye = eyeButton ? <TextInput.Icon nativeID="eye" icon="eye" size={33} iconColor={ colors.titleColor } onPress={ iconEye }/> : <TextInput.Icon nativeID="eye-off" icon="eye-off" size={33} iconColor={ colors.titleColor } onPress={ iconEye } />;
   return (
     <>
       <TextInput
+          textContentType={textContentType}
           accessibilityLabel="input"
           autoCapitalize={"none"}
           accessibilityLabelledBy={ accessibilityLabelledBy }
@@ -42,6 +43,7 @@ const Input = ({ label, placeholder, accessibilityLabelledBy="", value, setValue
           mode="flat"
           keyboardType={ keyboardType }
           secureTextEntry={ rightEye ? eyeButton : false }
+          onPressIn={onPressIn}
           onFocus={ onAccion }
           label={ label }
           placeholder={ placeholder }

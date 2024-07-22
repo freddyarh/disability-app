@@ -42,11 +42,13 @@ export const ForgotPassword = ({ navigation }: any ) => {
   }
   return (
     <View style={ globalStyles.container }>
-        <Text style={{ color: 'white', marginVertical: 20, fontSize: Platform.OS === 'android' ? 20 : 17 }}>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
+        <Text nativeID="formForgotPassword" style={{ color: 'white', marginVertical: 20, fontSize: Platform.OS === 'android' ? 20 : 17 }}>Enter the email associated with your account and we'll send an email with instructions to reset your password.</Text>
         <Input 
           label="Email"
+          accessibilityLabelledBy={"formForgotPassword"}
+          textContentType={"emailAddress"}
           placeholder={ "Email" }
-          backgroundInputColor={"black"}
+          backgroundInputColor={"black"}ß
           inputTextColor="white"
           value={ email }
           setValue={ setEmail }

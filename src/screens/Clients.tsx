@@ -98,7 +98,7 @@ const Clients = ({ navigation }: any ) => {
                     <View key={ index } style={[ styles.clientBox, { marginTop: 10 } ]}>
                         <View style={ styles.btnRow }>
                             <Text style={{ alignSelf: 'flex-start' }} onPress={() => navigation.goBack()}>
-                                <Avatar.Icon icon="account" color={ 'white' } size={ 40 } style={{ backgroundColor: colors.aquaGreen }} />
+                                <Avatar.Icon icon="account" color={ colors.white } size={ 40 } style={{ backgroundColor: colors.aquaGreen }} />
                             </Text>
                             <View style={{ flexDirection: 'column', marginLeft: 20 }}>
                                 <Text style={{ fontSize: Platform.OS === 'android' ? 20 : 17, marginBottom: 10, }}>{ client.name }</Text>

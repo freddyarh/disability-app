@@ -127,18 +127,20 @@ const ClientProfile = ({ route, navigation }: any ) => {
                 disabled
             />
             <Text nativeID="formClientProfileLabel8" style={ globalStyles.label }>Staffs</Text>
-            <DropDown
-                title={"Select Staff"}
-                items={dataUsers}
-                value={ valueUsers }
-                setItems={setDataUsers}
-                setValue={ setValueUsers }
-                open={ open1 }
-                setOpen={(val: boolean) => {
-                    setOpen1(val);
-                }}
-                multiple
-            />
+            <View accessibilityLabelledBy={'formClientProfileLabel8'} >
+                <DropDown
+                    title={"Select Staff"}
+                    items={dataUsers}
+                    value={ valueUsers }
+                    setItems={setDataUsers}
+                    setValue={ setValueUsers }
+                    open={ open1 }
+                    setOpen={(val: boolean) => {
+                        setOpen1(val);
+                    }}
+                    multiple
+                />
+            </View>
             <Button
                 label={ "Update client" }
                 onPress={ updateClient }
