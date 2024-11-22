@@ -76,58 +76,51 @@ const ClientProfile = ({ route, navigation }: any ) => {
             <View style={{ marginBottom: 10 }}>
                 <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist }/>
             </View>
-            <Text nativeID="formClientProfileLabel1" style={ globalStyles.label }>Name</Text>
+            <Text style={ globalStyles.label }>Name</Text>
             <Input  
                 label={ "Name" } 
-                accessibilityLabelledBy={'formClientProfileLabel1'}
                 value={ dataClient.client.name } 
                 disabled
             />
-            <Text nativeID="formClientProfileLabel2" style={ globalStyles.label }>Date of Birth</Text>            
+            <Text style={ globalStyles.label }>Date of Birth</Text>            
             <Input  
                 label={ "Date of Birth" }
-                accessibilityLabelledBy={'formClientProfileLabel2'} 
                 value={ dataClient.client.dateOfBirth } 
                 disabled 
             />
-            <Text nativeID="formClientProfileLabel3" style={ globalStyles.label }>Gender</Text>
+            <Text style={ globalStyles.label }>Gender</Text>
             <Input  
                 label={ "Gender" }
-                accessibilityLabelledBy={'formClientProfileLabel3'} 
                 value={ dataClient.client.gender } 
                 disabled 
             />
-            <Text nativeID="formClientProfileLabel4" style={ globalStyles.label }>NDIS Number</Text>
+            <Text style={ globalStyles.label }>NDIS Number</Text>
             <Input 
                 label={"NDIS Number"}
-                accessibilityLabelledBy={'formClientProfileLabel4'} 
                 value={ JSON.stringify(dataClient.client.ndisNumber)}
                 disabled 
             />
-            <Text nativeID="formClientProfileLabel5" style={ globalStyles.label }>Emergency Contact</Text>      
+            <Text style={ globalStyles.label }>Emergency Contact</Text>      
             <Input 
                 label={"Emergency Contact"}
-                accessibilityLabelledBy={'formClientProfileLabel5'} 
                 value={ emergency }
                 setValue={ setEmergency }
                 keyboardType={ "numeric" }
             />
-            <Text nativeID="formClientProfileLabel6" style={ globalStyles.label }>NDIS Goals</Text>      
+            <Text style={ globalStyles.label }>NDIS Goals</Text>      
             <Input 
                 label={"NDIS Goals"}
-                accessibilityLabelledBy={'formClientProfileLabel6'} 
                 value={ NDISGoals }
                 setValue={ setNDISGoals }
             />
-            <Text nativeID="formClientProfileLabel7" style={ globalStyles.label }>Assessment</Text>
+            <Text style={ globalStyles.label }>Assessment</Text>
             <Input 
                 label={"Assessment"}
-                accessibilityLabelledBy={'formClientProfileLabel7'} 
                 value={ dataClient.client.assessment }
                 disabled
             />
-            <Text nativeID="formClientProfileLabel8" style={ globalStyles.label }>Staffs</Text>
-            <View accessibilityLabelledBy={'formClientProfileLabel8'} >
+            <Text style={ globalStyles.label }>Staffs</Text>
+            <View >
                 <DropDown
                     title={"Select Staff"}
                     items={dataUsers}
