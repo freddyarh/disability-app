@@ -45,13 +45,31 @@ export const Login = ({ navigation }: Props) => {
               resizeMode="contain"
             /> 
           </View>
-          <View style={ styles.containLoginInput }>
-            <View style={[ styles.iconInputLogin, { flexGrow: 1.3 }]}>
-              <TextInput.Icon nativeID="formLoginEmail" icon="email" iconColor={colors.titleColor} size={29}/> 
+          <View 
+            style={styles.containLoginInput}
+            accessibilityLabel="Login form container"
+            accessibilityRole="none"
+            testID="login-form-container"
+          >
+            <View 
+              style={[styles.iconInputLogin, { flexGrow: 1.3 }]}
+              accessibilityLabel="Email icon container"
+              testID="email-icon-container"
+              accessible={true}
+              accessibilityRole="none"
+            >
+              <TextInput.Icon 
+                nativeID="formLoginEmail" 
+                icon="email" 
+                color={colors.titleColor} 
+                size={29}
+                accessibilityLabel="Email input icon"
+              /> 
             </View>
             <View  style={ [styles.inputLogin, aspectRatio > 1.6 ? { maxWidth: '89%'} : { maxWidth: '94%'} ] }>
               <Input
-                accessibilityLabelledBy={'formLoginEmail'}  
+                accessibilityLabel="Email input field"
+                accessibilityHint="Enter your email address"
                 textContentType={"emailAddress"}
                 label={ "Email" }
                 placeholder={ "Email" }
@@ -68,7 +86,8 @@ export const Login = ({ navigation }: Props) => {
             </View>
             <View  style={ [styles.inputLogin, aspectRatio > 1.6 ? { maxWidth: '89%'} : { maxWidth: '94%'} ] }>
               <Input
-                accessibilityLabelledBy={'formLoginPassword'}
+                accessibilityLabel="Password input field"
+                accessibilityHint="Enter your password"
                 textContentType={"password"}
                 label={ "Password" }
                 placeholder={ "Your password" }

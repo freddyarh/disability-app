@@ -1,26 +1,27 @@
 import React, { useCallback, useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import { TextInput, StyleSheet } from 'react-native-paper';
 import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 
 interface Props {
-    label: string,
-    placeholder?: string,
-    textContentType?: "none" | "password" | "emailAddress" | 'familyName'| 'givenName' | 'jobTitle' | 'location' | 'middleName' | 'name',
-    accessibilityLabelledBy?: string,
-    value: string,
-    setValue?: React.SetStateAction<any>,
-    onAccion?: () => void,
-    onPressIn?: () => void,
-    rightEye?: any,
-    multiline?: boolean,
-    disabled?: boolean;
-    keyboardType?: "default" | "numeric";
-    backgroundInputColor?: "white" | "black";
-    inputTextColor?: "white" | "black";
+  onAccion?: () => void,
+  onPressIn?: () => void,
+  label: string,
+  placeholder?: string,
+  textContentType?: "none" | "password" | "emailAddress" | 'familyName'| 'givenName' | 'jobTitle' | 'location' | 'middleName' | 'name',
+  value: string,
+  setValue?: React.SetStateAction<any>,
+  rightEye?: any,
+  multiline?: boolean,
+  disabled?: boolean;
+  keyboardType?: "default" | "numeric";
+  backgroundInputColor?: "white" | "black";
+  inputTextColor?: "white" | "black";
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
 }
 
-const Input = ({ label, placeholder, textContentType="none", accessibilityLabelledBy="", value, setValue, onAccion, onPressIn, rightEye, multiline=false, disabled=false, keyboardType='default', backgroundInputColor="white", inputTextColor="black"}: Props ) => {
+const Input = ({ label, placeholder, textContentType="none", value, setValue, onAccion, onPressIn, rightEye, multiline=false, disabled=false, keyboardType='default', backgroundInputColor="white", inputTextColor="black"}: Props ) => {
   
   const [eyeButton, setEyeButton] = useState(true);
 
@@ -36,10 +37,10 @@ const Input = ({ label, placeholder, textContentType="none", accessibilityLabell
           textContentType={textContentType}
           accessibilityLabel="input"
           autoCapitalize={"none"}
-          accessibilityLabelledBy={ accessibilityLabelledBy }
+          // accessibilityLabelledBy={ accessibilityLabelledBy }
           textColor={ disabled ? 'gray' : inputTextColor}
           autoCorrect={ false }
-          style={ [globalStyles.textInput, disabled ? { backgroundColor: 'rgb(238, 233, 237)' } : { backgroundColor: backgroundInputColor }]}
+          style={ [globalStyles.textInput, disabled ? { backgroundColor: 'rgb(238, 233, 237)' } : { backgroundColor: backgroundInputColor }, { height: 48, minHeight: 48 }]}
           mode="flat"
           keyboardType={ keyboardType }
           secureTextEntry={ rightEye ? eyeButton : false }

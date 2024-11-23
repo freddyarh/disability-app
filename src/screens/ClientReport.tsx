@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard, Dimensions, Platform } from 'react-native';
 import { BarChart, Grid, YAxis } from 'react-native-svg-charts';
 import { Text as TextSVG } from 'react-native-svg';
 import * as scale from 'd3-scale';
@@ -166,111 +166,122 @@ const ClientReport = ({ route, navigation }: any ) => {
         height: number
         width: number
         quality: number
-        format: 'jpg'
+        format: 'jpg',
+        scale?: number 
       }
       const screenShotDetails = (graphRows: number) => {
-        let graphHeight = imgGraphPdfHeight + (graphRows * 10);
-        let graphWidth = imgGraphPdfWidth + (graphRows * 10);
+        let graphHeight = Platform.OS === 'ios' ? imgGraphPdfHeight + (graphRows * 10) : 1000;
+        let graphWidth = Platform.OS === 'ios' ? imgGraphPdfWidth + (graphRows * 10) : 1000;
         const ScreenShotDetails: Props = {
           fileName: "prueba",
           result: 'tmpfile',
           height: graphHeight,
           width: graphWidth,
           quality: 1,
-          format: 'jpg', 
+          format: 'jpg',
+          scale: 2
         };
         return ScreenShotDetails;
       }
-      
-        await captureRef( viewToSnapShotRef0, screenShotDetails(functionalValues.length)).then(
-          async(uri) => {
-            
-            arrUrl.push(uri)
-          },
-          (error) => console.error("Oops, snapshot failed", error)
-          );
-        await captureRef( viewToSnapShotRef1, screenShotDetails(activitiesValues.length)).then(
-          async(uri) => {
-          arrUrl.push(uri)
-        },
-        (error) => console.error("Oops, snapshot failed", error)
-        );
-        await captureRef( viewToSnapShotRef2, screenShotDetails(promptValues.length)).then(
-          async(uri) => {
-          arrUrl.push(uri)
-        },
-        (error) => console.error("Oops, snapshot failed", error)
-        );
-        await captureRef( viewToSnapShotRef3, screenShotDetails(behaviour.length)).then(
-            async(uri) => {
-              arrUrl.push(uri);
-            
+
+      const getBase64Image = async (uri: string) => {
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    };
+
+          try {
+            // Capture all refs and convert to base64
+            const uri0 = await captureRef(viewToSnapShotRef0, screenShotDetails(functionalValues.length));
+            const base64Img0 = await getBase64Image(uri0);
+            arrUrl.push(base64Img0 as string);
+    
+            const uri1 = await captureRef(viewToSnapShotRef1, screenShotDetails(activitiesValues.length));
+            const base64Img1 = await getBase64Image(uri1);
+            arrUrl.push(base64Img1 as string);
+    
+            const uri2 = await captureRef(viewToSnapShotRef2, screenShotDetails(promptValues.length));
+            const base64Img2 = await getBase64Image(uri2);
+            arrUrl.push(base64Img2 as string);
+    
+            const uri3 = await captureRef(viewToSnapShotRef3, screenShotDetails(behaviour.length));
+            const base64Img3 = await getBase64Image(uri3);
+            arrUrl.push(base64Img3 as string);
+    
             const html = `
             <html>
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
               </head>
               <body>
-                <div style="text-align: center;">
-                  <div style="padding: 3px; background-color: rgba(37, 190, 50, 0.2);">
-                    <h1 style="text-align: center;">
-                      Report ${clientName}
-                    </h1>
-                  </div>
-                  <p style="font-size: 18px; font-family: Helvetica Neue; font-weight: normal; margin-left: 23px;">
-                    <span style="font-weight: bold;">From:</span> ${startDate} <span style="font-weight: bold;">To:</span> ${endDate}
-                  </p>
-                  </div>
-                  <div>
-                    <p style="font-size: 18px; font-family: Helvetica Neue; font-weight: normal;;">
-                    <span style="font-weight: bold;">Total:</span> ${ totalForms } forms
+                <div style="margin: 10px;">
+                  <div style="text-align: center;">
+                    <div style="padding: 3px; background-color: rgba(37, 190, 50, 0.2);">
+                      <h1 style="text-align: center;">
+                        Report ${clientName}
+                      </h1>
+                    </div>
+                    <p style="font-size: 18px; font-family: Helvetica Neue; font-weight: normal; margin-left: 23px;">
+                      <span style="font-weight: bold;">From:</span> ${startDate} <span style="font-weight: bold;">To:</span> ${endDate}
                     </p>
+                    </div>
+                    <div>
+                      <p style="font-size: 18px; font-family: Helvetica Neue; font-weight: normal;;">
+                      <span style="font-weight: bold;">Total:</span> ${ totalForms } forms
+                      </p>
+                    </div>
+                    <table>
+                      <tr>
+                        <h3>Functionality</h3>
+                        ${functionalityLabels}
+                        <img src="${arrUrl[0]}" width="500" height="${functionalValues.length * 60}" />
+                      </tr>
+                      <tr>
+                        <h3>Activities</h3>
+                        ${activitiesLabels}
+                        <img src=${ arrUrl[1] } width="500" height=${ activitiesValues.length * 60 }/>
+                      </tr>
+                      <tr>
+                        <h3>Prompt</h3>
+                        ${promptLabels}
+                        <img src=${ arrUrl[2] } width="500" height=${ promptValues.length * 60 } />
+                      </tr>
+                      <tr>
+                        <h3>Behaviour</h3>
+                        ${behaviourLabels}
+                        <img src=${ arrUrl[3] } width="500" height=${ behaviour.length * 55 } />
+                      </tr>
+                    </table>
+                    <div style="margin-top: 10">
+                      <h2 style="text-align: center;">
+                        Comments
+                      </h2>
+                      ${str}
+                    </div>
                   </div>
-                  <table>
-                    <tr>
-                      <h3>Functionality</h3>
-                      ${functionalityLabels}
-                      <img src=${ arrUrl[0] } width="500" height=${ functionalValues.length * 60 } />
-                    </tr>
-                    <tr>
-                      <h3>Activities</h3>
-                      ${activitiesLabels}
-                      <img src=${ arrUrl[1] } width="500" height=${ activitiesValues.length * 60 }/>
-                    </tr>
-                    <tr>
-                      <h3>Prompt</h3>
-                      ${promptLabels}
-                      <img src=${ arrUrl[2] } width="500" height=${ promptValues.length * 60 } />
-                    </tr>
-                    <tr>
-                      <h3>Behaviour</h3>
-                      ${behaviourLabels}
-                      <img src=${ arrUrl[3] } width="500" height=${ behaviour.length * 55 } />
-                    </tr>
-                  </table>
-                  <div style="margin-top: 10">
-                    <h2 style="text-align: center;">
-                      Comments
-                    </h2>
-                    ${str}
-                  </div>
-              </body>
+                </body>
             </html>
             `;
-
-          await Print.printAsync({
-              html,
-              margins: {
-                  left: 15,
-                  top: 15,
-                  right: 14,
-                  bottom: 20,
-                },
-                printerUrl: selectedPrinter?.url, // iOS only
-              }).catch(err => console.log('This is the error ', err))
-          },
-            (error) => console.error("Oops, snapshot failed", error)
-          );
+    
+            await Print.printAsync({
+                html,
+                margins: {
+                  top: Platform.OS === 'ios' ? 15 : 130,
+                  bottom: Platform.OS === 'ios' ? 20 : 130,
+                  left: Platform.OS === 'ios' ? 15 : 15,
+                  right: Platform.OS === 'ios' ? 14 : 15,
+              },
+              printerUrl: selectedPrinter?.url,
+            });
+    
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        }
   };
 
   const CUT_OFF = 50
@@ -355,7 +366,11 @@ const ClientReport = ({ route, navigation }: any ) => {
                   </View>
                 ))
               }
-              <View ref={ viewToSnapShotRef0 } collapsable={false}>
+              <View 
+                ref={viewToSnapShotRef0} 
+                collapsable={false} 
+                style={{ backgroundColor: '#ffffff' }}
+              >
               <View style={{ flexDirection: 'row', height: functionalValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
                 <YAxis
                     data={functionalValues}
@@ -390,7 +405,7 @@ const ClientReport = ({ route, navigation }: any ) => {
                   </View>
                 ))
               }
-              <View ref={ viewToSnapShotRef1 } collapsable={false}>
+              <View ref={ viewToSnapShotRef1 } collapsable={false} style={{ backgroundColor: '#ffffff' }}>
               <View style={{ flexDirection: 'row', height: activitiesValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
                 <YAxis
                     data={activitiesValues}
@@ -426,7 +441,7 @@ const ClientReport = ({ route, navigation }: any ) => {
                   </View>
                   ))
                 }
-                <View ref={ viewToSnapShotRef2 } collapsable={false}>
+                <View ref={ viewToSnapShotRef2 } collapsable={false} style={{ backgroundColor: '#ffffff' }}>
                 <View style={{ flexDirection: 'row', height: promptValues.length * 50, paddingVertical: 8, paddingLeft: 5 }}>
                   <YAxis
                       data={promptValues}
@@ -462,7 +477,7 @@ const ClientReport = ({ route, navigation }: any ) => {
                     </View>
                   ))
                 }
-                <View ref={ viewToSnapShotRef3 } collapsable={false}>
+                <View ref={ viewToSnapShotRef3 } collapsable={false} style={{ backgroundColor: '#ffffff' }}>
                 <View style={{ flexDirection: 'row', height: behaviour.length * 45, paddingVertical: 8, paddingLeft: 5 }}>
                   <YAxis
                       data={behaviour}

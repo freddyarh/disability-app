@@ -177,9 +177,9 @@ const ClientForm = ({ route, navigation }: any) => {
                 setItems={setActivity}
                 setValue={ setValueActivity }
             />
-            <Text nativeID="clientFormCheckbox" style={ globalStyles.label }>Incident Report?</Text>
+            <Text style={ globalStyles.label }>Incident Report?</Text>
             <Checkbox
-                testID="clientFormCheckbox"
+                accessibilityLabel="Incident Report checkbox"
                 status={checked ? 'checked' : 'unchecked'}
                 onPress={() => {
                     setChecked(!checked);
@@ -188,7 +188,7 @@ const ClientForm = ({ route, navigation }: any) => {
                     setOpen3(false);
                     setOpen4(false);
                 }}
-                />
+            />
             <Text style={ globalStyles.label }>Comments</Text>
             <Input 
                 label="Comments" 

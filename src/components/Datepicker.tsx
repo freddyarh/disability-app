@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Modal, StyleSheet, TouchableOpacity } from 'react-native';
-import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
+import DatePicker from "react-native-modern-datepicker";
 import { colors } from '../styles/colors';
 
 const Datepicker = ({
@@ -27,10 +27,10 @@ const Datepicker = ({
                         backgroundColor: colors.white,
                         textHeaderColor: colors.black,
                         textDefaultColor: colors.black,
-                        selectedTextColor: colors.white,
-                        mainColor: colors.titleColor,
-                        textSecondaryColor: 'rgba(52, 92, 184, 1)',
-                        borderColor: 'rgba(52, 92, 184, 1)',
+                        selectedTextColor: '#FFFFFF',
+                        mainColor: '#1a3875',
+                        textSecondaryColor: '#1a3875',
+                        borderColor: '#1a3875',
                     }}
                     mode={ mode }
                     minimumDate={minimumDate}
@@ -40,8 +40,11 @@ const Datepicker = ({
                     onSelectedChange={(date) => setDate(date)}
                     onTimeChange={(date) => console.log(date)}
                 />
-                <TouchableOpacity style={{ justifyContent: 'center', backgroundColor: 'rgba(52, 92, 184, 1)', height: 40, width: 110, marginBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, borderTopStartRadius: 10, borderTopEndRadius: 10, marginTop: -25 }} onPress={handleOnPressStartDate}>
-                    <Text style={{ color: colors.white, textAlign: 'center' }}>Close All</Text>
+                <TouchableOpacity
+                    style={styles.closeButton} 
+                    onPress={handleOnPressStartDate}
+                >
+                    <Text style={styles.closeButtonText}>Close All</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -71,6 +74,19 @@ const styles = StyleSheet.create({
             width: 0,
             height: 2,
         },
+    },
+    closeButton: {
+        justifyContent: 'center',
+        backgroundColor: 'rgba(52, 92, 184, 1)',
+        height: 48,
+        width: 110,
+        marginBottom: 20,
+        borderRadius: 10,
+        marginTop: -25
+    },
+    closeButtonText: {
+        color: colors.white,
+        textAlign: 'center'
     }
 })
 
