@@ -30,7 +30,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     backgroundColor: "#060302",
     package: "com.RespondAbility",
-    versionCode: 8,
+    versionCode: 9,
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#060302"
