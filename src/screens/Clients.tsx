@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Platform, RefreshControl, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Avatar, Card, Button as ButtonPaper } from 'react-native-paper';
@@ -9,6 +9,7 @@ import { Client, Clients as ClientsInterface } from '../interfaces/appInterfaces
 import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { LoadingScreen } from './LoadingScreen';
+import Input from '../components/Input';
     
 
 const Clients = ({ navigation }: any ) => {
@@ -16,6 +17,8 @@ const Clients = ({ navigation }: any ) => {
     const { height } = useWindowDimensions();
 
     const [dataClients, setDataClients] = useState<Client[]>([]);
+    const [searchClient, setSearchClient] = useState<string>("");
+    const [debouncedSearch, setDebouncedSearch] = useState(searchClient);
     const [status, setStatus] = useState<Number>();
     const [statusByStaff, setStatusByStaff] = useState<Number>();
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -27,6 +30,14 @@ const Clients = ({ navigation }: any ) => {
             getClientsByStaff();
         }
     }, []);
+
+    useEffect(() => {
+    const handler = setTimeout(() => {
+        setDebouncedSearch(searchClient);
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(handler);
+}, [searchClient]);
 
     const getAllClients = async() => {
         const { data: { clients }, status } = await disabilityApi.get<ClientsInterface>('/clients/getAllClients');
@@ -52,6 +63,13 @@ const Clients = ({ navigation }: any ) => {
             }
         }, 1000);
       }, []);
+    
+    const filteringClients = useMemo(() => {
+        const search = debouncedSearch.toLowerCase();
+        return dataClients.filter((client: Client) =>
+            client.name.toLowerCase().includes(search)
+        );
+    }, [dataClients, debouncedSearch]);
     
     if ( (statusByStaff !== 200) && (status !== 200) ) return <LoadingScreen />;
 
@@ -88,12 +106,31 @@ const Clients = ({ navigation }: any ) => {
             <View style={[globalStyles.container]}>
 
                 { user?.role === "SUPER_ADMIN" && (
-                    <View style={{ marginBottom: 10 }}>
-                        <Button label={ "Create new client" } onPress={ () => navigation.navigate("CreateClientProfile")} disabled={ false } />
-                    </View>
+                    <>
+                        <View style={{ marginBottom: 18 }}>
+                            <Button label={ "Create new client" } onPress={ () => navigation.navigate("CreateClientProfile")} disabled={ false } />
+                        </View>
+                        <View style={{ marginBottom: 6 }}>
+                            <Input
+                                label="Search Client"
+                                placeholder=""
+                                value={ searchClient }
+                                setValue={ setSearchClient }
+                                onAccion={ () => {} }
+                                rightEye={ false }
+                                multiline={ false }
+                                disabled={ false }
+                                keyboardType="default"
+                                backgroundInputColor="white"
+                                inputTextColor="black"
+                                accessibilityLabel="Search input field"
+                                accessibilityHint="Enter the name of the client you want to search"
+                            />
+                        </View>
+                    </>
                 )}
 
-                { dataClients.map((client: Client, index: number): Client[] | any => (
+                { filteringClients.map((client: Client, index: number): Client[] | any => (
 
                     <View key={ index } style={[ styles.clientBox, { marginTop: 10 } ]}>
                         <View style={ styles.btnRow }>
