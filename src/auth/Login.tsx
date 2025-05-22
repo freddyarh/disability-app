@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import { globalStyles } from '../styles/globalStyles';
 import { colors } from '../styles/colors';
-import { TextInput } from 'react-native-paper';
+import  CustomTextInputIcon  from '../components/CustomTextInputIcon';
 
 interface Props extends NativeStackScreenProps<any, any> {}
 
@@ -58,7 +58,7 @@ export const Login = ({ navigation }: Props) => {
               accessible={true}
               accessibilityRole="none"
             >
-              <TextInput.Icon 
+              <CustomTextInputIcon  
                 nativeID="formLoginEmail" 
                 icon="email" 
                 color={colors.titleColor} 
@@ -79,10 +79,16 @@ export const Login = ({ navigation }: Props) => {
                 inputTextColor="white"
               />
             </View>
-            </View>
+          </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}>
             <View style={[ styles.iconInputLogin, { flexGrow: 1.5 }]}>
-              <TextInput.Icon nativeID="formLoginPassword" icon="lock" iconColor={colors.titleColor} size={29}/> 
+              <CustomTextInputIcon 
+                nativeID="formLoginPassword" 
+                icon="lock" 
+                color={colors.titleColor} 
+                size={29}
+                accessibilityLabel="Password input icon"
+              /> 
             </View>
             <View  style={ [styles.inputLogin, aspectRatio > 1.6 ? { maxWidth: '89%'} : { maxWidth: '94%'} ] }>
               <Input
