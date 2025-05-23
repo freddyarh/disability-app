@@ -1,5 +1,5 @@
 export const colors = {
-    aquaDark: "rgba(52, 92, 184, 1)",
+    aquaDark: "#0052CC",
     aquaGreen: "#2596be",
     aquaMiddle: "rgba(52, 92, 184, 0.8)",
     aquaMist: "rgba(52, 92, 184, 0.6)",

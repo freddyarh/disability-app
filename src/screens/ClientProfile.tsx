@@ -135,6 +135,7 @@ const ClientProfile = ({ route, navigation }: any ) => {
                 />
             </View>
             <Button
+                iconName="update"
                 label={ "Update client" }
                 onPress={ updateClient }
                 disabled={ false }

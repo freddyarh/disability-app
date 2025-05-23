@@ -21,6 +21,7 @@ export const globalStyles = StyleSheet.create({
         borderColor: colors.aquaDark,
         fontSize: Platform.OS === 'android' ? 17 : 16,
         marginBottom: 12,
+        fontFamily: 'Roboto'
     },
     label: {
         marginVertical: 6,

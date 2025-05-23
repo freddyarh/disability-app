@@ -203,6 +203,7 @@ const CreateClientProfile = ({ navigation }: any) => {
                         multiple
                     />
                     <Button 
+                        iconName="account-plus"
                         label={ "Create client" }
                         onPress={ createClient }
                         disabled={ false }

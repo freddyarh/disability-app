@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Platform, RefreshControl, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { Avatar, Card, Button as ButtonPaper } from 'react-native-paper';
+import { Avatar, TextInput, Button as ButtonPaper } from 'react-native-paper';
 import disabilityApi from '../api/disabilityApi';
 import Button from '../components/Button';
 import { AuthContext } from '../context/AuthContext';
@@ -76,10 +76,11 @@ const Clients = ({ navigation }: any ) => {
     interface Props {
         label: string,
         onPress: () => void,
+        iconName: string,
         backgroundColor: string
     }
 
-    const BtnBoxClient = ({ label, onPress, backgroundColor }: Props) => {
+    const BtnBoxClient = ({ label, onPress, iconName, backgroundColor }: Props) => {
         return (
             <TouchableOpacity 
                 style={
@@ -92,6 +93,7 @@ const Clients = ({ navigation }: any ) => {
                 onPress={ onPress }
                 disabled={ false }
              >
+                <Avatar.Icon icon={iconName} size={24} color="#fff" style={{ backgroundColor: 'rgba(0,0,0,0)' }}/>
                 <Text style={styles.btnText}>{ label }</Text>
             </TouchableOpacity>
         )
@@ -108,7 +110,7 @@ const Clients = ({ navigation }: any ) => {
                 { user?.role === "SUPER_ADMIN" && (
                     <>
                         <View style={{ marginBottom: 18 }}>
-                            <Button label={ "Create new client" } onPress={ () => navigation.navigate("CreateClientProfile")} disabled={ false } />
+                            <Button label={ "Create new client" } iconName="account-plus" onPress={ () => navigation.navigate("CreateClientProfile")} disabled={ false } />
                         </View>
                         <View style={{ marginBottom: 6 }}>
                             <Input
@@ -125,6 +127,7 @@ const Clients = ({ navigation }: any ) => {
                                 inputTextColor="black"
                                 accessibilityLabel="Search input field"
                                 accessibilityHint="Enter the name of the client you want to search"
+                                left={<TextInput.Icon icon="magnify" color={colors.aquaDark} />}
                             />
                         </View>
                     </>
@@ -138,14 +141,14 @@ const Clients = ({ navigation }: any ) => {
                                 <Avatar.Icon icon="account" color={ colors.white } size={ 40 } style={{ backgroundColor: colors.aquaGreen }} />
                             </Text>
                             <View style={{ flexDirection: 'column', marginLeft: 20 }}>
-                                <Text style={{ fontSize: Platform.OS === 'android' ? 20 : 17, marginBottom: 10, }}>{ client.name }</Text>
+                                <Text style={{ fontSize: Platform.OS === 'android' ? 20 : 17, marginBottom: 10, fontFamily: 'Roboto'}}>{ client.name }</Text>
                                 { user?.role === "SUPER_ADMIN" && (
                                     <>
-                                    <Text style={{ marginBottom: 7, fontSize: Platform.OS === 'android' ? 17 : 15, color: 'rgba(52, 92, 184, 1)' }}>Staff</Text>
+                                    <Text style={{ marginBottom: 7, fontSize: Platform.OS === 'android' ? 17 : 15, color: 'rgba(52, 92, 184, 1)', fontFamily: 'Roboto' }}>Staff</Text>
                                         { client.user.map(( user, index ): any => (
                                             <View key={ index } style={{  flexDirection: 'row' }}>
                                                 <Avatar.Icon icon="account-tie" color={ colors.aquaGreen } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />
-                                                <Text style={{ fontSize: Platform.OS === 'android' ? 17 : 15 }}> { user.name }</Text>
+                                                <Text style={{ fontSize: Platform.OS === 'android' ? 17 : 15, fontFamily: 'Roboto' }}> { user.name }</Text>
                                             </View>
                                         ))}
                                     </>
@@ -155,6 +158,7 @@ const Clients = ({ navigation }: any ) => {
                         <View style={ styles.btnRow }>
                             <BtnBoxClient 
                                     label={"Form"} 
+                                    iconName="pencil"
                                     backgroundColor={ colors.aquaDark } 
                                     onPress={ () => navigation.navigate("Client Form", {
                                         clientUid: client._id,
@@ -164,13 +168,16 @@ const Clients = ({ navigation }: any ) => {
                                 <>
                                     <BtnBoxClient 
                                         label={"Report"} 
+                                        iconName="chart-bar"
                                         backgroundColor={ colors.aquaGreen } 
                                         onPress={ () => navigation.navigate("Client Report", {
                                             clientUid: client._id,
                                             clientName: client.name
                                         }) }/>
                                     <BtnBoxClient 
-                                        label={"Info"} backgroundColor={ colors.aquaMiddle } 
+                                        label={"Info"} 
+                                        iconName="information-variant"
+                                        backgroundColor={ colors.aquaMiddle } 
                                         onPress={ () => navigation.navigate("Client Profile", {
                                             clientUid: client._id
                                     }) }/>
@@ -216,17 +223,19 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 20,
         marginRight: 5,
-        height: 50,
-        borderRadius: 30,
+        height: 45,
+        borderRadius: 20,
         color: colors.black,
-        padding: 10,
+        display: 'flex',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
     btnText: {
         fontSize: Platform.OS === 'android' ? 18 : 16,
         color: '#fff',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Roboto'
     }
   });
 

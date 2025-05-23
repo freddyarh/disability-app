@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { TextInput, StyleSheet } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
 import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 
@@ -12,6 +13,7 @@ interface Props {
   value: string,
   setValue?: React.SetStateAction<any>,
   rightEye?: any,
+  left?: React.ReactNode,
   multiline?: boolean,
   disabled?: boolean;
   keyboardType?: "default" | "numeric";
@@ -21,7 +23,7 @@ interface Props {
   accessibilityHint?: string;
 }
 
-const Input = ({ label, placeholder, textContentType="none", value, setValue, onAccion, onPressIn, rightEye, multiline=false, disabled=false, keyboardType='default', backgroundInputColor="white", inputTextColor="black"}: Props ) => {
+const Input = ({ label, placeholder, textContentType="none", value, setValue, onAccion, onPressIn, rightEye, left, multiline=false, disabled=false, keyboardType='default', backgroundInputColor="white", inputTextColor="black"}: Props ) => {
   
   const [eyeButton, setEyeButton] = useState(true);
 
@@ -30,7 +32,7 @@ const Input = ({ label, placeholder, textContentType="none", value, setValue, on
     setEyeButton(!eyeButton);
   }, [eyeButton]);
 
-  const eye = eyeButton ? <TextInput.Icon nativeID="eye" icon="eye" size={33} iconColor={ colors.titleColor } onPress={ iconEye }/> : <TextInput.Icon nativeID="eye-off" icon="eye-off" size={33} iconColor={ colors.titleColor } onPress={ iconEye } />;
+  const eye = eyeButton ? <TextInput.Icon nativeID="eye" icon="eye" size={33} color={ colors.titleColor } onPress={ iconEye }/> : <TextInput.Icon nativeID="eye-off" icon="eye-off" size={33} color={ colors.titleColor } onPress={ iconEye } />;
   return (
     <>
       <TextInput
@@ -54,6 +56,7 @@ const Input = ({ label, placeholder, textContentType="none", value, setValue, on
           disabled={ disabled }
           multiline={ multiline }
           right={rightEye ? eye : null}
+          left={left}
       />
     </>
   )

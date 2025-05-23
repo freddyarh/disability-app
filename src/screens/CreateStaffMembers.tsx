@@ -109,7 +109,7 @@ const CreateStaffMembers = ({ navigation }: any) => {
                 setItems={ setRole }
                 setValue={ setValueRole }
             />
-            <Button label="Create Staff" onPress={ handleCreateStaff } disabled={false}/>
+            <Button label="Create Staff" iconName="account-plus" onPress={ handleCreateStaff } disabled={false}/>
           </View>
       </View>
     </Animated.ScrollView>
