@@ -340,7 +340,8 @@ const ClientReport = ({ route, navigation }: any ) => {
               setDate={ setEndDate }
               handleOnPressStartDate={ handleOnPressEndDate }
           />
-          <Button 
+          <Button
+            iconName="chart-bar"
             label={ "Create report" }
             onPress={ createReportByClient }
             disabled={ false }
@@ -523,6 +524,7 @@ const ClientReport = ({ route, navigation }: any ) => {
             }
             <View style={{ paddingHorizontal: '4%' }}>
               <Button 
+                iconName="file-chart-outline"
                 label={ "Create PDF" }
                 onPress={ snapshot }
                 disabled={ false }

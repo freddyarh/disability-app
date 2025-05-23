@@ -5,7 +5,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "Respond Ability",
   slug: "RespondAbility",
-  version: "1.0.9",
+  version: "1.0.10",
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "light",
@@ -18,6 +18,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     "**/*"
   ],
   jsEngine: "hermes",
+  plugins: [
+    "expo-font"
+  ],
   ios: {
     supportsTablet: true,
     jsEngine: "jsc",

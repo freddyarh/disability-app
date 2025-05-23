@@ -46,7 +46,7 @@ export const StaffMembers = ({ navigation }: any) => {
       } entering={ FadeIn.duration(500)}>
       <View style={[ globalStyles.container ]}>
         <IconGoBack navigation={ navigation } backgroundColor={ colors.aquaMist } />
-        <Button label={ "Create new staff" } onPress={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />
+        <Button label={ "Create new staff" } iconName="account-plus" onPress={ () => navigation.navigate( "Create Staff Members" )} disabled={ false } />
         <View style={{ marginTop: 20 }}>
           <View>
             <Text style={ styles.title }>Super admin</Text>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const disabilityApi = axios.create({ baseURL: process.env.URL_DEV });
+const disabilityApi = axios.create({ baseURL: process.env.URL_PRO });
 
 disabilityApi.interceptors.request.use(
 
