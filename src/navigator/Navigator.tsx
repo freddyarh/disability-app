@@ -36,40 +36,48 @@ export const AuthNavigator = () => {
             backgroundColor: colors.black
           },
           title: '',
-          headerTintColor: "rgb(99, 81, 159)",
+          headerTintColor: colors.white,
           headerStyle: {
-            backgroundColor: colors.black
-          },
+            backgroundColor: colors.black,
+            borderBottomColor: colors.black,
+            borderBottomWidth: 1,
+          } as any,
         }}/>
       <Stack.Screen name="ForgotPassword" component={ ForgotPassword } options={{
           contentStyle: {
             backgroundColor: colors.black
           },
           title: 'Forgot Password',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}/>
       <Stack.Screen name="InsertCode" component={ InsertCode } options={{
           contentStyle: {
             backgroundColor: colors.black
           },
           title: 'Insert Code',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}/>
       <Stack.Screen name="ChangePassword" component={ ChangePassword } options={{
           contentStyle: {
             backgroundColor: colors.black
           },
           title: 'Change Password',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}/>
     </Stack.Navigator>
   )
@@ -96,10 +104,12 @@ export const DrawerNavigator = () => {
             backgroundColor: colors.white,
           },
           title: 'Participants',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}
         />
       <Drawer.Screen 
@@ -110,10 +120,12 @@ export const DrawerNavigator = () => {
             backgroundColor: colors.white,
           },
           title: 'Create Staff Members',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}
         />
       <Drawer.Screen 
@@ -124,10 +136,12 @@ export const DrawerNavigator = () => {
             backgroundColor: colors.white,
           },
           title: 'Users',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}
         />
       <Drawer.Screen 
@@ -138,10 +152,12 @@ export const DrawerNavigator = () => {
             backgroundColor: colors.white,
           },
           title: 'Client Profile',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}
         />
       <Drawer.Screen 
@@ -152,10 +168,12 @@ export const DrawerNavigator = () => {
             backgroundColor: colors.white,
           },
           title: 'Create Client Profile',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}
         />
       <Drawer.Screen
@@ -166,10 +184,12 @@ export const DrawerNavigator = () => {
             backgroundColor: colors.white,
           },
           title: 'Client Form',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
               backgroundColor: colors.black,
-          },
+              borderBottomColor: colors.black,
+              borderBottomWidth: 1,
+          } as any,
         }}
         />
       <Drawer.Screen
@@ -180,10 +200,12 @@ export const DrawerNavigator = () => {
             backgroundColor: colors.white,
           },
           title: 'Client Report',
-          headerTintColor: colors.titleColor,
+          headerTintColor: colors.white,
           headerStyle: {
             backgroundColor: colors.black,
-          },
+            borderBottomColor: colors.black,
+            borderBottomWidth: 1,
+          } as any,
         }}
         />
     </Drawer.Navigator>

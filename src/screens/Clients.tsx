@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Platform, RefreshControl, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { Platform, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Avatar, TextInput, Button as ButtonPaper } from 'react-native-paper';
 import disabilityApi from '../api/disabilityApi';
@@ -14,7 +14,6 @@ import Input from '../components/Input';
 
 const Clients = ({ navigation }: any ) => {
     const { user } = useContext(AuthContext);
-    const { height } = useWindowDimensions();
 
     const [dataClients, setDataClients] = useState<Client[]>([]);
     const [searchClient, setSearchClient] = useState<string>("");
@@ -93,7 +92,7 @@ const Clients = ({ navigation }: any ) => {
                 onPress={ onPress }
                 disabled={ false }
              >
-                <Avatar.Icon icon={iconName} size={24} color="#fff" style={{ backgroundColor: 'rgba(0,0,0,0)' }}/>
+                <Avatar.Icon icon={iconName} size={26} color={colors.aquaDark} style={{ backgroundColor: 'rgba(0,0,0,0)', }}/>
                 <Text style={styles.btnText}>{ label }</Text>
             </TouchableOpacity>
         )
@@ -115,7 +114,7 @@ const Clients = ({ navigation }: any ) => {
                         <View style={{ marginBottom: 6 }}>
                             <Input
                                 label="Search Client"
-                                placeholder=""
+                                placeholder="Search Client"
                                 value={ searchClient }
                                 setValue={ setSearchClient }
                                 onAccion={ () => {} }
@@ -127,7 +126,7 @@ const Clients = ({ navigation }: any ) => {
                                 inputTextColor="black"
                                 accessibilityLabel="Search input field"
                                 accessibilityHint="Enter the name of the client you want to search"
-                                left={<TextInput.Icon icon="magnify" color={colors.aquaDark} />}
+                                left={<TextInput.Icon icon="magnify" color={colors.aquaDark} size={35} accessibilityLabel='search-client' />}
                             />
                         </View>
                     </>
@@ -144,11 +143,11 @@ const Clients = ({ navigation }: any ) => {
                                 <Text style={{ fontSize: Platform.OS === 'android' ? 20 : 17, marginBottom: 10, fontFamily: 'Roboto'}}>{ client.name }</Text>
                                 { user?.role === "SUPER_ADMIN" && (
                                     <>
-                                    <Text style={{ marginBottom: 7, fontSize: Platform.OS === 'android' ? 17 : 15, color: 'rgba(52, 92, 184, 1)', fontFamily: 'Roboto' }}>Staff</Text>
+                                    <Text aria-label={`Label for Username${index}`} nativeID={`labelStaff${index}`} accessibilityLabel={`Staff${index}`} style={{ marginBottom: 7, fontSize: Platform.OS === 'android' ? 17 : 15, color: 'rgba(52, 92, 184, 1)', fontFamily: 'Roboto' }}>Staff</Text>
                                         { client.user.map(( user, index ): any => (
                                             <View key={ index } style={{  flexDirection: 'row' }}>
-                                                <Avatar.Icon icon="account-tie" color={ colors.aquaGreen } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />
-                                                <Text style={{ fontSize: Platform.OS === 'android' ? 17 : 15, fontFamily: 'Roboto' }}> { user.name }</Text>
+                                                <Avatar.Icon icon="account-tie" accessibilityLabel={`profile-account-${index}`} color={ colors.aquaGreen } size={ 30 } style={{ backgroundColor: colors.white, paddingBottom: 10 }} />
+                                                <Text aria-label={`staffs-${index}`} style={{ fontSize: Platform.OS === 'android' ? 17 : 15, fontFamily: 'Roboto' }}> { user.name }</Text>
                                             </View>
                                         ))}
                                     </>
@@ -159,7 +158,7 @@ const Clients = ({ navigation }: any ) => {
                             <BtnBoxClient 
                                     label={"Form"} 
                                     iconName="pencil"
-                                    backgroundColor={ colors.aquaDark } 
+                                    backgroundColor={ colors.white } 
                                     onPress={ () => navigation.navigate("Client Form", {
                                         clientUid: client._id,
                                         clientName: client.name
@@ -169,7 +168,7 @@ const Clients = ({ navigation }: any ) => {
                                     <BtnBoxClient 
                                         label={"Report"} 
                                         iconName="chart-bar"
-                                        backgroundColor={ colors.aquaGreen } 
+                                        backgroundColor={ colors.white } 
                                         onPress={ () => navigation.navigate("Client Report", {
                                             clientUid: client._id,
                                             clientName: client.name
@@ -177,7 +176,7 @@ const Clients = ({ navigation }: any ) => {
                                     <BtnBoxClient 
                                         label={"Info"} 
                                         iconName="information-variant"
-                                        backgroundColor={ colors.aquaMiddle } 
+                                        backgroundColor={ colors.white } 
                                         onPress={ () => navigation.navigate("Client Profile", {
                                             clientUid: client._id
                                     }) }/>
@@ -202,13 +201,14 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     clientBox: {
-        flexDirection: 'column',
+        display: 'flex',
+        // flexDirection: 'column',
         backgroundColor: colors.white,
         padding: 20,
         borderRadius: 10,
         marginBottom: 10,
         // Box shadow
-        shadowColor: "#000",
+        shadowColor: colors.aquaDark,
         shadowOffset: {
             width: 0,
             height: 3,
@@ -224,18 +224,19 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginRight: 5,
         height: 45,
-        borderRadius: 20,
-        color: colors.black,
+        borderRadius: 15,
+        color: colors.brightRed,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        borderColor: colors.aquaDark,
+        borderWidth: 1,
     },
     btnText: {
-        fontSize: Platform.OS === 'android' ? 18 : 16,
-        color: '#fff',
-        fontWeight: 'bold',
-        fontFamily: 'Roboto'
+        fontSize: 16,
+        color: colors.aquaDark,
+        fontFamily: 'Roboto',
     }
   });
 

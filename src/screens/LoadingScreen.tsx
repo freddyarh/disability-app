@@ -2,7 +2,7 @@ import React from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { colors } from '../styles/colors'
 
-export const LoadingScreen = ({ color=colors.black, backgroundColor = colors.white }) => {
+export const LoadingScreen = ({ color=colors.black, backgroundColor = colors.black }) => {
     return (
         <View style={{ 
             flex: 1,
