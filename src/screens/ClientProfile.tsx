@@ -10,6 +10,7 @@ import { Client } from '../interfaces/appInterfaces';
 import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { LoadingScreen } from './LoadingScreen';
+import LottieScreen from '../components/LottieScreen';
 
 const ClientProfile = ({ route, navigation }: any ) => {
 
@@ -21,6 +22,7 @@ const ClientProfile = ({ route, navigation }: any ) => {
     const [emergency, setEmergency] = useState<number | any>("");
     const [NDISGoals, setNDISGoals] = useState<string>("");
     const [valueUsers, setValueUsers ] = useState([]);
+    const [updateLottie, setUpdateLottie] = useState(false);
     const [open1, setOpen1] = useState(false);
     
     useEffect(() => {
@@ -54,19 +56,26 @@ const ClientProfile = ({ route, navigation }: any ) => {
         setDataUsers( usersList );
     }
     const updateClient = async() => {
-
         Keyboard.dismiss();
         setOpen1(false);
+        setUpdateLottie(true);
 
         try {
-
-            const { data: { msg }} = await disabilityApi.put<any>(`/clients/updateClient/${clientUid}`, { emergencyContact: Number(emergency), ndisGoals: NDISGoals, user: valueUsers });
-            Alert.alert("Success", msg)
-            
+            const { status } = await disabilityApi.put<any>(`/clients/updateClient/${clientUid}`, { emergencyContact: Number(emergency), ndisGoals: NDISGoals, user: valueUsers });
+            if(status !== 200) {
+                setUpdateLottie(false);
+                return console.log(status);
+            }
+            setTimeout(() => {
+                setUpdateLottie(false)
+            }, 2900);
         } catch (error) {
+            setUpdateLottie(false);
             console.log(error);
         }
     }
+
+    if(updateLottie) return <LottieScreen />
 
     if (!dataClient) return <LoadingScreen />;
     

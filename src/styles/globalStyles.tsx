@@ -4,7 +4,7 @@ import { colors } from "./colors";
 
 export const globalStyles = StyleSheet.create({
     container: {
-        padding: '4%',
+        padding: '3%',
     },
     forgotPassword:{
         fontSize: 15,
@@ -14,13 +14,12 @@ export const globalStyles = StyleSheet.create({
     },
     textInput: {
         borderWidth: 1,
-        borderBottomWidth: 0.8,
-        borderTopWidth: 0.8,
+        // borderBottomWidth: 0.8,
+        // borderTopWidth: 0.8,
         borderBottomColor: colors.aquaDark,
         borderTopColor: colors.aquaDark,
         borderColor: colors.aquaDark,
         fontSize: Platform.OS === 'android' ? 17 : 16,
-        marginBottom: 12,
         fontFamily: 'Roboto'
     },
     label: {

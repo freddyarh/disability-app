@@ -7,6 +7,7 @@ import { StatusBar } from 'react-native';
 import { colors } from './src/styles/colors';
 import { AuthProvider } from './src/context/AuthContext';
 import { LoadingScreen } from './src/screens/LoadingScreen';
+import LottieScreen from './src/components/LottieScreen';
 
 const AppState = ({ children }: any ) => {
   return(
@@ -24,6 +25,7 @@ const App = () => {
 
   if (!loaded) {
     return <LoadingScreen />; // Prevent showing content until fonts are loaded
+    // return <LottieScreen />; // Prevent showing content until fonts are loaded
   }
   return (
     <NavigationContainer>
