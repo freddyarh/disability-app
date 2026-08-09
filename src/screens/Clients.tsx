@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: colors.aquaDark,
+        borderColor: colors.black,
         borderWidth: 1,
     },
     btnText: {
