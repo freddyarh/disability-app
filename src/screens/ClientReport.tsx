@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Keyboard, Dimensions, Platform } from 'react-native';
 import { BarChart, Grid, YAxis } from 'react-native-svg-charts';
 import { Text as TextSVG } from 'react-native-svg';
@@ -15,22 +15,22 @@ import Input from '../components/Input';
 import { setNewFormatDate } from '../helpers/setNewFormatDate';
 import ScreenTitle from '../components/ScreenTitle';
 import Animated, { FadeIn } from 'react-native-reanimated';
+import { useAppTheme } from '../context/ThemeContext';
+import { ThemePalette } from '../styles/theme';
 
-const notion = {
-  bg: '#F7F6F3',
-  card: '#FFFFFF',
-  border: '#E9E9E7',
-  text: '#37352F',
-  textMuted: '#787774',
-  textLight: '#9B9A97',
-  accent: '#2383E2',
-  accentSoft: '#E8F3FC',
-  chartColors: {
-    functionality: '#2383E2',
-    activities: '#0F7B6C',
-    prompt: '#9065B0',
-    behaviour: '#D9730D',
-  },
+const chartColorsDefault = {
+  functionality: '#2383E2',
+  activities: '#0F7B6C',
+  prompt: '#9065B0',
+  behaviour: '#D9730D',
+};
+
+/** Brighter categorical colors for visibility on dark high-contrast backgrounds */
+const chartColorsHighContrast = {
+  functionality: '#5EB1FF',
+  activities: '#3DDC97',
+  prompt: '#D4A5FF',
+  behaviour: '#FFB347',
 };
 
 interface ChartDataItem {
@@ -51,22 +51,26 @@ interface StatChartProps {
 
 const CUT_OFF = 50;
 
-const ChartLabels = ({ x, y, bandwidth, data }: any) => (
-  data.map((value: ChartDataItem, index: number) => (
+const ChartLabels = ({ x, y, bandwidth, data }: any) => {
+  const { theme } = useAppTheme();
+
+  return data.map((value: ChartDataItem, index: number) => (
     <TextSVG
       key={index}
       x={value.value > CUT_OFF ? x(0) + 10 : x(value.value) + 10}
       y={y(index) + (bandwidth / 2)}
       fontSize={12}
-      fill={value.value > CUT_OFF ? '#FFFFFF' : notion.text}
+      fill={value.value > CUT_OFF ? '#FFFFFF' : theme.text}
       alignmentBaseline={'middle'}
     >
       {value.value}
     </TextSVG>
-  ))
-);
+  ));
+};
 
 const StatChart = ({ title, subtitle, data, maxCount, totalForms, barColor, chartRef }: StatChartProps) => {
+  const { theme } = useAppTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const chartHeight = Math.max(data.length * 44, 80);
 
   return (
@@ -101,7 +105,7 @@ const StatChart = ({ title, subtitle, data, maxCount, totalForms, barColor, char
                 contentInset={{ top: 10, bottom: 10 }}
                 spacing={0.25}
                 formatLabel={(_, index) => data[index].label}
-                svg={{ fill: notion.textMuted, fontSize: 11 }}
+                svg={{ fill: theme.textMuted, fontSize: 11 }}
               />
               <BarChart
                 style={styles.barChart}
@@ -115,7 +119,7 @@ const StatChart = ({ title, subtitle, data, maxCount, totalForms, barColor, char
                 spacing={0.25}
                 gridMin={0}
               >
-                <Grid direction={Grid.Direction.VERTICAL} svg={{ stroke: notion.border, strokeWidth: 1 }} />
+                <Grid direction={Grid.Direction.VERTICAL} svg={{ stroke: theme.border, strokeWidth: 1 }} />
                 <ChartLabels />
               </BarChart>
             </View>
@@ -126,22 +130,31 @@ const StatChart = ({ title, subtitle, data, maxCount, totalForms, barColor, char
   );
 };
 
-const CommentCard = ({ date, comment, incidentReport }: { date: string; comment: string; incidentReport: boolean }) => (
-  <View style={styles.commentCard}>
-    <Text style={styles.commentDate}>{date}</Text>
-    <Text style={styles.commentBody}>{comment}</Text>
-    <View style={styles.commentFooter}>
-      <Text style={styles.commentMetaLabel}>Incident report</Text>
-      <View style={[styles.badge, incidentReport ? styles.badgeWarning : styles.badgeNeutral]}>
-        <Text style={[styles.badgeText, incidentReport ? styles.badgeTextWarning : styles.badgeTextNeutral]}>
-          {incidentReport ? 'Yes' : 'No'}
-        </Text>
+const CommentCard = ({ date, comment, incidentReport }: { date: string; comment: string; incidentReport: boolean }) => {
+  const { theme } = useAppTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
+  return (
+    <View style={styles.commentCard}>
+      <Text style={styles.commentDate}>{date}</Text>
+      <Text style={styles.commentBody}>{comment}</Text>
+      <View style={styles.commentFooter}>
+        <Text style={styles.commentMetaLabel}>Incident report</Text>
+        <View style={[styles.badge, incidentReport ? styles.badgeWarning : styles.badgeNeutral]}>
+          <Text style={[styles.badgeText, incidentReport ? styles.badgeTextWarning : styles.badgeTextNeutral]}>
+            {incidentReport ? 'Yes' : 'No'}
+          </Text>
+        </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 
 const ClientReport = ({ route, navigation }: any) => {
+  const { theme, highContrast } = useAppTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const chartColors = highContrast ? chartColorsHighContrast : chartColorsDefault;
+
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   let imgGraphPdfHeight = 25;
@@ -413,7 +426,7 @@ const ClientReport = ({ route, navigation }: any) => {
 
       {loading && (
         <View style={styles.loadingWrap}>
-          <LoadingScreen color={notion.accent} />
+          <LoadingScreen color={theme.accent} />
         </View>
       )}
 
@@ -462,7 +475,7 @@ const ClientReport = ({ route, navigation }: any) => {
               data={functionalValues}
               maxCount={functionalityMaxCounts}
               totalForms={totalForms}
-              barColor={notion.chartColors.functionality}
+              barColor={chartColors.functionality}
               chartRef={viewToSnapShotRef0}
             />
             <StatChart
@@ -471,7 +484,7 @@ const ClientReport = ({ route, navigation }: any) => {
               data={activitiesValues}
               maxCount={activitiesMaxCounts}
               totalForms={totalForms}
-              barColor={notion.chartColors.activities}
+              barColor={chartColors.activities}
               chartRef={viewToSnapShotRef1}
             />
             <StatChart
@@ -480,7 +493,7 @@ const ClientReport = ({ route, navigation }: any) => {
               data={promptValues}
               maxCount={promptMaxCounts}
               totalForms={totalForms}
-              barColor={notion.chartColors.prompt}
+              barColor={chartColors.prompt}
               chartRef={viewToSnapShotRef2}
             />
             <StatChart
@@ -489,7 +502,7 @@ const ClientReport = ({ route, navigation }: any) => {
               data={behaviour}
               maxCount={behaviourMaxCounts}
               totalForms={totalForms}
-              barColor={notion.chartColors.behaviour}
+              barColor={chartColors.behaviour}
               chartRef={viewToSnapShotRef3}
             />
 
@@ -524,251 +537,252 @@ const ClientReport = ({ route, navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: notion.bg,
-  },
-  screenContent: {
-    paddingBottom: 32,
-  },
-  filterCard: {
-    backgroundColor: notion.card,
-    marginHorizontal: 16,
-    marginTop: 16,
-    padding: 20,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: notion.border,
-  },
-  sectionLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: notion.text,
-    marginBottom: 4,
-  },
-  sectionHint: {
-    fontSize: 13,
-    color: notion.textMuted,
-    marginBottom: 16,
-  },
-  fieldLabel: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: notion.textMuted,
-    marginTop: 8,
-    marginBottom: 4,
-  },
-  loadingWrap: {
-    paddingVertical: 40,
-  },
-  dashboard: {
-    paddingHorizontal: 16,
-    paddingTop: 8,
-  },
-  summaryCard: {
-    backgroundColor: notion.card,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: notion.border,
-    padding: 20,
-    marginBottom: 24,
-  },
-  summaryLabel: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: notion.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 8,
-  },
-  summaryTitle: {
-    fontSize: 22,
-    fontWeight: '600',
-    color: notion.text,
-    marginBottom: 4,
-  },
-  summaryPeriod: {
-    fontSize: 13,
-    color: notion.textMuted,
-    marginBottom: 20,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: notion.bg,
-    borderRadius: 6,
-    paddingVertical: 16,
-  },
-  statBox: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: notion.text,
-    marginBottom: 2,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: notion.textMuted,
-  },
-  statDivider: {
-    width: 1,
-    height: 32,
-    backgroundColor: notion.border,
-  },
-  dashboardHeading: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: notion.text,
-    marginBottom: 4,
-  },
-  dashboardSubheading: {
-    fontSize: 13,
-    color: notion.textMuted,
-    marginBottom: 16,
-  },
-  chartCard: {
-    backgroundColor: notion.card,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: notion.border,
-    padding: 16,
-    marginBottom: 12,
-  },
-  chartHeader: {
-    marginBottom: 12,
-  },
-  chartTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: notion.text,
-    marginBottom: 2,
-  },
-  chartSubtitle: {
-    fontSize: 12,
-    color: notion.textMuted,
-  },
-  legendList: {
-    marginBottom: 12,
-    gap: 6,
-  },
-  legendRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 2,
-  },
-  legendDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  legendText: {
-    flex: 1,
-    fontSize: 13,
-    color: notion.text,
-  },
-  legendValue: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: notion.textMuted,
-    marginLeft: 8,
-  },
-  chartCapture: {
-    backgroundColor: notion.card,
-  },
-  chartRow: {
-    flexDirection: 'row',
-    paddingVertical: 4,
-  },
-  barChart: {
-    flex: 1,
-    marginLeft: 8,
-  },
-  emptyChartText: {
-    fontSize: 13,
-    color: notion.textMuted,
-    fontStyle: 'italic',
-  },
-  commentCard: {
-    backgroundColor: notion.card,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: notion.border,
-    padding: 16,
-    marginBottom: 8,
-  },
-  commentDate: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: notion.textMuted,
-    marginBottom: 8,
-  },
-  commentBody: {
-    fontSize: 14,
-    color: notion.text,
-    lineHeight: 20,
-    marginBottom: 12,
-  },
-  commentFooter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  commentMetaLabel: {
-    fontSize: 12,
-    color: notion.textLight,
-  },
-  badge: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 12,
-  },
-  badgeNeutral: {
-    backgroundColor: notion.bg,
-  },
-  badgeWarning: {
-    backgroundColor: '#FDEBEC',
-  },
-  badgeText: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  badgeTextNeutral: {
-    color: notion.textMuted,
-  },
-  badgeTextWarning: {
-    color: '#E03E3E',
-  },
-  emptyState: {
-    backgroundColor: notion.card,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: notion.border,
-    padding: 24,
-    marginHorizontal: 16,
-    marginTop: 8,
-    alignItems: 'center',
-  },
-  emptyStateTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: notion.text,
-    marginBottom: 6,
-  },
-  emptyStateText: {
-    fontSize: 13,
-    color: notion.textMuted,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-  exportSection: {
-    marginTop: 16,
-    marginBottom: 8,
-  },
-});
+const createStyles = (theme: ThemePalette) =>
+  StyleSheet.create({
+    screen: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+    screenContent: {
+      paddingBottom: 32,
+    },
+    filterCard: {
+      backgroundColor: theme.card,
+      marginHorizontal: 16,
+      marginTop: 16,
+      padding: 20,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.border,
+    },
+    sectionLabel: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 4,
+    },
+    sectionHint: {
+      fontSize: 13,
+      color: theme.textMuted,
+      marginBottom: 16,
+    },
+    fieldLabel: {
+      fontSize: 13,
+      fontWeight: '500',
+      color: theme.textMuted,
+      marginTop: 8,
+      marginBottom: 4,
+    },
+    loadingWrap: {
+      paddingVertical: 40,
+    },
+    dashboard: {
+      paddingHorizontal: 16,
+      paddingTop: 8,
+    },
+    summaryCard: {
+      backgroundColor: theme.card,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.border,
+      padding: 20,
+      marginBottom: 24,
+    },
+    summaryLabel: {
+      fontSize: 12,
+      fontWeight: '600',
+      color: theme.textMuted,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+      marginBottom: 8,
+    },
+    summaryTitle: {
+      fontSize: 22,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 4,
+    },
+    summaryPeriod: {
+      fontSize: 13,
+      color: theme.textMuted,
+      marginBottom: 20,
+    },
+    statsRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.background,
+      borderRadius: 6,
+      paddingVertical: 16,
+    },
+    statBox: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    statValue: {
+      fontSize: 24,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 2,
+    },
+    statLabel: {
+      fontSize: 12,
+      color: theme.textMuted,
+    },
+    statDivider: {
+      width: 1,
+      height: 32,
+      backgroundColor: theme.border,
+    },
+    dashboardHeading: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 4,
+    },
+    dashboardSubheading: {
+      fontSize: 13,
+      color: theme.textMuted,
+      marginBottom: 16,
+    },
+    chartCard: {
+      backgroundColor: theme.card,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.border,
+      padding: 16,
+      marginBottom: 12,
+    },
+    chartHeader: {
+      marginBottom: 12,
+    },
+    chartTitle: {
+      fontSize: 15,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 2,
+    },
+    chartSubtitle: {
+      fontSize: 12,
+      color: theme.textMuted,
+    },
+    legendList: {
+      marginBottom: 12,
+      gap: 6,
+    },
+    legendRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 2,
+    },
+    legendDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      marginRight: 8,
+    },
+    legendText: {
+      flex: 1,
+      fontSize: 13,
+      color: theme.text,
+    },
+    legendValue: {
+      fontSize: 13,
+      fontWeight: '600',
+      color: theme.textMuted,
+      marginLeft: 8,
+    },
+    chartCapture: {
+      backgroundColor: theme.card,
+    },
+    chartRow: {
+      flexDirection: 'row',
+      paddingVertical: 4,
+    },
+    barChart: {
+      flex: 1,
+      marginLeft: 8,
+    },
+    emptyChartText: {
+      fontSize: 13,
+      color: theme.textMuted,
+      fontStyle: 'italic',
+    },
+    commentCard: {
+      backgroundColor: theme.card,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.border,
+      padding: 16,
+      marginBottom: 8,
+    },
+    commentDate: {
+      fontSize: 12,
+      fontWeight: '600',
+      color: theme.textMuted,
+      marginBottom: 8,
+    },
+    commentBody: {
+      fontSize: 14,
+      color: theme.text,
+      lineHeight: 20,
+      marginBottom: 12,
+    },
+    commentFooter: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    commentMetaLabel: {
+      fontSize: 12,
+      color: theme.textMuted,
+    },
+    badge: {
+      paddingHorizontal: 10,
+      paddingVertical: 3,
+      borderRadius: 12,
+    },
+    badgeNeutral: {
+      backgroundColor: theme.background,
+    },
+    badgeWarning: {
+      backgroundColor: theme.errorBg,
+    },
+    badgeText: {
+      fontSize: 12,
+      fontWeight: '500',
+    },
+    badgeTextNeutral: {
+      color: theme.textMuted,
+    },
+    badgeTextWarning: {
+      color: theme.errorText,
+    },
+    emptyState: {
+      backgroundColor: theme.card,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.border,
+      padding: 24,
+      marginHorizontal: 16,
+      marginTop: 8,
+      alignItems: 'center',
+    },
+    emptyStateTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 6,
+    },
+    emptyStateText: {
+      fontSize: 13,
+      color: theme.textMuted,
+      textAlign: 'center',
+      lineHeight: 20,
+    },
+    exportSection: {
+      marginTop: 16,
+      marginBottom: 8,
+    },
+  });
 
 export default ClientReport;

@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Keyboard } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View, Keyboard, Pressable } from 'react-native';
 import { getFormatedDate } from "react-native-modern-datepicker";
 import Animated, { FadeIn } from 'react-native-reanimated';
-import{ AuthContext } from '../context/AuthContext';
-import { functionList, promptList, activities, displayedBehaviour } from '../helpers/ClientFormList'
+import { AuthContext } from '../context/AuthContext';
+import { useAppTheme } from '../context/ThemeContext';
+import { functionList, promptList, activities, displayedBehaviour } from '../helpers/ClientFormList';
 import Button from '../components/Button';
 import Datepicker from '../components/Datepicker';
 import Input from '../components/Input';
@@ -12,13 +13,12 @@ import DropDown from '../components/DropDown';
 import disabilityApi from '../api/disabilityApi';
 import { ClientForm as InterfaceClientForm } from '../interfaces/appInterfaces';
 import { Checkbox } from 'react-native-paper';
-import { colors } from '../styles/colors';
 import { setNewFormatDate } from '../helpers/setNewFormatDate';
 import ScreenTitle from '../components/ScreenTitle';
 
 const ClientForm = ({ route, navigation }: any) => {
-
-    const { user: { uid }} = useContext(AuthContext);
+    const { user: { uid } } = useContext(AuthContext);
+    const { theme } = useAppTheme();
     const { clientUid, clientName } = route.params;
 
     const _today = new Date();
@@ -43,23 +43,18 @@ const ClientForm = ({ route, navigation }: any) => {
 
     const today = new Date();
     const startDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "1900/01/01"
+        today.setDate(today.getDate()),
+        "1900/01/01"
     );
-    const maxiDate = getFormatedDate(
-    today.setDate(today.getDate()),
-    "YYYY/MM/DD"
-    );
-    
+
     const handleOnPressStartDate = () => {
         setOpenStartDatePicker(!openStartDatePicker);
         Keyboard.dismiss();
-    }
+    };
 
     useEffect(() => {
         cleanFields();
     }, [clientUid]);
-    
 
     const cleanFields = () => {
         setValueFunct([]);
@@ -68,152 +63,255 @@ const ClientForm = ({ route, navigation }: any) => {
         setValueActivity([]);
         setChecked(false);
         setComment("");
-    }
-            
-    const handleCLientForm = async() => {
+    };
 
+    const handleCLientForm = async () => {
         Keyboard.dismiss();
         setOpen1(false);
         setOpen2(false);
         setOpen3(false);
         setOpen4(false);
-        
-        const behaviour = valueBehaviour.map((item: string) => {
-            return {
-                name: item
-            }
-        });
-        
+
+        const behaviourPayload = valueBehaviour.map((item: string) => ({
+            name: item,
+        }));
+
         try {
-            const resp = await disabilityApi.post<InterfaceClientForm>('/clients/setClientForm', { clientId: clientUid, date, prompt: valuePrompt, behaviour, functionality: valueFunct, activity: valueActivity, incidentReport: checked, comment, userId: uid });
-            
-            if( resp.status === 200){
-                Alert.alert("Success", "Form saved successfully", [{ text: 'Ok', onPress: cleanFields }] );
+            const resp = await disabilityApi.post<InterfaceClientForm>(
+                '/clients/setClientForm',
+                {
+                    clientId: clientUid,
+                    date,
+                    prompt: valuePrompt,
+                    behaviour: behaviourPayload,
+                    functionality: valueFunct,
+                    activity: valueActivity,
+                    incidentReport: checked,
+                    comment,
+                    userId: uid,
+                }
+            );
+
+            if (resp.status === 200) {
+                Alert.alert('Success', 'Form saved successfully', [
+                    { text: 'Ok', onPress: cleanFields },
+                ]);
             }
         } catch (error: any) {
-            Alert.alert('Invalid information', error.response.data.msg);
+            Alert.alert('Invalid information', error.response?.data?.msg || 'Unable to save form');
         }
+    };
 
-    }
-  return (
-    <Animated.ScrollView entering={ FadeIn.duration(500)}>
-        <ScreenTitle navigation={ navigation } clientName={ clientName } />
-        <View style={[globalStyles.container]}>
-            <Text style={ globalStyles.label }>Time</Text>
-            <TouchableOpacity>
-                <Input 
-                    label={"Time"} 
-                    value={ date }
-                    onPressIn={ handleOnPressStartDate }
+    const labelStyle = [styles.label, { color: theme.accent }];
+
+    return (
+        <Animated.ScrollView
+            entering={FadeIn.duration(500)}
+            style={{ backgroundColor: theme.background }}
+            contentContainerStyle={styles.content}
+            accessibilityLabel={`Client form for ${clientName}`}
+        >
+            <ScreenTitle navigation={navigation} clientName={clientName} />
+
+            <View style={[globalStyles.container, styles.formCard, {
+                backgroundColor: theme.card,
+                borderColor: theme.border,
+            }]}>
+                <Text
+                    style={labelStyle}
+                    maxFontSizeMultiplier={2}
+                    allowFontScaling
+                    accessibilityRole="header"
+                >
+                    Time
+                </Text>
+                <TouchableOpacity
+                    onPress={handleOnPressStartDate}
+                    accessibilityRole="button"
+                    accessibilityLabel="Select time"
+                    accessibilityHint="Opens the date and time picker"
+                >
+                    <Input
+                        label="Time"
+                        value={date}
+                        onPressIn={handleOnPressStartDate}
+                        accessibilityLabel="Selected time"
+                        accessibilityHint="Current date and time for this form entry"
+                    />
+                </TouchableOpacity>
+                <Datepicker
+                    mode="datepicker"
+                    openStartDatePicker={openStartDatePicker}
+                    startDate={startDate}
+                    maximumDate={today_}
+                    startedDate={today_}
+                    setDate={setDate}
+                    handleOnPressStartDate={handleOnPressStartDate}
                 />
-            </TouchableOpacity>
-            <Datepicker 
-                mode={ "datepicker" }
-                openStartDatePicker={ openStartDatePicker }
-                startDate={ startDate }
-                maximumDate={ today_ }
-                startedDate={ today_ }
-                setDate={ setDate }
-                handleOnPressStartDate={ handleOnPressStartDate }
-            />
-            <Text style={[ globalStyles.label, {marginTop: 6} ]}>Function</Text>
-            <DropDown
-                title={"Select function"}
-                items={ functionality }
-                value={ valueFunct }
-                open={ open1 }
-                setOpen={(val: boolean) => {
-                    setOpen1(val);
-                    setOpen2(false);
-                    setOpen3(false);
-                    setOpen4(false);
-                }}
-                setItems={ setFunctionality }
-                setValue={ setValueFunct }
-            />
-            <Text style={ globalStyles.label }>Prompt</Text>
-            <DropDown
-                title={"Select prompt"}
-                items={ prompt }
-                value={ valuePrompt }
-                open={ open2 }
-                setOpen={(val: boolean) => {
-                    setOpen1(false);
-                    setOpen2(val);
-                    setOpen3(false);
-                    setOpen4(false);
-                }}
-                setItems={ setPrompt }
-                setValue={ setValuePrompt }
-            />
-            <Text style={ globalStyles.label }>Displayed Behaviour</Text>
-            <DropDown
-                title={"Behaviour"}
-                items={behaviour}
-                value={ valueBehaviour }
-                open={ open3 }
-                setOpen={(val: boolean) => {
-                    setOpen1(false);
-                    setOpen2(false);
-                    setOpen3(val);
-                    setOpen4(false);
-                }}
-                setItems={setBechaviour}
-                setValue={ setValueBehaviour }
-                multiple={ true }
-            />
-            <Text style={ globalStyles.label }>Activities</Text>
-            <DropDown
-                title={"Activities"}
-                items={activity}
-                value={ valueActivity }
-                open={ open4 }
-                setOpen={(val: boolean) => {
-                    setOpen1(false);
-                    setOpen2(false);
-                    setOpen3(false);
-                    setOpen4(val);
-                }}
-                setItems={setActivity}
-                setValue={ setValueActivity }
-            />
-            <Text style={ globalStyles.label }>Incident Report?</Text>
-            <Checkbox
-                accessibilityLabel="Incident Report checkbox"
-                status={checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                    setChecked(!checked);
-                    setOpen1(false);
-                    setOpen2(false);
-                    setOpen3(false);
-                    setOpen4(false);
-                }}
-            />
-            <Text style={ globalStyles.label }>Comments</Text>
-            <Input 
-                label="Comments" 
-                value={ comment } 
-                setValue={ setComment }
-                multiline={ true }
-            />
-            <Button label="Create" onPress={ handleCLientForm } disabled={false}/>
-        </View>
-    </Animated.ScrollView>
-  )
-}
+
+                <Text style={[labelStyle, styles.labelSpaced]} maxFontSizeMultiplier={2} allowFontScaling>
+                    Function
+                </Text>
+                <DropDown
+                    title="Select function"
+                    items={functionality}
+                    value={valueFunct}
+                    open={open1}
+                    setOpen={(val: boolean) => {
+                        setOpen1(val);
+                        setOpen2(false);
+                        setOpen3(false);
+                        setOpen4(false);
+                    }}
+                    setItems={setFunctionality}
+                    setValue={setValueFunct}
+                />
+
+                <Text style={labelStyle} maxFontSizeMultiplier={2} allowFontScaling>
+                    Prompt
+                </Text>
+                <DropDown
+                    title="Select prompt"
+                    items={prompt}
+                    value={valuePrompt}
+                    open={open2}
+                    setOpen={(val: boolean) => {
+                        setOpen1(false);
+                        setOpen2(val);
+                        setOpen3(false);
+                        setOpen4(false);
+                    }}
+                    setItems={setPrompt}
+                    setValue={setValuePrompt}
+                />
+
+                <Text style={labelStyle} maxFontSizeMultiplier={2} allowFontScaling>
+                    Displayed Behaviour
+                </Text>
+                <DropDown
+                    title="Behaviour"
+                    items={behaviour}
+                    value={valueBehaviour}
+                    open={open3}
+                    setOpen={(val: boolean) => {
+                        setOpen1(false);
+                        setOpen2(false);
+                        setOpen3(val);
+                        setOpen4(false);
+                    }}
+                    setItems={setBechaviour}
+                    setValue={setValueBehaviour}
+                    multiple={true}
+                />
+
+                <Text style={labelStyle} maxFontSizeMultiplier={2} allowFontScaling>
+                    Activities
+                </Text>
+                <DropDown
+                    title="Activities"
+                    items={activity}
+                    value={valueActivity}
+                    open={open4}
+                    setOpen={(val: boolean) => {
+                        setOpen1(false);
+                        setOpen2(false);
+                        setOpen3(false);
+                        setOpen4(val);
+                    }}
+                    setItems={setActivity}
+                    setValue={setValueActivity}
+                />
+
+                <Text style={labelStyle} maxFontSizeMultiplier={2} allowFontScaling>
+                    Incident Report?
+                </Text>
+                <Pressable
+                    onPress={() => {
+                        setChecked(!checked);
+                        setOpen1(false);
+                        setOpen2(false);
+                        setOpen3(false);
+                        setOpen4(false);
+                    }}
+                    accessibilityRole="checkbox"
+                    accessibilityState={{ checked }}
+                    accessibilityLabel="Incident report"
+                    accessibilityHint="Marks whether an incident report is required"
+                    style={styles.checkboxRow}
+                    hitSlop={8}
+                >
+                    <Checkbox
+                        status={checked ? 'checked' : 'unchecked'}
+                        color={theme.accent}
+                        uncheckedColor={theme.border}
+                        onPress={() => {
+                            setChecked(!checked);
+                            setOpen1(false);
+                            setOpen2(false);
+                            setOpen3(false);
+                            setOpen4(false);
+                        }}
+                    />
+                    <Text
+                        style={[styles.checkboxLabel, { color: theme.text }]}
+                        maxFontSizeMultiplier={2}
+                        allowFontScaling
+                    >
+                        {checked ? 'Yes, incident report required' : 'No incident report'}
+                    </Text>
+                </Pressable>
+
+                <Text style={labelStyle} maxFontSizeMultiplier={2} allowFontScaling>
+                    Comments
+                </Text>
+                <Input
+                    label="Comments"
+                    value={comment}
+                    setValue={setComment}
+                    multiline={true}
+                    accessibilityLabel="Comments"
+                    accessibilityHint="Enter optional comments for this form"
+                />
+
+                <Button label="Create" onPress={handleCLientForm} disabled={false} />
+            </View>
+        </Animated.ScrollView>
+    );
+};
 
 const styles = StyleSheet.create({
-    checkboxContainer: {
+    content: {
+        paddingBottom: 32,
+        flexGrow: 1,
+    },
+    formCard: {
+        marginTop: 12,
+        marginHorizontal: 8,
+        borderWidth: 2,
+        borderRadius: 12,
+        paddingBottom: 16,
+    },
+    label: {
+        marginVertical: 6,
+        fontSize: 18,
+        fontWeight: '700',
+        fontFamily: 'Roboto',
+    },
+    labelSpaced: {
+        marginTop: 10,
+    },
+    checkboxRow: {
+        minHeight: 48,
         flexDirection: 'row',
-        marginBottom: 20,
+        alignItems: 'center',
+        marginBottom: 8,
     },
-    checkbox: {
-        alignSelf: 'center',
+    checkboxLabel: {
+        flex: 1,
+        fontSize: 16,
+        fontFamily: 'Roboto',
+        marginLeft: 4,
     },
-    labelCheckbox: {
-        margin: 8,
-        color: colors.white
-    }
-  });
+});
 
 export default ClientForm;

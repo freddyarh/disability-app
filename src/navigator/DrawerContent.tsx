@@ -1,85 +1,138 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, Text } from 'react-native';
 import {
     Avatar,
     Title,
     Caption,
-    Paragraph,
     Drawer,
-    List,
 } from 'react-native-paper';
 import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
 
-import{ AuthContext } from '../context/AuthContext';
-import { colors } from '../styles/colors';
-
+import { AuthContext } from '../context/AuthContext';
+import { useAppTheme } from '../context/ThemeContext';
+import HighContrastToggle from '../components/HighContrastToggle';
 
 export function DrawerContent(props: any) {
-    
     const { logOut, user } = useContext(AuthContext);
+    const { theme } = useAppTheme();
 
-    return(
-        <View style={{flex:1}}>
-            <DrawerContentScrollView {...props}>
+    return (
+        <View style={[styles.root, { backgroundColor: theme.background }]}>
+            <DrawerContentScrollView
+                {...props}
+                contentContainerStyle={{ backgroundColor: theme.background }}
+            >
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        {/* <View style={{flexDirection:'column',marginTop: 15}}> */}
-                        {/* <Image
-                            style={styles.logo}
-                            source={require('../assets/images/logo.jpeg')}
-                            resizeMode="contain"
-                        />  */}
-                        {/* </View> */}
-                        <View style={{flexDirection:'row', marginTop: 15}}>
-                            <Avatar.Icon {...props} icon="account" style={{ backgroundColor: colors.aquaGreen }} color="white" size={ 50 } />
-                            <View style={{marginLeft:15, flexDirection:'column'}}>
-                                <Title style={styles.title}>{ user?.name + " " + user?.lastName}</Title>
-                                <Caption style={styles.caption}>{ user?.email }</Caption>
+                        <View style={styles.userRow}>
+                            <Avatar.Icon
+                                {...props}
+                                icon="account"
+                                style={{ backgroundColor: theme.avatarBg }}
+                                color={theme.accentOn}
+                                size={50}
+                                accessible={false}
+                            />
+                            <View style={styles.userTextWrap}>
+                                <Title
+                                    style={[styles.title, { color: theme.text }]}
+                                    maxFontSizeMultiplier={2}
+                                    allowFontScaling
+                                >
+                                    {user?.name + ' ' + user?.lastName}
+                                </Title>
+                                <Caption
+                                    style={[styles.caption, { color: theme.textMuted }]}
+                                    maxFontSizeMultiplier={2}
+                                    allowFontScaling
+                                >
+                                    {user?.email}
+                                </Caption>
                             </View>
                         </View>
+
                         <View style={styles.row}>
-                            <View style={styles.section}>
-                                <Paragraph style={[styles.paragraph, styles.caption]}></Paragraph>
-                                <Caption style={styles.caption}>Menu</Caption>
-                            </View>
+                            <Caption
+                                style={[styles.caption, { color: theme.textMuted }]}
+                                maxFontSizeMultiplier={2}
+                                allowFontScaling
+                            >
+                                Menu
+                            </Caption>
+                        </View>
+
+                        <View style={styles.contrastRow}>
+                            <Text
+                                style={[styles.contrastLabel, { color: theme.text }]}
+                                maxFontSizeMultiplier={2}
+                                allowFontScaling
+                            >
+                                Accessibility
+                            </Text>
+                            <HighContrastToggle />
                         </View>
                     </View>
 
                     <Drawer.Section style={styles.drawerSection}>
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Avatar.Icon {...props} icon="home-account" style={{ backgroundColor: colors.aquaGreen }} color="white" size={ size } />
+                        <DrawerItem
+                            icon={({ size }) => (
+                                <Avatar.Icon
+                                    {...props}
+                                    icon="home-account"
+                                    style={{ backgroundColor: theme.avatarBg }}
+                                    color={theme.accentOn}
+                                    size={size}
+                                    accessible={false}
+                                />
                             )}
-
                             label="Participants"
-                            onPress={() => {props.navigation.navigate('Clients')}}
-                            labelStyle={ styles.listItem }
+                            onPress={() => { props.navigation.navigate('Clients'); }}
+                            labelStyle={[styles.listItem, { color: theme.text }]}
                         />
-                        { user?.role === 'SUPER_ADMIN' && (
-                            <DrawerItem 
-                                icon={({color, size}) => (
-                                    <Avatar.Icon {...props} icon="account-multiple" style={{ backgroundColor: colors.aquaGreen }} color="white" size={ size } />
+                        {user?.role === 'SUPER_ADMIN' && (
+                            <DrawerItem
+                                icon={({ size }) => (
+                                    <Avatar.Icon
+                                        {...props}
+                                        icon="account-multiple"
+                                        style={{ backgroundColor: theme.avatarBg }}
+                                        color={theme.accentOn}
+                                        size={size}
+                                        accessible={false}
+                                    />
                                 )}
-
                                 label="Users"
-                                onPress={() => {props.navigation.navigate('Staff Members')}}
-                                labelStyle={ styles.listItem }
+                                onPress={() => { props.navigation.navigate('Staff Members'); }}
+                                labelStyle={[styles.listItem, { color: theme.text }]}
                             />
                         )}
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
-            <Drawer.Section style={styles.bottomDrawerSection}>
-                <DrawerItem 
-                    icon={({color, size}) => (
-                        <Avatar.Icon {...props} icon="logout" style={{ backgroundColor: colors.aquaGreen }} color="white" size={ size } />
+
+            <Drawer.Section
+                style={[
+                    styles.bottomDrawerSection,
+                    { borderTopColor: theme.border },
+                ]}
+            >
+                <DrawerItem
+                    icon={({ size }) => (
+                        <Avatar.Icon
+                            {...props}
+                            icon="logout"
+                            style={{ backgroundColor: theme.avatarBg }}
+                            color={theme.accentOn}
+                            size={size}
+                            accessible={false}
+                        />
                     )}
                     label="Sign Out"
-                    onPress={ logOut }
-                    labelStyle={ styles.listItem }
+                    onPress={logOut}
+                    labelStyle={[styles.listItem, { color: theme.text }]}
                 />
             </Drawer.Section>
         </View>
@@ -87,57 +140,62 @@ export function DrawerContent(props: any) {
 }
 
 const styles = StyleSheet.create({
+    root: {
+        flex: 1,
+    },
     drawerContent: {
-      flex: 1,
+        flex: 1,
     },
     userInfoSection: {
-      paddingLeft: 20,
+        paddingLeft: 20,
+        paddingRight: 16,
     },
-    logo: {
-        width: '30%',
-        minWidth: 240,
-        maxHeight: 200,
+    userRow: {
+        flexDirection: 'row',
+        marginTop: 15,
+        alignItems: 'center',
+    },
+    userTextWrap: {
+        marginLeft: 15,
+        flexDirection: 'column',
+        flex: 1,
     },
     title: {
-      fontSize: Platform.OS === 'android' ? 18 : 17,
-      marginTop: 3,
-      fontWeight: 'bold',
+        fontSize: Platform.OS === 'android' ? 18 : 17,
+        marginTop: 3,
+        fontWeight: 'bold',
     },
     caption: {
-      fontSize: Platform.OS === 'android' ? 18 : 17,
-      color: "gray"
+        fontSize: Platform.OS === 'android' ? 16 : 15,
     },
     listItem: {
-        fontSize: Platform.OS === 'android' ? 18 : 17, 
-        // fontFamily: 'FieldGeoRegular', 
-        color: colors.black
+        fontSize: Platform.OS === 'android' ? 18 : 17,
+        fontWeight: '600',
     },
     row: {
-      marginTop: 20,
-      flexDirection: 'row',
-      alignItems: 'center',
+        marginTop: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    section: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginRight: 15,
+    contrastRow: {
+        marginTop: 16,
+        marginBottom: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 12,
+        minHeight: 48,
     },
-    paragraph: {
-      fontWeight: 'bold',
-      marginRight: 3,
+    contrastLabel: {
+        fontSize: 16,
+        fontWeight: '700',
+        fontFamily: 'Roboto',
     },
     drawerSection: {
-      marginTop: 15,
+        marginTop: 15,
     },
     bottomDrawerSection: {
         marginBottom: 15,
-        borderTopColor: "rgb(136, 131, 140)",
-        borderTopWidth: 1
+        borderTopWidth: 2,
     },
-    preference: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-    },
-  });
+});

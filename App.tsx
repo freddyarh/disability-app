@@ -6,14 +6,17 @@ import { Navigator } from './src/navigator/Navigator';
 import { StatusBar } from 'react-native';
 import { colors } from './src/styles/colors';
 import { AuthProvider } from './src/context/AuthContext';
+import { ThemeProvider } from './src/context/ThemeContext';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import LottieScreen from './src/components/LottieScreen';
 
 const AppState = ({ children }: any ) => {
   return(
-    <AuthProvider>
-      { children }
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        { children }
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 
