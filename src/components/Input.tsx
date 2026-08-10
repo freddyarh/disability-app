@@ -23,7 +23,24 @@ interface Props {
   accessibilityHint?: string;
 }
 
-const Input = ({ label, placeholder, textContentType="none", value, setValue, onAccion, onPressIn, rightEye, left, multiline=false, disabled=false, keyboardType='default', backgroundInputColor="white", inputTextColor="black"}: Props ) => {
+const Input = ({
+  label,
+  placeholder,
+  textContentType = "none",
+  value,
+  setValue,
+  onAccion,
+  onPressIn,
+  rightEye,
+  left,
+  multiline = false,
+  disabled = false,
+  keyboardType = 'default',
+  backgroundInputColor = "white",
+  inputTextColor = "black",
+  accessibilityLabel,
+  accessibilityHint,
+}: Props ) => {
   
   const [eyeButton, setEyeButton] = useState(true);
 
@@ -37,9 +54,9 @@ const Input = ({ label, placeholder, textContentType="none", value, setValue, on
     <>
       <TextInput
           textContentType={textContentType}
-          accessibilityLabel="input"
+          accessibilityLabel={accessibilityLabel ?? label}
+          accessibilityHint={accessibilityHint}
           autoCapitalize={"none"}
-          // accessibilityLabelledBy={ accessibilityLabelledBy }
           textColor={ disabled ? 'gray' : inputTextColor}
           autoCorrect={ false }
           style={ [globalStyles.textInput, disabled ? { backgroundColor: 'rgb(238, 233, 237)' } : { backgroundColor: backgroundInputColor }, { height: 48, minHeight: 48 }]}
