@@ -1,7 +1,7 @@
 name: expo production
-on: 
+on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   update:
@@ -21,17 +21,28 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
-          cache: yarn
+          node-version: 22
+          cache: npm
+
+      # #region agent log
+      - name: Debug environment
+        run: |
+          echo "node=$(node -v)"
+          echo "npm=$(npm -v)"
+          echo "which_yarn=$(command -v yarn || echo none)"
+          echo "has_package_lock=$([ -f package-lock.json ] && echo yes || echo no)"
+          echo "has_yarn_lock=$([ -f yarn.lock ] && echo yes || echo no)"
+      # #endregion
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+          packager: npm
 
       - name: Install dependencies
-        run: yarn install
+        run: npm ci
 
       - name: Publish production android
         run: eas build --profile production --platform android
